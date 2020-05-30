@@ -1,0 +1,55 @@
+
+from datetime import datetime as dt
+from . import db
+
+
+class Seguimiento(db.Model):
+    __tablename__ = 'seguimiento'
+    cpn = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    ruc = db.Column(db.String, nullable=True)
+    comercial = db.Column(db.String, nullable=True)
+    razon_social = db.Column(db.String, nullable=True)
+    plan_bsale = db.Column(db.String, nullable=True)
+    categoria = db.Column(db.String, nullable=True)
+    estado = db.Column(db.String, nullable=True)
+    produccion = db.Column(db.String, nullable=True)
+    fecha_ganado = db.Column(db.String, nullable=True)
+    fecha_inicio_pem = db.Column(db.String, nullable=True)
+    ejecutivo_pem = db.Column(db.String, nullable=True)
+    fecha_contacto_inicial = db.Column(db.String, nullable=True)
+    fecha_pase_produccion = db.Column(db.String, nullable=True)
+    hizo_upselling = db.Column(db.String, nullable=True)
+    url_bsale = db.Column(db.String, nullable=True)
+    comentario = db.Column(db.String, nullable=True)
+
+    def __repr__(self):
+        return f'<Seguimiento (cpn={self.cpn}, ruc={self.ruc})>'
+
+    def anio(self):
+        if self.fecha_inicio_pem:
+            return (self.fecha_inicio_pem[0:4] if len(self.fecha_inicio_pem) >=4 else '')
+        else:
+            return('')
+
+    def mes_anio(self):
+        if self.fecha_ganado:
+            return (self.fecha_ganado[0:7] if len(self.fecha_ganado) >=7 else '')
+        else:
+            return('')
+
+    def dias_pem(self):
+
+        if self.estado == 'PEM':
+            try:
+                return ((dt.today().date() - dt.strptime(self.fecha_inicio_pem, '%Y-%m-%d').date()).days)
+            except:
+                return('')
+        else:
+            try:
+                return((dt.strptime(self.fecha_pase_produccion, '%Y-%m-%d').date() - dt.strptime(self.fecha_inicio_pem, '%Y-%m-%d').date()).days)
+            except:
+                return('')
+
+    def tiene_url(self):
+        
+        return (self.url_bsale.startswith('http'))

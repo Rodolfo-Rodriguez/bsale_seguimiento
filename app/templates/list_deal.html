@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %} Deals {% endblock title %}
+
+{% block body %}
+
+<!-- Page -->
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="text-heading"> Deals 
+            {% for df in deal_filters %}
+                  <span class="text-filter">
+                    {{df['field']}} = {{df['value']}} 
+                    <a href="/deal/remove_filter/{{df['field']}}/{{df['value']}}"><i class="fas fa-times-circle"></i></a>
+                  </span>  
+            {% endfor %}
+
+          </div>
+        </div>
+    </div>
+  
+  </div>
+
+  <div class="panel-body">
+
+  <div class="row">
+        <div class="col-lg-12">
+
+         <table width="100%" class="table table-striped table-hover" id="dataTables">
+          <thead>
+            <tr>
+              <th>RUC</th>
+              <th>CPN</th>
+              <th>Comercial</th>
+              <th>Razon Social</th>
+              <th>Plan Bsale</th>
+              <th>Categoria</th>
+              <th>Estado</th>
+              <th>Produccion</th>
+              <th>Ejecutivo PEM</th>
+              <th>Mes Ini PEM</th>
+              <th>Hizo Upselling</th>
+              <th>Dias en PEM</th>
+              <th>Coment.</th>
+              <th width="60px"></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for item in items %}
+            <tr>
+              <td><a href="/deal/show/{{item.cpn}}">{{item.ruc}}</a></td>
+              <td><a href="/deal/show/{{item.cpn}}">{{item.cpn}}</a></td>
+              <td><a href="/deal/add_filter/comercial/{{item.comercial}}">{{item.comercial}}</td>
+              <td><a href="/deal/show/{{item.cpn}}">{{item.razon_social}}</a></td>
+              <td><a href="/deal/add_filter/plan_bsale/{{item.plan_bsale}}">{{item.plan_bsale}}</td>
+              <td><a href="/deal/add_filter/categoria/{{item.categoria}}">{{item.categoria}}</td>
+              <td><a href="/deal/add_filter/estado/{{item.estado}}">{{item.estado}}</a></td>
+              <td><a href="/deal/add_filter/estado_pep/{{item.produccion}}">{{item.produccion}}</a></td>
+              <td><a href="/deal/add_filter/ejecutivo_pem/{{item.ejecutivo_pem}}">{{item.ejecutivo_pem}}</a></td>             
+              <td>{{item.mes_anio()}}</td>
+              <td>{{item.hizo_upselling}}</td>
+              <td>{{item.dias_pem()}}</td>
+              <td>{{item.comentario}}</td>
+              <td align="right">
+                {% if item.tiene_url() %}
+                  <a href="{{item.url_bsale}}" target="_new" class="icon-list"><i class="fas fa-link"></i></a>
+                {% endif %}
+                <a href="/deal/edit/{{item.cpn}}" class="icon-list"><i class="fas fa-edit"></i></a>
+              </td>
+             </tr>
+          {% endfor %}
+         </tbody>
+        </table>
+
+       </div>
+   </div>
+
+  </div>
+
+</div>
+
+<!-- Page -->
+
+{% endblock body %}
+
+
+{% block scripts %}
+
+  <script>
+      $(document).ready(function() {
+          $('#dataTables').DataTable({
+              responsive: true,
+              stateSave: true,
+              searching: true,
+              info: true,
+              paging: true,
+              "order": [0, 'desc'],
+              "pageLength": 20,
+              "lengthChange": true,
+              "lengthMenu": [ 20, 50, 100 ],
+              "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>"
+          });
+          $('.dataTables_filter input').css({"width": "60%"});
+      });          
+  </script>
+
+
+{% endblock scripts %}
+

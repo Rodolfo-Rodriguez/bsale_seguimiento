@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block body %}
+
+<!-- Page -->
+
+<div class="row">
+
+ <div class="col-lg-8">  
+
+     <div class="panel panel-primary">
+      <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-heading">{{titles[1]}}</div>
+            </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div id="ventas_anual" style="height: 250px;"></div>
+          </div>
+
+          <div class="col-lg-6">
+              <table width="100%" class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th align="left">Mes</th>
+                    <th align="center">Meta</th>
+                    <th align="center">Ventas</th>
+                    <th align="center">% Cump.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in data_all[1] %}
+                    {% if item['ventas'] > 0 %}
+                    <tr>
+                      <td align="left">{{item['mes']}}</td>
+                      <td align="center">{{item['meta']}}</td>
+                      <td align="center">{{item['ventas']}}</td>
+                      <td align="center">{{item['cumpl']}}%</td>
+                    </tr>
+                    {% endif %}
+                  {% endfor %}
+                  <tr>
+                    <td align="left"><strong>Total</strong></td>
+                    <td align="center"><strong>{{totals[1]['meta_total']}}</strong></td>
+                    <td align="center"><strong>{{totals[1]['venta_total']}}</strong></td>
+                    <td align="center"><strong>{{totals[1]['cumpl']}}%</strong></td>
+                  </tr>
+                </tbody>
+              </table>      
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div id="ventas_anual_mes" style="height: 250px;"></div>
+          </div>          
+        </div>
+
+      </div>
+
+  </div>
+
+  </div>  
+
+
+  <div class="col-lg-4">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-heading">{{titles[0]}}</div>
+            </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="row">
+          <div class="col-lg-12">
+              <div id="ventas_mensual" style="height: 250px;"></div>
+              <table width="100%" class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th align="left">Comercial</th>
+                    <th align="left">Meta</th>
+                    <th align="left">Ventas</th>
+                    <th align="left">Cumpl.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in data_all[0] %}
+                    <tr>
+                      <td align="left">{{item['comercial']}}</td>
+                      <td align="left">{{item['meta']}}</td>
+                      <td align="left">{{item['ventas']}}</td>
+                      <td align="left">{{item['cumpl']}}%</td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                    <td align="left"><strong>Total</strong></td>
+                    <td align="left"><strong>{{totals[0]['meta_total']}}</strong></td>
+                    <td align="left"><strong>{{totals[0]['venta_total']}}</strong></td>
+                    <td align="left"><strong>{{totals[0]['cumpl']}}%</strong></td>
+                    <td align="left"></td>
+                  </tr>
+                </tbody>
+              </table>             
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>  
+
+</div>
+
+
+
+<!-- Page -->
+
+{% endblock body %}
+
+
+{% block scripts %}
+
+<script>
+  
+  new Morris.Donut({
+    element: 'ventas_mensual',
+    data: [ {label: "Ventas", value: {{totals[0]['cumpl']}} }, {label: "Restante", value: {{ 100 - totals[0]['cumpl']}} } ],
+    colors: ['#64B474','#E58C77'],
+    formatter: function (value, data) { return value + '%'; }
+  });
+
+
+  new Morris.Donut({
+    element: 'ventas_anual',
+    data: [ {label: "Ventas", value: {{totals[1]['cumpl_anual']}} }, {label: "Restante", value: {{ 100 - totals[1]['cumpl_anual']}} } ],
+    colors: ['#64B474','#E58C77'],
+    formatter: function (value, data) { return value + '%'; }
+  });
+
+  new Morris.Line({
+      element: 'ventas_anual_mes',
+      data: [{% for item in data_all[1] %}
+                { mes:"{{item['mes']}}",
+                  meta:{{item['meta']}}, 
+                  ventas:{{item['ventas']}},},
+             {% endfor %}],
+      xkey: 'mes',
+      ykeys: ['meta','ventas'],
+      labels: ['Meta','Ventas'],
+      hideHover: 'auto',
+      lineColors: ['#61B7D7','#64B474'],
+      stacked: false,
+      xLabels: "month",
+      xLabelAngle: 0
+    });
+
+</script>
+
+{% endblock scripts %}
+

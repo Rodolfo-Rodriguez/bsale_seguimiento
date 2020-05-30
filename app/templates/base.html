@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock title %}</title>
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/sb-admin-2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/static/sb-admin-2/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="/static/sb-admin-2/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/static/sb-admin-2/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/sb-admin-2/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/custom.css" rel="stylesheet">
+
+    <!-- Morris CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+    <!-- Morris JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="wrapper">
+
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" style="padding: 5px 20px;"><img src="/static/images/logo.png" height="100%"></a>
+    </div>
+
+  <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right">
+
+
+      <!-- /. deals -->
+      <li class="dropdown">
+        <a href="/deal/list">Deals</a>
+      </li>
+      <!-- /. deals -->
+
+      <!-- /. filtros -->
+      <li class="dropdown">
+        <a href="/filtros/list">Filtros</a>
+      </li>
+      <!-- /. filtros -->
+
+      <!-- /. stats -->
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          Stats <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a href="/stats/ventas_mes">Ventas Mes</a></li>
+          <li><a href="/stats/ventas_vs_pep/2020">Venta vs PEP</a></li>
+          <li><a href="/stats/pem/todos/0">Ejecutivos PEM</a></li>
+<!--           <li><a href="/stats/churn">Churn</a></li>
+ -->        </ul>
+      </li>
+      <!-- /. stats -->
+
+
+      <!-- /. config -->
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-gear fa-fw"></i> <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a href="/deal/load">Cargar Deals</a></li>
+        </ul>
+      </li>
+      <!-- /. config -->
+
+    </ul>
+
+  </nav>
+
+   <div id="page-wrapper" style="padding: 20px; margin: 0 0 0 0;">
+
+   {% block body %}
+   {% endblock body %}
+
+   </div>
+
+ </div>
+
+<!-- jQuery -->
+<script src="/static/sb-admin-2/vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/sb-admin-2/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/static/sb-admin-2/vendor/metisMenu/metisMenu.min.js"></script>
+
+<!-- DataTables JavaScript -->
+<script src="/static/sb-admin-2/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/sb-admin-2/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+<script src="/static/sb-admin-2/vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/sb-admin-2/dist/js/sb-admin-2.js"></script>
+
+<!-- Page Scripts -->
+
+{% block scripts %}
+{% endblock scripts %}
+
+</body>

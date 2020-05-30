@@ -1,0 +1,70 @@
+.home-wraper {
+  max-width: 1200px;
+  margin:0 auto;
+}
+
+.home-title {
+  padding: 2px;
+  margin: 5px;
+  color: #31708f;
+}
+
+.title-text {
+  border-bottom: 0px;
+}
+
+.text-heading {
+  font-size: 18px;
+}
+.text-footer {
+  font-size: 18px;
+}
+
+.text-heading a {
+  font-size: 24px;
+  color: white;
+  text-decoration: none;
+}
+
+.text-heading a:hover{
+  color: lightgrey;
+}
+
+.text-filter {
+  font-size: 15px;
+  color: white;
+  background: #ED7131;
+  padding: 6px 6px 6px 6px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 20px;  
+}
+
+.text-filter a {
+  font-size: 15px;
+  color: white;
+}
+
+.icon-header{
+  padding-right: 15px;
+}
+
+.icon-list{
+  padding-right: 8px;
+  font-size: 16px;
+}
+
+ 
+div.dataTables_filter {
+    float: left;
+    width: 100%;
+}
+
+div.dataTables_filter label {
+    float: left;
+    width: 100%;
+}
+
+div.dataTables_length {
+    float: right;
+}

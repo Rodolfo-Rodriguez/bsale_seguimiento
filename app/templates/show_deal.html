@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %} Deals {% endblock title %}
+
+{% block body %}
+
+<!-- Page -->
+<div class="row">
+  <div class="col-lg-6 col-lg-offset-3">
+
+    <div class="panel panel-primary">
+
+      <div class="panel-heading">
+        
+        <div class="row">
+            <div class="col-lg-10">
+              <div class="text-heading">Deal Info</div>
+            </div>
+            <div class="col-lg-2">
+              <div class="text-heading text-right"><a href="/deal/edit/{{deal.cpn}}"><i class="fas fa-edit icon-header"></i></a></div>
+            </div>
+        </div>
+      
+      </div>
+
+      <div class="panel-body">
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>RUC</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.ruc}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>CPN</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.cpn}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Razon Social</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.razon_social}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Comercial</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.comercial}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Plan BSale</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.plan_bsale}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Categoria</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.categoria}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Estado</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.estado}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Prodcuccion</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.produccion}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Ejecutivo PEM</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.ejecutivo_pem}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Fecha Ganado</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.fecha_ganado}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Fecha Inicio PEM</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.fecha_inicio_pem}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Fecha Contacto Inicial</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.fecha_contacto_inicial}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Fecha Pase a Produccion</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.fecha_pase_produccion}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Dias en PEM</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.dias_pem()}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Hizo Upselling</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.hizo_upselling}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>URL BSale</strong></p></div>
+            <div class="col-lg-8 text-left text-info">
+              {% if deal.tiene_url() %}
+                <p><a target="_new" href="{{deal.url_bsale}}">{{deal.url_bsale}}</a></p>
+              {% else %}
+                <p>{{deal.url_bsale}}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>Comentario</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.comentario}}</p></div>
+          </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Page -->
+
+{% endblock body %}
+
+
+{% block scripts %}
+
+{% endblock scripts %}
+

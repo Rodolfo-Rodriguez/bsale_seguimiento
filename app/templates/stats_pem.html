@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block body %}
+
+<!-- Page -->
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="text-heading">Dias en PEM</div>
+        </div>
+    </div>
+
+  </div>
+
+  <div class="panel-body">
+
+  <div class="row">
+    <div class="col-lg-5">
+
+      <table width="100%" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Ejecutivo</th>
+            {% for name in range_names %}
+              <th align="center">{{name}}</td>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in data %}
+            <tr>
+              <td>{{item['ejecutivo']}}</td>
+              {% for dr in item['deals_range'] %}
+                <td align="center"><a href="/stats/pem/{{item['ejecutivo']}}/{{loop.index - 1}}" style="color: {{colors[loop.index-1]}};">{{dr}}</a></td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+          <tr>
+            <td><strong>Total</strong></td>
+            {% for tot in totales %}
+              <td align="center"><strong style="color: {{colors[loop.index-1]}};">{{tot}}</strong></td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="total_stats" style="height: 300px;"></div>
+
+    </div>
+
+    <div class="col-lg-7">
+      <h3 class="text-center">Negocios en PEM por Ejecutivo</h3>
+      <div id="pem_stats" style="height: 350px;"></div>
+    </div>
+
+  </div>
+
+  </div>
+
+</div>
+
+{% if show_list %}
+
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="text-heading">{{title}}</div>
+        </div>
+    </div>
+
+  </div>
+
+  <div class="panel-body">
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <table width="100%" class="table table-striped table-hover" id="dataTables-List">
+
+          <thead>
+            <tr>
+              <th>RUC</th>
+              <th>CPN</th>
+              <th>Comercial</th>
+              <th>Razon Social</th>
+              <th>Plan Bsale</th>
+              <th>Fecha Ini PEM</th>
+              <th>Hizo Upselling</th>
+              <th>Dias en PEM</th>
+              <th>URL</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for item in items %}
+            <tr>
+              <td><a href="/deal/show/{{item.cpn}}">{{item.ruc}}</a></td>
+              <td><a href="/deal/show/{{item.cpn}}">{{item.cpn}}</a></td>
+              <td>{{item.comercial}}</td>
+              <td><a href="/deal/show/{{item.cpn}}">{{item.razon_social}}</a></td>
+              <td>{{item.plan_bsale}}</td>
+              <td>{{item.fecha_inicio_pem}}</td>
+              <td>{{item.hizo_upselling}}</td>
+              <td>{{item.dias_pem()}}</td>
+              <td align="right">
+                {% if item.tiene_url() %}
+                  <a href="{{item.url_bsale}}" target="_new" class="icon-list"><i class="fas fa-link"></i></a>
+                {% endif %}
+              </td>
+             </tr>
+          {% endfor %}
+         </tbody>
+
+      </table>
+    </div>
+
+  </div>
+
+  </div>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- Page -->
+
+{% endblock body %}
+
+
+{% block scripts %}
+
+  <script>
+
+      $(document).ready(function() {
+          $('#dataTables-List').DataTable({
+              responsive: true,
+              stateSave: false,
+              paging: false,
+              info: true,
+              searching: false,
+          });
+      });
+
+    new Morris.Bar({
+      element: 'pem_stats',
+      data: [{% for item in data %}
+                { ejecutivo:"{{item['ejecutivo']}}", 
+                  range0:{{item['deals_range'][0]}}, 
+                  range1:{{item['deals_range'][1]}}, 
+                  range2:{{item['deals_range'][2]}},
+                  range3:{{item['deals_range'][3]}} },
+             {% endfor %}],
+      xkey: 'ejecutivo',
+      ykeys: ['range0','range1','range2','range3'],
+      labels: ['0-15d','15-30d','30-60d','>60d'],
+      hideHover: 'auto',
+      barColors: [{% for color in colors %} '{{color}}', {% endfor %}],
+      stacked: true,
+      xLabelAngle: 0
+    });
+
+    Morris.Donut({
+      element: 'total_stats',
+      data: [
+        {label: "0-15d", value: {{totales_prc[0]}} },
+        {label: "15-30d", value: {{totales_prc[1]}} },
+        {label: "30-60d", value: {{totales_prc[2]}} },
+        {label: ">60d", value: {{totales_prc[3]}} }
+      ],
+      colors : ['{{colors[0]}}', '{{colors[1]}}', '{{colors[2]}}', '{{colors[3]}}'],
+      formatter: function (value, data) { return value + '%'; }
+    });
+
+  </script>
+
+{% endblock scripts %}
+

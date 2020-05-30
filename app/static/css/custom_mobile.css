@@ -1,0 +1,400 @@
+
+.home-mobile-wraper {
+  max-width: 880px;
+  margin:0 auto;
+}
+
+.mobile-padding {
+  padding: 2px;
+}
+
+.mobile-pannel {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.home-title {
+  padding: 2px;
+  margin: 5px;
+  color: #31708f;
+}
+
+.panel-font-big{
+  font-size: 24px;
+  padding: 5px; 
+  color: white;
+}
+
+.scene-thumb-container {
+  position: relative;
+  width: 281px;
+  height: 164px;
+  max-width: 300px;
+  max-height: 168px;
+}
+
+
+.scene-thumb-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 300px;
+  max-height: 168px;
+}
+
+.scene-thumb-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: grey;
+}
+
+.scene-thumb-overlay-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 25%;
+  width: 25%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: grey;
+}
+
+.scene-thumb-overlay-view {
+  position: absolute;
+  top: 90%;
+  left: 94%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 10%;
+  width: 10%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.scene-thumb-overlay-link {
+  position: absolute;
+  top: 85%;
+  left: 0;
+  height: 15%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.scene-thumb-overlay-tags {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.scene-thumb-icon-view {
+  color: white;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: left;
+}
+
+.scene-thumb-icon-play {
+  color: white;
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: left;
+}
+
+.scene-thumb-link {
+  color: white;
+  font-size: 16px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+.scene-thumb-link:link {
+  text-decoration: none;
+}
+
+.scene-thumb-text {
+  color: orange;
+  font-size: 16px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: left;
+  padding-left: 5px
+}
+
+.scene-thumb-stars {
+  color: orange;
+  font-size: 14px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.scene-thumb-stars a{
+  color: orange;
+}
+
+.scene-thumb-stars:link {
+  text-decoration: none;
+  color: orange;
+}
+
+
+.scene-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 700px;
+  max-height: 400px;
+}
+
+.scene-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 700px;
+  max-height: 400px;
+}
+
+.scene-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.scene-overlay-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 20%;
+  width: 20%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.scene-icon-play {
+  color: white;
+  font-size: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: left;
+}
+
+
+.ps-thumb-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.ps-thumb-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.ps-thumb-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: grey;
+}
+
+
+.ps-thumb-overlay-delete {
+  position: absolute;
+  top: 10%;
+  left: 85%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 20%;
+  width: 20%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: grey;
+}
+
+.ps-thumb-overlay-view {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 40%;
+  width: 40%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.ps-thumb-overlay-link {
+  position: absolute;
+  top: 85%;
+  left: 0;
+  height: 15%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.ps-thumb-grid-overlay-link {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  height: 10%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.ps-thumb-icon-view {
+  position: absolute;
+  color: white;
+  font-size: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.ps-thumb-icon-delete {
+  color: white;
+  font-size: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: center;
+}
+
+.ps-thumb-link {
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.ps-thumb-link:link {
+  text-decoration: none;
+}
+
+
+.ps-thumb-grid-link {
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.ps-thumb-grid-link:link {
+  text-decoration: none;
+  color: orange;
+}
+
+
+.movie-thumb-container {
+  position: relative;
+  width: 190px;
+  height: 280px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.movie-thumb-image {
+  display: block;
+  width: 190px;
+  height: 280px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.movie-thumb-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: grey;
+}
+
+.movie-thumb-grid-overlay-link {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  height: 20%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: black;
+}
+
+.movie-thumb-grid-link {
+  position: absolute;
+  color: white;
+  font-size: 18px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.movie-thumb-grid-link:link {
+  text-decoration: none;
+  color: orange;
+}
