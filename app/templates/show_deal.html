@@ -17,7 +17,7 @@
               <div class="text-heading">Deal Info</div>
             </div>
             <div class="col-lg-2">
-              <div class="text-heading text-right"><a href="/deal/edit/{{deal.cpn}}"><i class="fas fa-edit icon-header"></i></a></div>
+              <div class="text-heading text-right"><a href="/deal/edit/{{deal.negocio_id}}"><i class="fas fa-edit icon-header"></i></a></div>
             </div>
         </div>
       
@@ -26,13 +26,18 @@
       <div class="panel-body">
 
           <div class="row">
-            <div class="col-lg-4"><p class="text-right"><strong>RUC</strong></p></div>
-            <div class="col-lg-8 text-left text-info"><p>{{deal.ruc}}</p></div>
+            <div class="col-lg-4"><p class="text-right"><strong>ID Negocio</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.negocio_id}}</p></div>
           </div>
 
           <div class="row">
             <div class="col-lg-4"><p class="text-right"><strong>CPN</strong></p></div>
             <div class="col-lg-8 text-left text-info"><p>{{deal.cpn}}</p></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4"><p class="text-right"><strong>RUC</strong></p></div>
+            <div class="col-lg-8 text-left text-info"><p>{{deal.ruc}}</p></div>
           </div>
 
           <div class="row">

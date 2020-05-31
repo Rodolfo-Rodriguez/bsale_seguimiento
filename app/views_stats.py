@@ -2,7 +2,7 @@ import os
 from flask import render_template, redirect, Blueprint, session, url_for
 
 import randomcolor
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 
 stats = Blueprint('stats', __name__)
 
@@ -10,12 +10,93 @@ from . import db
 from .models import Seguimiento
 
 #---------------------------------------------------------------------------------------------------------------------------------
+# Venta vs Meta
+#---------------------------------------------------------------------------------------------------------------------------------
+@stats.route("/stats/ventas_vs_meta/<mes>", methods=["GET"])
+def stats_ventas_meta(mes):
+
+	if mes == 'today':
+		mes = dt.today().date().strftime("%Y-%m")
+
+	date_mes = dt.strptime(mes, '%Y-%m').date()
+	date_next = date_mes + timedelta(days=31)
+	date_prev = date_mes - timedelta(days=1)
+	mes_next = date_next.strftime("%Y-%m")
+	mes_prev = date_prev.strftime("%Y-%m")
+
+	fecha_ini = '{}-01'.format(mes)
+	fecha_fin = '{}-31'.format(mes)
+
+	data_all = []
+	totals = []
+	titles = []
+	colors = []
+
+	deals = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin)
+	venta_total = deals.count()
+
+	##--- Comerciales para el mes
+
+	titles.append('Ventas por Comercial - Mes {}'.format(mes))
+
+	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
+
+	data = []
+	metas = {'2020-05':12, '2020-04':11, '2020-03':10, '2020-02':12, '2020-01':14}
+	meta_total = 86
+
+	for comercial in comerciales:
+		meta = metas[mes] if mes in metas else 1
+		ventas = len([ deal for deal in deals if deal.comercial == comercial ])
+		data.append({'comercial':comercial, 'meta':meta, 'ventas':ventas, 'cumpl': int(round(100 * ventas/meta,0)) })
+
+	data.sort(key = lambda x: x['ventas'], reverse=True)
+
+	totals.append({'meta_total':meta_total, 'venta_total':venta_total, 'cumpl':int(round(100 * venta_total/meta_total,0))})
+
+	data_all.append(data)
+
+	##--- Anual
+	
+	meses = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06','2020-07','2020-08','2020-09','2020-10','2020-11','2020-12']
+	metas = [61,68,74,80,86,83,84,93,97,93,90,92]
+	meta_anual = 1000
+
+	titles.append('Ventas del 2020')
+
+	data = []
+
+	for idx, mes_venta in enumerate(meses):
+		fecha_ini = '{}-01'.format(mes_venta)
+		fecha_fin = '{}-31'.format(mes_venta)
+
+		ventas = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).count()
+		data.append({'mes':mes_venta, 'meta':metas[idx], 'ventas':ventas, 'cumpl': int(round(100 * ventas/metas[idx],0)), 'cumpl_anual': int(round(100 * ventas/meta_anual,0)) })
+
+	data_all.append(data)
+
+	meta_total = sum(metas)
+	venta_total = sum([ item['ventas'] for item in data])
+
+	totals.append({'meta_total':meta_total, 'venta_total':venta_total, 'cumpl':int(round(100 * venta_total/meta_total,0)), 'cumpl_anual':int(round(100 * venta_total/meta_anual,0))})	
+
+	return render_template('home.html', data_all=data_all, totals=totals, titles=titles, mes=mes, mes_next=mes_next, mes_prev=mes_prev) 
+
+
+#---------------------------------------------------------------------------------------------------------------------------------
 # Ventas Mes
 #---------------------------------------------------------------------------------------------------------------------------------
-@stats.route("/stats/ventas_mes", methods=["GET"])
-def stats_ventas_mes():	
+@stats.route("/stats/ventas_mes/<mes>", methods=["GET"])
+def stats_ventas_mes(mes):	
 
-	mes = dt.today().date().strftime("%Y-%m")
+	if mes=='today':
+		mes = dt.today().date().strftime("%Y-%m")
+
+	date_mes = dt.strptime(mes, '%Y-%m').date()
+	date_next = date_mes + timedelta(days=31)
+	date_prev = date_mes - timedelta(days=1)
+	mes_next = date_next.strftime("%Y-%m")
+	mes_prev = date_prev.strftime("%Y-%m")
 
 	fecha_ini = '{}-01'.format(mes)
 	fecha_fin = '{}-31'.format(mes)
@@ -28,7 +109,7 @@ def stats_ventas_mes():
 
 	##--- Comerciales
 
-	titles.append('Ventas mes {} por Comercial'.format(mes))
+	titles.append('Ventas por Comercial')
 
 	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
 
@@ -45,7 +126,7 @@ def stats_ventas_mes():
 
 	##--- Plan
 
-	titles.append('Ventas mes {} por plan BSale'.format(mes))
+	titles.append('Ventas por plan BSale')
 
 	planes_bsale = [ deal.plan_bsale for deal in db.session.query(Seguimiento.plan_bsale).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
 
@@ -61,7 +142,7 @@ def stats_ventas_mes():
 
 	##--- Categoria
 
-	titles.append('Ventas mes {} por Categoria'.format(mes))
+	titles.append('Ventas por Categoria')
 
 	categorias = [ deal.categoria for deal in db.session.query(Seguimiento.categoria).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
 
@@ -75,7 +156,7 @@ def stats_ventas_mes():
 	data_all.append(data)
 
 
-	return render_template('stats_ventas.html', data_all=data_all, total=total, titles=titles) 
+	return render_template('stats_ventas.html', data_all=data_all, total=total, titles=titles, mes=mes, mes_next=mes_next, mes_prev=mes_prev) 
 	
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +170,7 @@ def stats_ventas_pep(year):
 	meses = {
 				"2020":['2020-01','2020-02','2020-03','2020-04','2020-05'],
 				"2019":['2019-01','2019-02','2019-03','2019-04','2019-05','2019-06','2019-07','2019-08','2019-09','2019-10','2019-11','2019-12'],
-				"2018":['2018-05','2018-06','2018-07','2018-08','2018-09','2018-10','2018-11','2018-12']
+				"2018":['2018-01','2018-02','2018-03','2018-04','2018-05','2018-06','2018-07','2018-08','2018-09','2018-10','2018-11','2018-12']
 			}
 
 	data = []

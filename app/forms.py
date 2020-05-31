@@ -17,7 +17,7 @@ class SeguimientoForm(FlaskForm):
 	fecha_inicio_pem = StringField('Fecha Inicio PEM')
 	fecha_contacto_inicial = StringField('Fecha de Contacto Inicial')
 	fecha_pase_produccion = StringField('Fecha de Pase a Produccion')
-	hizo_upselling = BooleanField('Hizo Upselling')
+	hizo_upselling = SelectField('Hizo Upselling', choices=[ ('SI','SI'),('NO','NO')])
 	url_bsale = StringField('URL BSale')
 	comentario = TextAreaField('Comentario')
 

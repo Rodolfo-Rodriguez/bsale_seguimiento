@@ -41,9 +41,9 @@
                   {% for item in data_all[1] %}
                     {% if item['ventas'] > 0 %}
                     <tr>
-                      <td align="left">{{item['mes']}}</td>
+                      <td align="left"><a href="/deal/list/mes/{{item['mes']}}">{{item['mes']}}</a></td>
                       <td align="center">{{item['meta']}}</td>
-                      <td align="center">{{item['ventas']}}</td>
+                      <td align="center"><a href="/deal/list/mes/{{item['mes']}}">{{item['ventas']}}</a></td>
                       <td align="center">{{item['cumpl']}}%</td>
                     </tr>
                     {% endif %}
@@ -62,7 +62,7 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <div id="ventas_anual_mes" style="height: 250px;"></div>
+            <div id="ventas_anual_mes" style="height: 300px;"></div>
           </div>          
         </div>
 
@@ -78,8 +78,14 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="text-heading">{{titles[0]}}</div>
+            <div class="col-lg-2">
+                <div class="text-heading text-left"><a href="/stats/ventas_vs_meta/{{mes_prev}}"><i class="fas fa-chevron-circle-left"></i></a></div>
+            </div>
+            <div class="col-lg-8">
+                <div class="text-heading text-center">{{titles[0]}}</div>
+            </div>
+            <div class="col-lg-2">
+                <div class="text-heading text-right"><a href="/stats/ventas_vs_meta/{{mes_next}}"><i class="fas fa-chevron-circle-right"></i></a></div>
             </div>
         </div>
       </div>
@@ -103,7 +109,7 @@
                     <tr>
                       <td align="left">{{item['comercial']}}</td>
                       <td align="left">{{item['meta']}}</td>
-                      <td align="left">{{item['ventas']}}</td>
+                      <td align="left"><a href="/deal/list/mes/comercial/{{mes}}/{{item['comercial']}}">{{item['ventas']}}</a></td>
                       <td align="left">{{item['cumpl']}}%</td>
                     </tr>
                   {% endfor %}
@@ -166,8 +172,9 @@
       hideHover: 'auto',
       lineColors: ['#61B7D7','#64B474'],
       stacked: false,
+      smooth: false,
       xLabels: "month",
-      xLabelAngle: 0
+      xLabelAngle: 0,
     });
 
 </script>

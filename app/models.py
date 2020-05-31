@@ -5,7 +5,8 @@ from . import db
 
 class Seguimiento(db.Model):
     __tablename__ = 'seguimiento'
-    cpn = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    negocio_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    cpn = db.Column(db.Integer, nullable=True)
     ruc = db.Column(db.String, nullable=True)
     comercial = db.Column(db.String, nullable=True)
     razon_social = db.Column(db.String, nullable=True)
