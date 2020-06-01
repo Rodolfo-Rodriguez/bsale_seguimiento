@@ -1,5 +1,6 @@
 import os
 from flask import render_template, redirect, Blueprint, session, url_for
+from flask_login import login_required
 
 import randomcolor
 from datetime import datetime as dt, timedelta
@@ -13,6 +14,7 @@ from .models import Seguimiento
 # Venta vs Meta
 #---------------------------------------------------------------------------------------------------------------------------------
 @stats.route("/stats/ventas_vs_meta/<mes>", methods=["GET"])
+@login_required
 def stats_ventas_meta(mes):
 
 	if mes == 'today':
@@ -111,6 +113,7 @@ def stats_ventas_meta(mes):
 # Ventas Mes
 #---------------------------------------------------------------------------------------------------------------------------------
 @stats.route("/stats/ventas_mes/<mes>", methods=["GET"])
+@login_required
 def stats_ventas_mes(mes):	
 
 	if mes=='today':
@@ -187,6 +190,7 @@ def stats_ventas_mes(mes):
 # Ventas vs PEP
 #---------------------------------------------------------------------------------------------------------------------------------
 @stats.route("/stats/ventas_vs_pep/<year>", methods=["GET"])
+@login_required
 def stats_ventas_pep(year):
 	
 	colors = ['#4E9AAB','#64B474','#E58C77', '#2B629F', '#59A9C6']
@@ -263,6 +267,7 @@ def stats_ventas_pep(year):
 # PEM por Ejecutivo
 #---------------------------------------------------------------------------------------------------------------------------------
 @stats.route("/stats/pem/<ejecutivo>/<range_id>", methods=["GET"])
+@login_required
 def stats_pem(ejecutivo, range_id):
 
 	##-- Stats
@@ -324,6 +329,7 @@ def stats_pem(ejecutivo, range_id):
 # Churn
 #---------------------------------------------------------------------------------------------------------------------------------
 @stats.route("/stats/churn", methods=["GET"])
+@login_required
 def stats_churn():
 	
 	colors = ['#4E9AAB','#64B474','#E58C77', '#2B629F']

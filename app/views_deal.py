@@ -2,6 +2,7 @@ import os
 import copy
 from flask import render_template, redirect, Blueprint, session, url_for
 from sqlalchemy_filters import apply_filters
+from flask_login import login_required
 
 import randomcolor
 from datetime import datetime as dt
@@ -18,6 +19,7 @@ from .forms import SeguimientoForm, FileForm
 # Show Deal
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/show/<id>", methods=["GET"])
+@login_required
 def deal_show(id):
 
 	deal = Seguimiento.query.get(id)
@@ -30,6 +32,7 @@ def deal_show(id):
 # Deal - List
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list", methods=["GET"])
+@login_required
 def deal_list():
 
 	if 'DEAL_FILTERS' not in session:
@@ -48,6 +51,7 @@ def deal_list():
 # Deal - Add Filter
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/add_filter/<field>/<op>/<value>", methods=["GET"])
+@login_required
 def deal_add_filter(field, op, value):
 	
 	if 'DEAL_FILTERS' not in session:
@@ -68,6 +72,7 @@ def deal_add_filter(field, op, value):
 # Deal - Remove Filter
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/remove_filter/<field>/<op>/<value>", methods=["GET"])
+@login_required
 def deal_remove_filter(field, op, value):
 	
 	if 'DEAL_FILTERS' not in session:
@@ -89,6 +94,7 @@ def deal_remove_filter(field, op, value):
 # Deal por Field
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/<field>/<value>", methods=["GET"])
+@login_required
 def deal_list_field_value(field, value):
 
 	if 'DEAL_FILTERS' not in session:
@@ -112,6 +118,7 @@ def deal_list_field_value(field, value):
 # Deal - List para un Mes
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/mes/<mes>", methods=["GET"])
+@login_required
 def deal_list_mes(mes):
 
 	fecha_ini = '{}-01'.format(mes)
@@ -135,6 +142,7 @@ def deal_list_mes(mes):
 # Deal - List para un Mes y Comercial
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/mes/comercial/<mes>/<comercial>", methods=["GET"])
+@login_required
 def deal_list_mes_comercial(mes, comercial):
 
 	fecha_ini = '{}-01'.format(mes)
@@ -158,6 +166,7 @@ def deal_list_mes_comercial(mes, comercial):
 # Deal - List puesta en produccion en mes
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/mes/produccion/<mes>", methods=["GET"])
+@login_required
 def deal_list_mes_produccion(mes):
 
 	fecha_ini = '{}-01'.format(mes)
@@ -180,6 +189,7 @@ def deal_list_mes_produccion(mes):
 # Edit Seguimiento
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/edit/<id>", methods=['GET', 'POST'])
+@login_required
 def deal_edit(id):
 
 	seguimiento = Seguimiento.query.get(id)
@@ -232,6 +242,7 @@ def deal_edit(id):
 # Load Deals
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/load", methods=['GET', 'POST'])
+@login_required
 def deal_load():
 
 	form = FileForm()

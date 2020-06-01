@@ -2,6 +2,7 @@ import os
 import copy
 from flask import render_template, redirect, Blueprint, session, url_for
 from sqlalchemy_filters import apply_filters
+from flask_login import login_required
 
 import randomcolor
 from datetime import datetime as dt, timedelta
@@ -12,12 +13,13 @@ main = Blueprint('main', __name__)
 
 from . import db, config
 from .models import Seguimiento
-from .forms import SeguimientoForm, FileForm
+from .forms import SeguimientoForm, FileForm, LoginForm
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Home
 #---------------------------------------------------------------------------------------------------------------------------------
 @main.route("/", methods=["GET"])
+@login_required
 def home():
 
 	return redirect(url_for('stats.stats_ventas_meta',mes='today'))
@@ -26,6 +28,7 @@ def home():
 # List Filtros
 #---------------------------------------------------------------------------------------------------------------------------------
 @main.route("/filtros/list", methods=["GET"])
+@login_required
 def filtros_list():
 
 	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).distinct() ]
@@ -78,6 +81,7 @@ def filtros_list():
 # List Estados
 #---------------------------------------------------------------------------------------------------------------------------------
 @main.route("/estado/list", methods=["GET"])
+@login_required
 def estado_list():
 
 	items = [ seg.estado for seg in db.session.query(Seguimiento.estado).distinct() ]
@@ -91,6 +95,7 @@ def estado_list():
 # List Ejecutivo
 #---------------------------------------------------------------------------------------------------------------------------------
 @main.route("/ejecutivo_pem/list", methods=["GET"])
+@login_required
 def ejecutivo_pem_list():
 
 	items = [seg.ejecutivo_pem for seg in db.session.query(Seguimiento.ejecutivo_pem).distinct() if (seg.ejecutivo_pem != None) and (seg.ejecutivo_pem !='') ]

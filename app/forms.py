@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, FloatField, IntegerField, TextAreaField, DateField, BooleanField
+from wtforms import StringField, SubmitField, SelectField, FloatField, IntegerField, TextAreaField, DateField, BooleanField, PasswordField
 from flask_wtf.file import FileField, FileRequired
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
+from wtforms.validators import Required, DataRequired, InputRequired, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 
 class SeguimientoForm(FlaskForm):
@@ -30,3 +30,12 @@ class FileForm(FlaskForm):
 	filename = FileField('Archivo')
 
 	submit = SubmitField('Submit')
+
+
+class LoginForm(FlaskForm):
+
+	username = StringField('User', validators=[Required()])
+	password = PasswordField('Password', validators=[Required()])
+	remember_me = BooleanField('Keep me logged in')
+
+	submit = SubmitField('Login')
