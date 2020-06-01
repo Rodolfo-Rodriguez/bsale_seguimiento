@@ -266,7 +266,7 @@ def stats_ventas_pep(year):
 def stats_pem(ejecutivo, range_id):
 
 	##-- Stats
-	ejecutivos = [ deal.ejecutivo_pem for deal in db.session.query(Seguimiento.ejecutivo_pem).filter(Seguimiento.estado=='PEM').distinct() ]
+	ejecutivos = [ deal.ejecutivo_pem for deal in db.session.query(Seguimiento.ejecutivo_pem).filter(Seguimiento.estado=='PEM').distinct() if deal.ejecutivo_pem != '']
 
 	day_ranges = [(0,15),(15,30),(30,60),(60,5000)]
 	range_names = ['0-15d', '15-30d', '30-60d', '>60d', 'Total']
@@ -279,7 +279,7 @@ def stats_pem(ejecutivo, range_id):
 		deals_eje = Seguimiento.query.filter(Seguimiento.estado=='PEM', Seguimiento.ejecutivo_pem==eje)
 		deals_range = []
 		for idx, dr in enumerate(day_ranges):
-			deals = len([deal for deal in deals_eje if (deal.dias_pem() > dr[0] and deal.dias_pem() <= dr[1])])
+			deals = len([deal for deal in deals_eje if (deal.dias_pem() != '' and deal.dias_pem() > dr[0] and deal.dias_pem() <= dr[1])])
 			deals_range.append(deals)
 			totales[idx] = totales[idx] + deals 
 
@@ -304,7 +304,7 @@ def stats_pem(ejecutivo, range_id):
 		deals = Seguimiento.query.filter(Seguimiento.ejecutivo_pem==ejecutivo, Seguimiento.estado=='PEM').all()
 
 		if int(range_id) < 4:
-			items = [ item for item in deals if (item.dias_pem() > day_ranges[int(range_id)][0] and item.dias_pem() <= day_ranges[int(range_id)][1]) ]
+			items = [ item for item in deals if (item.dias_pem()!='' and item.dias_pem() > day_ranges[int(range_id)][0] and item.dias_pem() <= day_ranges[int(range_id)][1]) ]
 			title = '{} [ {} ]'.format(ejecutivo,range_names[int(range_id)])
 		else:
 			items = deals

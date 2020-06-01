@@ -184,6 +184,7 @@ def deal_edit(id):
 
 	seguimiento = Seguimiento.query.get(id)
 	form = SeguimientoForm()
+	form.title = seguimiento.razon_social
 
 	form.comercial.choices = [('','NO')] + sorted([ (deal.comercial, deal.comercial) for deal in db.session.query(Seguimiento.comercial).distinct() if deal.comercial != '' ])
 	form.plan_bsale.choices = [('','NO')] + sorted([ (deal.plan_bsale, deal.plan_bsale) for deal in db.session.query(Seguimiento.plan_bsale).distinct() if deal.plan_bsale != ''])
