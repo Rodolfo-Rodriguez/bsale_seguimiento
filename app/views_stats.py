@@ -35,6 +35,20 @@ def stats_ventas_meta(mes):
 	deals = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin)
 	venta_total = deals.count()
 
+
+	meta_mes = {'2020-01':61,
+				'2020-02':68,
+				'2020-03':74,
+				'2020-04':80,
+				'2020-05':86,
+				'2020-06':83,
+				'2020-07':84,
+				'2020-08':93,
+				'2020-09':97,
+				'2020-10':93,
+				'2020-11':90,
+				'2020-12':92} 
+
 	##--- Comerciales para el mes
 
 	titles.append('Ventas por Comercial - Mes {}'.format(mes))
@@ -42,43 +56,53 @@ def stats_ventas_meta(mes):
 	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
 
 	data = []
-	metas = {'2020-05':12, '2020-04':11, '2020-03':10, '2020-02':12, '2020-01':14}
-	meta_total = 86
+	metas = {'2020-05':12, '2020-04':12, '2020-03':12, '2020-02':12, '2020-01':12}
+	meta_total = meta_mes[mes] if mes in meta_mes else 50
 
 	for comercial in comerciales:
-		meta = metas[mes] if mes in metas else 1
+		meta = metas[mes] if mes in metas else 12
 		ventas = len([ deal for deal in deals if deal.comercial == comercial ])
 		data.append({'comercial':comercial, 'meta':meta, 'ventas':ventas, 'cumpl': int(round(100 * ventas/meta,0)) })
 
 	data.sort(key = lambda x: x['ventas'], reverse=True)
 
-	totals.append({'meta_total':meta_total, 'venta_total':venta_total, 'cumpl':int(round(100 * venta_total/meta_total,0))})
+	cumplimiento = int(round(100 * venta_total/meta_total,0))
+	restante = 100 - cumplimiento if cumplimiento < 100 else -1
+	totals.append({'meta_total':meta_total, 
+				'venta_total':venta_total, 
+				'restante':restante, 
+				'cumpl':cumplimiento})
 
 	data_all.append(data)
 
 	##--- Anual
 	
 	meses = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06','2020-07','2020-08','2020-09','2020-10','2020-11','2020-12']
-	metas = [61,68,74,80,86,83,84,93,97,93,90,92]
-	meta_anual = 1000
 
 	titles.append('Ventas del 2020')
 
 	data = []
 
-	for idx, mes_venta in enumerate(meses):
+	for mes_venta in meses:
 		fecha_ini = '{}-01'.format(mes_venta)
 		fecha_fin = '{}-31'.format(mes_venta)
 
 		ventas = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).count()
-		data.append({'mes':mes_venta, 'meta':metas[idx], 'ventas':ventas, 'cumpl': int(round(100 * ventas/metas[idx],0)), 'cumpl_anual': int(round(100 * ventas/meta_anual,0)) })
+		data.append({'mes':mes_venta, 
+					'meta':meta_mes[mes_venta], 
+					'ventas':ventas, 
+					'cumpl': int(round(100 * ventas/meta_mes[mes_venta],0)), 
+					 })
 
 	data_all.append(data)
 
-	meta_total = sum(metas)
+	meta_total = sum([ item['meta'] for item in data])
 	venta_total = sum([ item['ventas'] for item in data])
 
-	totals.append({'meta_total':meta_total, 'venta_total':venta_total, 'cumpl':int(round(100 * venta_total/meta_total,0)), 'cumpl_anual':int(round(100 * venta_total/meta_anual,0))})	
+	totals.append({'meta_total':meta_total, 
+				'venta_total':venta_total, 
+				'cumpl':int(round(100 * venta_total/meta_total,0)), 
+				'cumpl_anual':int(round(100 * venta_total/meta_total,0))})	
 
 	return render_template('home.html', data_all=data_all, totals=totals, titles=titles, mes=mes, mes_next=mes_next, mes_prev=mes_prev) 
 
@@ -188,14 +212,23 @@ def stats_ventas_pep(year):
 			deals_en_prod = len([deal for deal in deals if deal.estado == 'PRODUCCION'])
 			deals_en_baja = len([deal for deal in deals if deal.estado == 'BAJA'])
 
-			deals_pep = Seguimiento.query.filter(Seguimiento.fecha_pase_produccion>=fecha_ini, Seguimiento.fecha_pase_produccion<=fecha_fin).count()
+			deals = Seguimiento.query.filter(Seguimiento.fecha_pase_produccion>=fecha_ini, Seguimiento.fecha_pase_produccion<=fecha_fin)
+			deals_over_days = len([ deal for deal in deals if deal.dias_pem() != '' and deal.dias_pem() > 30 ])
+
+			deals_pep = deals.count()
+			if deals_pep > 0:
+				tiempo_prom_pem = int(round( sum([ deal.dias_pem() for deal in deals if deal.dias_pem() != '' ]) / len([ deal.dias_pem() for deal in deals if deal.dias_pem() != '' ]) ,0))
+			else:
+				tiempo_prom_pem = 0
 
 			data.append({'mes':mes, 
 						'deals_vend':deals_vend, 
 						'deals_en_pem':deals_en_pem, 
 						'deals_en_prod':deals_en_prod, 
 						'deals_en_baja':deals_en_baja, 
-						'deals_pep':deals_pep })
+						'deals_pep':deals_pep,
+						'deals_over_days':deals_over_days,
+						'tiempo_prom_pem':tiempo_prom_pem })
 
 		total_vend = sum([ d['deals_vend'] for d in data ])
 
@@ -205,16 +238,26 @@ def stats_ventas_pep(year):
 					'deals_en_prod':sum([ d['deals_en_prod'] for d in data ]), 
 					'deals_en_baja':sum([ d['deals_en_baja'] for d in data ]), 
 					'deals_pep':sum([ d['deals_pep'] for d in data ]),
+					'deals_over_days':sum([ d['deals_over_days'] for d in data ]),
 					'deals_en_pem_prc': int(round(100 * sum([ d['deals_en_pem'] for d in data ])/total_vend,0)), 
 					'deals_en_prod_prc': int(round(100 * sum([ d['deals_en_prod'] for d in data ])/total_vend,0)), 
 					'deals_en_baja_prc': int(round(100 * sum([ d['deals_en_baja'] for d in data ])/total_vend,0)), 
 				}
 
+
+		fecha_ini = '{}-01-01'.format(year)
+		fecha_fin = '{}-12-31'.format(year)
+
+		deals = Seguimiento.query.filter(Seguimiento.fecha_pase_produccion>=fecha_ini, Seguimiento.fecha_pase_produccion<=fecha_fin)
+
+		data_dias = [ {'fecha_pep':deal.fecha_pase_produccion, 'dias':deal.dias_pem()} for deal in deals if deal.dias_pem() != '']
+		data_dias.sort(key= lambda x: x['fecha_pep'])
+
 	else:
 		totales = []
 		title = 'No hay datos para {}'.format(year)
 	
-	return render_template('stats_ventas_pep.html', data=data, totales=totales, colors=colors, year=year)	
+	return render_template('stats_ventas_pep.html', data=data, totales=totales, colors=colors, year=year, data_dias=data_dias)	
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # PEM por Ejecutivo

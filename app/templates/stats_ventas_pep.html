@@ -35,6 +35,8 @@
   <div class="row">
     <div class="col-lg-4">
 
+        <h3>Ventas</h3>
+
         <table width="100%" class="table table-striped table-hover">
           <thead>
             <tr>
@@ -43,18 +45,16 @@
               <th align="center">En PEM</th>
               <th align="center">En Prod.</th>
               <th align="center">En Baja</th>
-              <th align="center">Pase a Prod.</th>
             </tr>
           </thead>
           <tbody>
             {% for item in data %}
               <tr>
                 <td>{{item['mes']}}</td>
-                <td align="center" style="color: {{colors[3]}};">{{item['deals_vend']}}</td>
+                <td align="center" style="color: {{colors[3]}};"><a href="/deal/list/mes/{{item['mes']}}">{{item['deals_vend']}}</a></td>
                 <td align="center" style="color: {{colors[0]}};">{{item['deals_en_pem']}}</td>
                 <td align="center" style="color: {{colors[1]}};">{{item['deals_en_prod']}}</td>
                 <td align="center" style="color: {{colors[2]}};">{{item['deals_en_baja']}}</td>
-                <td align="center" style="color: {{colors[4]}};">{{item['deals_pep']}}</td>
               </tr>
             {% endfor %}
             <tr>
@@ -63,20 +63,50 @@
                 <td align="center"><strong style="color: {{colors[0]}};">{{totales['deals_en_pem']}}</strong></td>
                 <td align="center"><strong style="color: {{colors[1]}};">{{totales['deals_en_prod']}}</strong></td>
                 <td align="center"><strong style="color: {{colors[2]}};">{{totales['deals_en_baja']}}</strong></td>
-                <td align="center"><strong style="color: {{colors[4]}};">{{totales['deals_pep']}}</strong></td>
-            </tr>
+              </tr>
           </tbody>
         </table>
 
         <div id="total_ventas_stats" style="height: 250px;"></div>
     
+        <h3>Puesta en Producción</h3>
+
+        <table width="100%" class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Mes</th>
+              <th align="center">Pase a Prod.</th>
+              <th align="center"> >30 días </th>
+              <th align="center">Prom. Dias PEM</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data %}
+              <tr>
+                <td>{{item['mes']}}</td>
+                <td align="center" style="color: {{colors[4]}};"><a href="/deal/list/mes/produccion/{{item['mes']}}">{{item['deals_pep']}}</a></td>
+                <td align="center" style="color: {{colors[4]}};">{{item['deals_over_days']}}</td>
+                <td align="center" style="color: {{colors[4]}};">{{item['tiempo_prom_pem']}}</td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <td><strong>Total</strong></td>
+                <td align="center"><strong style="color: {{colors[4]}};">{{totales['deals_pep']}}</strong></td>
+                <td align="center"><strong style="color: {{colors[4]}};">{{totales['deals_over_days']}}</strong></td>
+                <td></td>
+            </tr>
+          </tbody>
+        </table>
+
     </div>
 
     <div class="col-lg-8">
-      <h3 class="text-center">Ventas vs Puesta en Produccion por Mes</h3>
+      <h3 class="text-center">Ventas vs Puesta en Producción por Mes</h3>
       <div id="pem_stats" style="height: 250px;"></div>
       <h3 class="text-center">Estado de Negocios Vendidos por Mes</h3>
       <div id="ventas_stats" style="height: 250px;"></div>
+      <h3 class="text-center">Dias de Puesta en Producción por Cliente</h3>
+      <div id="pem_dias_stats" style="height: 250px;"></div>
     </div>
 
   </div>
@@ -135,6 +165,21 @@
       ],
       colors : ['{{colors[0]}}', '{{colors[1]}}', '{{colors[2]}}'],
       formatter: function (value, data) { return value + '%'; }
+    });
+
+    new Morris.Bar({
+      element: 'pem_dias_stats',
+      data: [{% for item in data_dias %}
+                { fecha:"{{item['fecha_pep']}}", dias:{{item['dias']}} },
+             {% endfor %}],
+      xkey: 'fecha',
+      ykeys: ['dias'],
+      labels: ['Dias PEP'],
+      hideHover: 'auto',
+      barColors: ['{{colors[3]}}'],
+      stacked: false,
+      xLabelAngle: 0,
+      ymax: 120
     });
 
   </script>

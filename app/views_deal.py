@@ -155,6 +155,28 @@ def deal_list_mes_comercial(mes, comercial):
 	return redirect(url_for('deal.deal_list'))
 
 #---------------------------------------------------------------------------------------------------------------------------------
+# Deal - List puesta en produccion en mes
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/list/mes/produccion/<mes>", methods=["GET"])
+def deal_list_mes_produccion(mes):
+
+	fecha_ini = '{}-01'.format(mes)
+	fecha_fin = '{}-31'.format(mes)
+	
+	if 'DEAL_FILTERS' not in session:
+		deal_filters = []
+	else:
+		deal_filters = session['DEAL_FILTERS']
+		deal_filters.clear()
+
+	deal_filters.append({'field': 'fecha_pase_produccion', 'op': '>=', 'value': fecha_ini})
+	deal_filters.append({'field': 'fecha_pase_produccion', 'op': '<=', 'value': fecha_fin})
+
+	session['DEAL_FILTERS'] = deal_filters
+
+	return redirect(url_for('deal.deal_list'))
+
+#---------------------------------------------------------------------------------------------------------------------------------
 # Edit Seguimiento
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/edit/<id>", methods=['GET', 'POST'])
@@ -271,19 +293,20 @@ def deal_load():
 
 		#df_merge.drop_duplicates(subset ='cpn', keep='first', inplace=True)
 
-		df_merge.loc[:,'estado'] = ''
-		df_merge.loc[:,'produccion'] = ''
-		df_merge.loc[:,'ejecutivo_pem'] = ''
-		df_merge.loc[:,'fecha_inicio_pem'] = ''
-		df_merge.loc[:,'fecha_contacto_inicial'] = ''
-		df_merge.loc[:,'fecha_pase_produccion'] = ''
-		df_merge.loc[:,'hizo_upselling'] = ''
-		df_merge.loc[:,'url_bsale'] = ''
-		df_merge.loc[:,'comentario'] = 'Nuevo'
+		if not df_merge.empty:
+			df_merge.loc[:,'estado'] = ''
+			df_merge.loc[:,'produccion'] = ''
+			df_merge.loc[:,'ejecutivo_pem'] = ''
+			df_merge.loc[:,'fecha_inicio_pem'] = ''
+			df_merge.loc[:,'fecha_contacto_inicial'] = ''
+			df_merge.loc[:,'fecha_pase_produccion'] = ''
+			df_merge.loc[:,'hizo_upselling'] = ''
+			df_merge.loc[:,'url_bsale'] = ''
+			df_merge.loc[:,'comentario'] = 'Nuevo'
 
-		df_merge.to_sql('seguimiento', con=db.engine, if_exists='append', index=False)
+			df_merge.to_sql('seguimiento', con=db.engine, if_exists='append', index=False)
 
-		return redirect(url_for('main.deal_list'))
+		return redirect(url_for('main.home'))
 
 	return render_template("edit_excel_file.html", form=form)
 

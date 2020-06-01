@@ -146,7 +146,7 @@
   
   new Morris.Donut({
     element: 'ventas_mensual',
-    data: [ {label: "Ventas", value: {{totals[0]['cumpl']}} }, {label: "Restante", value: {{ 100 - totals[0]['cumpl']}} } ],
+    data: [ {label: "Ventas", value: {{totals[0]['cumpl']}} }, {label: "Restante", value: {{ totals[0]['restante']}} } ],
     colors: ['#64B474','#E58C77'],
     formatter: function (value, data) { return value + '%'; }
   });
@@ -154,7 +154,7 @@
 
   new Morris.Donut({
     element: 'ventas_anual',
-    data: [ {label: "Ventas", value: {{totals[1]['cumpl_anual']}} }, {label: "Restante", value: {{ 100 - totals[1]['cumpl_anual']}} } ],
+    data: [ {label: "Ventas", value: {{totals[1]['cumpl_anual']}} }, {label: "Restante", value: {{ 100 - totals[1]['cumpl']}} } ],
     colors: ['#64B474','#E58C77'],
     formatter: function (value, data) { return value + '%'; }
   });
