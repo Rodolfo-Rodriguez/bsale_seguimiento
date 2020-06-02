@@ -13,7 +13,7 @@ deal = Blueprint('deal', __name__)
 
 from . import db, config
 from .models import Seguimiento
-from .forms import SeguimientoForm, FileForm
+from .forms import SeguimientoForm, FileForm, ConfirmForm
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Show Deal
@@ -237,6 +237,29 @@ def deal_edit(id):
 
 	return render_template("edit_deal.html", form=form)
 
+#---------------------------------------------------------------------------------------------------------------------------------
+# Deal - Delete
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/delete/<id>", methods=["GET","POST"])
+@login_required
+def deal_delete(id):
+
+	deal = Seguimiento.query.get(id)
+
+	form = ConfirmForm()
+
+	form.title = 'Borrar - {} - {}'.format(deal.negocio_id,deal.razon_social)
+
+	if form.validate_on_submit():
+
+		db.session.delete(deal)
+
+		db.session.commit()
+
+		return redirect(session['LAST_URL'])
+
+
+	return render_template('delete_deal.html', form=form)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Load Deals

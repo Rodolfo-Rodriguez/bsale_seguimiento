@@ -39,3 +39,8 @@ class LoginForm(FlaskForm):
 	remember_me = BooleanField('Keep me logged in')
 
 	submit = SubmitField('Login')
+
+class ConfirmForm(FlaskForm):
+
+	title = 'Confirm'
+	submit = SubmitField('Confirm')
