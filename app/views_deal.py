@@ -215,9 +215,9 @@ def deal_edit(id):
 		seguimiento.fecha_inicio_pem = form.fecha_inicio_pem.data
 		seguimiento.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
 		seguimiento.fecha_pase_produccion = form.fecha_pase_produccion.data		
-		seguimiento.hizo_upselling = form.hizo_upselling.data
+		seguimiento.fecha_baja = form.fecha_baja.data
 		seguimiento.url_bsale = form.url_bsale.data		
-		seguimiento.razon_baja = form.razon_baja.data		
+		seguimiento.razon_baja = form.razon_baja.data	
 
 		db.session.commit()
 
@@ -234,11 +234,11 @@ def deal_edit(id):
 	form.fecha_inicio_pem.data = seguimiento.fecha_inicio_pem
 	form.fecha_contacto_inicial.data = seguimiento.fecha_contacto_inicial
 	form.fecha_pase_produccion.data = seguimiento.fecha_pase_produccion
-	form.hizo_upselling.data = seguimiento.hizo_upselling
+	form.fecha_baja.data = seguimiento.fecha_baja
 	form.url_bsale.data = seguimiento.url_bsale
 	form.comentario.data = seguimiento.comentario
 	form.razon_baja.data = seguimiento.razon_baja
-	
+
 
 	return render_template("edit_deal.html", form=form)
 

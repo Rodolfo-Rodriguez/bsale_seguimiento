@@ -7,7 +7,7 @@
 <!-- Page -->
 
 <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div class="col-lg-10 col-lg-offset-1">
     
     <div class="panel panel-primary">
       
@@ -25,147 +25,157 @@
 
         <form class="needs-validation" method="POST">
 
-          {{form.csrf_token}}
+        <div class="row">
+          <div class="col-lg-6">
+            
+            {{form.csrf_token}}
 
-          <fieldset>
+            <fieldset>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.razon_social.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.razon_social.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.razon_social(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.razon_social(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.comercial.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.comercial.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.comercial(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.comercial(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.plan_bsale.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.plan_bsale.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.plan_bsale(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.plan_bsale(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.categoria.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.categoria.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.categoria(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.categoria(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.estado.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.estado.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.estado(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.estado(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.produccion.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.produccion.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.produccion(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.produccion(class="form-control")}}</div>
+          
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.ejecutivo_pem.label}}</div>
+                </div>
+                <div class="col-lg-7">               
+                  <div class="form-group">{{form.ejecutivo_pem(class="form-control")}}</div>
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.ejecutivo_pem.label}}</div>
+              <div class="row">
+                <div class="col-lg-3 col-lg-offset-1 text-right">
+                  <div class="form-group">{{form.url_bsale.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.url_bsale(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">               
-                <div class="form-group">{{form.ejecutivo_pem(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.fecha_ganado.label}}</div>
-              </div>
-              <div class="col-lg-8">
-                <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_ganado(class="form-control")}}</div>
-              </div>
-            </div>
+          </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.fecha_inicio_pem.label}}</div>
-              </div>
-              <div class="col-lg-8">
-                <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_inicio_pem(class="form-control")}}</div>
-              </div>
-            </div>
+          <div class="col-lg-6">
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.fecha_contacto_inicial.label}}</div>
-              </div>
-              <div class="col-lg-8">
-                <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_contacto_inicial(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.fecha_pase_produccion.label}}</div>
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_ganado.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_ganado(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_pase_produccion(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.hizo_upselling.label}}</div>
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_inicio_pem.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_inicio_pem(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.hizo_upselling(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.url_bsale.label}}</div>
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_contacto_inicial.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_contacto_inicial(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.url_bsale(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.razon_baja.label}}</div>
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_pase_produccion.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_pase_produccion(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.razon_baja(class="form-control")}}</div>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-lg-2 col-lg-offset-1 text-right">
-                <div class="form-group">{{form.comentario.label}}</div>
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_baja.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_baja(class="form-control")}}</div>
+                </div>
               </div>
-              <div class="col-lg-8">
-                <div class="form-group">{{form.comentario(class="form-control")}}</div>
+
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.razon_baja.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.razon_baja(class="form-control")}}</div>
+                </div>
               </div>
-            </div>
 
-          </fieldset>
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.comentario.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.comentario(class="form-control")}}</div>
+                </div>
+              </div>
 
+            </fieldset>
+
+          </div>
+        </div>
 
       </div>
 
