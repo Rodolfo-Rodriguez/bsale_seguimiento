@@ -24,7 +24,11 @@
       <div class="panel-footer">
         <form class="needs-validation" method="POST">
           {{form.csrf_token}}
-          <div class="text-footer text-right">{{form.submit(class="btn btn-outline btn-primary")}}</div>            
+          <div class="text-footer text-right text-danger">
+              <strong style="margin-right: 10px">Esta Operación es Irreversible - Está Seguro ??</strong>
+              {{form.submit(class="btn btn-outline btn-primary")}}
+            </div>
+          </div>            
         </form>
       </div>
 

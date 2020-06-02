@@ -25,6 +25,7 @@ class Seguimiento(db.Model):
     hizo_upselling = db.Column(db.String, nullable=True)
     url_bsale = db.Column(db.String, nullable=True)
     comentario = db.Column(db.String, nullable=True)
+    razon_baja = db.Column(db.String, nullable=True)
 
     def __repr__(self):
         return f'<Seguimiento (cpn={self.cpn}, ruc={self.ruc})>'

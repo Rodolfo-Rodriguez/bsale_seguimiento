@@ -7,6 +7,7 @@ from wtforms import ValidationError
 class SeguimientoForm(FlaskForm):
 	title = 'Edit'
 
+	razon_social = StringField('Razón Social')
 	comercial = SelectField('Comercial', choices=[ ('','NO')])
 	plan_bsale = SelectField('Plan BSale', choices=[ ('','NO')])
 	categoria = StringField('Categoria')
@@ -20,6 +21,18 @@ class SeguimientoForm(FlaskForm):
 	hizo_upselling = SelectField('Hizo Upselling', choices=[ ('SI','SI'),('NO','NO')])
 	url_bsale = StringField('URL BSale')
 	comentario = TextAreaField('Comentario')
+	razon_baja = SelectField('Razón Baja', choices=[('','NO'), 
+													('ACTIVACION TEMPORAL','ACTIVACION TEMPORAL'),
+													('BAJA PLAN ECOMMERCE','BAJA PLAN ECOMMERCE'),
+													('CAMBIO DE RUC','CAMBIO DE RUC'),
+													('CAMBIO PROVEEDOR','CAMBIO PROVEEDOR'),
+													('CIERRE DE NEGOCIO','CIERRE DE NEGOCIO'),
+													('DEUDA','DEUDA'),
+													('FALTA SEGUIMIENTO USO','FALTA SEGUIMIENTO USO'),
+													('FUNCIONALIDAD','FUNCIONALIDAD'),
+													('MAL CALCE','MAL CALCE'),
+													('PEM','PEM'),
+													('PRECIO','PRECIO')])
 
 	submit = SubmitField('Submit')
 
@@ -43,4 +56,4 @@ class LoginForm(FlaskForm):
 class ConfirmForm(FlaskForm):
 
 	title = 'Confirm'
-	submit = SubmitField('Confirm')
+	submit = SubmitField('Borrar')

@@ -204,6 +204,7 @@ def deal_edit(id):
          
 	if form.validate_on_submit():
         
+		seguimiento.razon_social = form.razon_social.data
 		seguimiento.comercial = form.comercial.data
 		seguimiento.plan_bsale = form.plan_bsale.data
 		seguimiento.categoria = form.categoria.data
@@ -216,11 +217,13 @@ def deal_edit(id):
 		seguimiento.fecha_pase_produccion = form.fecha_pase_produccion.data		
 		seguimiento.hizo_upselling = form.hizo_upselling.data
 		seguimiento.url_bsale = form.url_bsale.data		
+		seguimiento.razon_baja = form.razon_baja.data		
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
+	form.razon_social.data = seguimiento.razon_social
 	form.comercial.data = seguimiento.comercial
 	form.plan_bsale.data = seguimiento.plan_bsale
 	form.categoria.data = seguimiento.categoria
@@ -234,6 +237,8 @@ def deal_edit(id):
 	form.hizo_upselling.data = seguimiento.hizo_upselling
 	form.url_bsale.data = seguimiento.url_bsale
 	form.comentario.data = seguimiento.comentario
+	form.razon_baja.data = seguimiento.razon_baja
+	
 
 	return render_template("edit_deal.html", form=form)
 
