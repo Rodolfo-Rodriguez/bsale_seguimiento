@@ -10,22 +10,28 @@
   <div class="panel-heading">
     
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-11">
           <div class="text-heading"> Deals 
-            {% for df in deal_filters %}
-                  <span class="text-filter">
+            {% for field, field_list in session['DEAL_FILTERS'].items() %}
+              {% for df in field_list%}
+                  <span class="text-filter-head">
                     {% if df['value'] == '' %}
                       {{df['field']}} == NA
-                      <a href="/deal/remove_filter/{{df['field']}}/{{df['op']}}/NA"><i class="fas fa-times-circle"></i></a>
+                      <a href="/deal/remove_filter?field={{df['field']}}&op={{df['op']}}&value=NA"><i class="fas fa-times-circle"></i></a>
                     {% else %}
                       {{df['field']}} {{df['op']}} {{df['value']}} 
-                      <a href="/deal/remove_filter/{{df['field']}}/{{df['op']}}/{{df['value']}}"><i class="fas fa-times-circle"></i></a>
+                      <a href="/deal/remove_filter?field={{df['field']}}&op={{df['op']}}&value={{df['value']}}"><i class="fas fa-times-circle"></i></a>
                     {% endif %}
-                  </span>  
+                  </span> 
+              {% endfor %}
             {% endfor %}
 
           </div>
         </div>
+        <div class="col-lg-1 text-right text-heading">
+          <a href="/deal/download"><i class="fas fa-download"></i></a>
+        </div>
+
     </div>
   
   </div>
@@ -60,13 +66,13 @@
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.negocio_id}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.ruc}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
-              <td><a href="/deal/add_filter/comercial/==/{{item.comercial}}">{{item.comercial}}</td>
+              <td><a href="/deal/add_filter?field=comercial&op===&value={{item.comercial}}">{{item.comercial}}</td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
-              <td><a href="/deal/add_filter/plan_bsale/==/{{item.plan_bsale}}">{{item.plan_bsale}}</td>
-              <td><a href="/deal/add_filter/categoria/==/{{item.categoria}}">{{item.categoria}}</td>
-              <td><a href="/deal/add_filter/estado/==/{{item.estado}}">{{item.estado}}</a></td>
-              <td><a href="/deal/add_filter/estado_pep/==/{{item.produccion}}">{{item.produccion}}</a></td>
-              <td><a href="/deal/add_filter/ejecutivo_pem/==/{{item.ejecutivo_pem}}">{{item.ejecutivo_pem}}</a></td>             
+              <td><a href="/deal/add_filter?field=plan_bsale&op===&value={{item.plan_bsale}}">{{item.plan_bsale}}</td>
+              <td><a href="/deal/add_filter?field=categoria&op===&value={{item.categoria}}">{{item.categoria}}</td>
+              <td><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
+              <td><a href="/deal/add_filter?field=estado_pep&op===&value={{item.produccion}}">{{item.produccion}}</a></td>
+              <td><a href="/deal/add_filter?field=ejecutivo_pem&op===&value={{item.ejecutivo_pem}}">{{item.ejecutivo_pem}}</a></td>             
               <td>{{item.fecha_ganado}}</td>
               <td>{{item.dias_pem()}}</td>
               <td>{{item.comentario}}</td>

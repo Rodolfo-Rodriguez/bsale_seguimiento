@@ -32,7 +32,25 @@
               <tbody>
               {% for item in comerciales %}
                 <tr>
-                    <td><a href="/deal/list/comercial/{{item}}">{{item}}</a></td>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'comercial' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['comercial'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                      
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=comercial&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=comercial&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
                 </tr>
               {% endfor %}
              </tbody>
@@ -70,7 +88,28 @@
               <tbody>
               {% for item in planes_bsale %}
                 <tr>
-                    <td><a href="/deal/list/plan_bsale/{{item}}">{{item}}</a></td>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'plan_bsale' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['plan_bsale'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                        {% if item == 'NA' and filter['value'] == '' %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=plan_bsale&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=plan_bsale&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
                 </tr>
               {% endfor %}
              </tbody>
@@ -108,7 +147,28 @@
               <tbody>
               {% for item in categorias %}
                 <tr>
-                    <td><a href="/deal/list/categoria/{{item}}">{{item}}</a></td>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'categoria' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['categoria'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                        {% if item == 'NA' and filter['value'] == '' %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=categoria&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=categoria&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
                 </tr>
               {% endfor %}
              </tbody>
@@ -146,7 +206,28 @@
               <tbody>
               {% for item in estados %}
                 <tr>
-                    <td><a href="/deal/list/estado/{{item}}">{{item}}</a></td>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'estado' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['estado'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                        {% if item == 'NA' and filter['value'] == '' %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=estado&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=estado&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
                 </tr>
               {% endfor %}
              </tbody>
@@ -184,7 +265,28 @@
               <tbody>
               {% for item in producciones %}
                 <tr>
-                    <td><a href="/deal/list/produccion/{{item}}">{{item}}</a></td>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'produccion' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['produccion'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                        {% if item == 'NA' and filter['value'] == '' %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=produccion&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=produccion&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
                 </tr>
               {% endfor %}
              </tbody>
@@ -222,7 +324,28 @@
               <tbody>
               {% for item in ejecutivos %}
                 <tr>
-                    <td><a href="/deal/list/ejecutivo_pem/{{item}}">{{item}}</a></td>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'ejecutivo_pem' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['ejecutivo_pem'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                        {% if item == 'NA' and filter['value'] == '' %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=ejecutivo_pem&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=ejecutivo_pem&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
                 </tr>
               {% endfor %}
              </tbody>

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %} Edit {% endblock title %}
+
+{% block body %}
+
+<!-- Page -->
+
+<div class="row">
+  <div class="col-lg-6 col-lg-offset-3">
+    
+    <div class="panel panel-primary">
+      
+      <div class="panel-heading">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-heading">{{form.title}}</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel-body">
+
+        <form class="needs-validation" method="POST">
+
+        <div class="row">
+          <div class="col-lg-12">
+            
+            {{form.csrf_token}}
+
+            <fieldset>
+          
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.produccion.label}}</div>
+                </div>
+                <div class="col-lg-7">               
+                  <div class="form-group">{{form.produccion(class="form-control")}}</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_pase_produccion.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_pase_produccion(class="form-control")}}</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.url_bsale.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.url_bsale(class="form-control")}}</div>
+                </div>
+              </div>
+
+          </div>
+
+          </fieldset>
+
+        </div>
+
+      </div>
+
+      <div class="panel-footer">
+        <div class="text-footer text-right">{{form.submit(class="btn btn-outline btn-primary")}}</div>            
+      </div>
+
+        </form>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Page -->
+
+{% endblock body %}

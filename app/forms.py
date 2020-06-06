@@ -37,6 +37,60 @@ class SeguimientoForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 
+class DealVentaForm(FlaskForm):
+	title = 'Edit'
+
+	cpn = StringField('CPN')
+	ruc = StringField('RUC')
+	razon_social = StringField('Razón Social')
+	comercial = SelectField('Comercial', choices=[ ('','NO')])
+	plan_bsale = SelectField('Plan BSale', choices=[ ('','NO')])
+	categoria = StringField('Categoria')
+	estado = SelectField('Estado', choices=[('','NO')])
+	fecha_ganado = StringField('Fecha Ganado')
+
+	submit = SubmitField('Submit')
+
+class DealPEMForm(FlaskForm):
+	title = 'Edit'
+
+	ejecutivo_pem = SelectField('Ejecutivo PEM', choices=[('','NO')])
+	fecha_inicio_pem = StringField('Fecha Inicio PEM')
+	fecha_contacto_inicial = StringField('Fecha de Contacto Inicial')
+
+	submit = SubmitField('Submit')
+
+
+class DealProdForm(FlaskForm):
+	title = 'Edit'
+
+	produccion = SelectField('Produccion', choices=[('','NO')])
+	fecha_pase_produccion = StringField('Fecha de Pase a Produccion')
+	url_bsale = StringField('URL BSale')
+
+	submit = SubmitField('Submit')
+
+class DealBajaForm(FlaskForm):
+	title = 'Edit'
+
+	fecha_baja = StringField('Fecha de Baja')
+	comentario = TextAreaField('Comentario')
+	razon_baja = SelectField('Razón Baja', choices=[('','NO'), 
+													('ACTIVACION TEMPORAL','ACTIVACION TEMPORAL'),
+													('BAJA PLAN ECOMMERCE','BAJA PLAN ECOMMERCE'),
+													('CAMBIO DE RUC','CAMBIO DE RUC'),
+													('CAMBIO PROVEEDOR','CAMBIO PROVEEDOR'),
+													('CIERRE DE NEGOCIO','CIERRE DE NEGOCIO'),
+													('DEUDA','DEUDA'),
+													('FALTA SEGUIMIENTO USO','FALTA SEGUIMIENTO USO'),
+													('FUNCIONALIDAD','FUNCIONALIDAD'),
+													('MAL CALCE','MAL CALCE'),
+													('PEM','PEM'),
+													('PRECIO','PRECIO')])
+
+	submit = SubmitField('Submit')
+
+
 class FileForm(FlaskForm):
 	title = 'Cargar desde Excel'
 

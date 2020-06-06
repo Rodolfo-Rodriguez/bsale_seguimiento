@@ -22,6 +22,9 @@ from .forms import SeguimientoForm, FileForm, LoginForm
 @login_required
 def home():
 
+	# Clear session
+	#if 'DEAL_FILTERS' in session: del session['DEAL_FILTERS']
+
 	return redirect(url_for('stats.stats_ventas_meta',mes='today'))
 
 #---------------------------------------------------------------------------------------------------------------------------------
