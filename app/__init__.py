@@ -26,6 +26,9 @@ def create_app(config_name):
     from .views_deal import deal as deal_blueprint
     app.register_blueprint(deal_blueprint)
 
+    from .views_prod import prod as prod_blueprint
+    app.register_blueprint(prod_blueprint)
+
     from .views_stats import stats as stats_blueprint
     app.register_blueprint(stats_blueprint)
 

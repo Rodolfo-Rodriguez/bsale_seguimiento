@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Estados {% endblock title %}
+{% block title %} Filtros {% endblock title %}
 
 {% block body %}
 
@@ -191,7 +191,66 @@
 
         <div class="row">
             <div class="col-lg-12">
-              <div class="text-heading">Estados</div>
+              <div class="text-heading">Etapa</div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="panel-body">
+
+      <div class="row">
+            <div class="col-lg-12">
+
+             <table width="100%" class="table table-striped table-hover" id="dataTables">
+              <tbody>
+              {% for item in etapas %}
+                <tr>
+                    <td>
+                    {% set ns = namespace(foo=False) %}
+                    {% if 'etapa' in session['DEAL_FILTERS'] %}                      
+                      {% for filter in session['DEAL_FILTERS']['etapa'] %}
+                        {% if filter['value'] == item %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                        {% if item == 'NA' and filter['value'] == '' %}
+                          {% set ns.foo = True %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                    {% if ns.foo == True %}
+                      <span class="text-filter">{{item}}
+                        <a href="/deal/remove_filter?field=etapa&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
+                      </span>                        
+                    {% else %}
+                      <span><a href="/deal/add_filter?field=etapa&op===&value={{item}}">{{item}}</a></span>                  
+                    {% endif %}
+
+                    </td>
+                </tr>
+              {% endfor %}
+             </tbody>
+            </table>
+           </div>
+
+       </div>
+     
+     </div>
+    </div>
+
+  </div>
+
+
+  <div class="col-lg-2">
+
+    <div class="panel panel-primary">
+
+      <div class="panel-heading">
+
+        <div class="row">
+            <div class="col-lg-12">
+              <div class="text-heading">Estado</div>
             </div>
         </div>
 
@@ -225,65 +284,6 @@
                       </span>                        
                     {% else %}
                       <span><a href="/deal/add_filter?field=estado&op===&value={{item}}">{{item}}</a></span>                  
-                    {% endif %}
-
-                    </td>
-                </tr>
-              {% endfor %}
-             </tbody>
-            </table>
-           </div>
-
-       </div>
-     
-     </div>
-    </div>
-
-  </div>
-
-
-  <div class="col-lg-2">
-
-    <div class="panel panel-primary">
-
-      <div class="panel-heading">
-
-        <div class="row">
-            <div class="col-lg-12">
-              <div class="text-heading">Produccion</div>
-            </div>
-        </div>
-
-      </div>
-
-      <div class="panel-body">
-
-      <div class="row">
-            <div class="col-lg-12">
-
-             <table width="100%" class="table table-striped table-hover" id="dataTables">
-              <tbody>
-              {% for item in producciones %}
-                <tr>
-                    <td>
-                    {% set ns = namespace(foo=False) %}
-                    {% if 'produccion' in session['DEAL_FILTERS'] %}                      
-                      {% for filter in session['DEAL_FILTERS']['produccion'] %}
-                        {% if filter['value'] == item %}
-                          {% set ns.foo = True %}
-                        {% endif %}
-                        {% if item == 'NA' and filter['value'] == '' %}
-                          {% set ns.foo = True %}
-                        {% endif %}
-                      {% endfor %}
-                    {% endif %}
-
-                    {% if ns.foo == True %}
-                      <span class="text-filter">{{item}}
-                        <a href="/deal/remove_filter?field=produccion&op===&value={{item}}"><i class="fas fa-times-circle"></i></a>
-                      </span>                        
-                    {% else %}
-                      <span><a href="/deal/add_filter?field=produccion&op===&value={{item}}">{{item}}</a></span>                  
                     {% endif %}
 
                     </td>

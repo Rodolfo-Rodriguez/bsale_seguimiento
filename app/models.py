@@ -6,8 +6,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 
-class Seguimiento(db.Model):
-    __tablename__ = 'seguimiento'
+class Deal(db.Model):
+    __tablename__ = 'deals'
     negocio_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     cpn = db.Column(db.Integer, nullable=True)
     ruc = db.Column(db.String, nullable=True)
@@ -15,21 +15,21 @@ class Seguimiento(db.Model):
     razon_social = db.Column(db.String, nullable=True)
     plan_bsale = db.Column(db.String, nullable=True)
     categoria = db.Column(db.String, nullable=True)
+    etapa = db.Column(db.String, nullable=True)
     estado = db.Column(db.String, nullable=True)
-    produccion = db.Column(db.String, nullable=True)
     fecha_ganado = db.Column(db.String, nullable=True)
     fecha_inicio_pem = db.Column(db.String, nullable=True)
     ejecutivo_pem = db.Column(db.String, nullable=True)
     fecha_contacto_inicial = db.Column(db.String, nullable=True)
     fecha_pase_produccion = db.Column(db.String, nullable=True)
-    hizo_upselling = db.Column(db.String, nullable=True)
     url_bsale = db.Column(db.String, nullable=True)
     comentario = db.Column(db.String, nullable=True)
     razon_baja = db.Column(db.String, nullable=True)
     fecha_baja = db.Column(db.String, nullable=True)
+    checkpoints = db.relationship('Checkpoint', backref='deal', lazy='dynamic')
 
     def __repr__(self):
-        return f'<Seguimiento (cpn={self.cpn}, ruc={self.ruc})>'
+        return f'<Deal (id={self.negocio_id}, (cpn={self.cpn}, ruc={self.ruc})>'
 
     def anio(self):
         if self.fecha_inicio_pem:
@@ -45,7 +45,7 @@ class Seguimiento(db.Model):
 
     def dias_pem(self):
 
-        if self.estado == 'PEM':
+        if self.etapa == 'PEM':
             try:
                 return ((dt.today().date() - dt.strptime(self.fecha_inicio_pem, '%Y-%m-%d').date()).days)
             except:
@@ -58,8 +58,21 @@ class Seguimiento(db.Model):
 
     def tiene_url(self):
         
-        return (self.url_bsale.startswith('http'))
+        return ( self.url_bsale.startswith('http') if self.url_bsale else False)
 
+
+class Checkpoint(db.Model):
+    __tablename__ = 'checkpoints'
+    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    nombre = db.Column(db.String, nullable=True)
+    fecha = db.Column(db.String, nullable=True)
+    tipo = db.Column(db.String, nullable=True)
+    realizado = db.Column(db.Boolean, default=False)
+    comentario = db.Column(db.String, nullable=True)
+    deal_id = db.Column(db.Integer, db.ForeignKey('deals.negocio_id'))
+    
+    def __repr__(self):
+        return '<Role %r>' % self.name
 
 class Role(db.Model):
     __tablename__ = 'roles'

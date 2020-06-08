@@ -4,15 +4,15 @@ from flask_wtf.file import FileField, FileRequired
 from wtforms.validators import Required, DataRequired, InputRequired, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 
-class SeguimientoForm(FlaskForm):
+class DealForm(FlaskForm):
 	title = 'Edit'
 
 	razon_social = StringField('Razón Social')
 	comercial = SelectField('Comercial', choices=[ ('','NO')])
 	plan_bsale = SelectField('Plan BSale', choices=[ ('','NO')])
 	categoria = StringField('Categoria')
+	etapa = SelectField('Etapa', choices=[('','NO')])
 	estado = SelectField('Estado', choices=[('','NO')])
-	produccion = SelectField('Produccion', choices=[('','NO')])
 	ejecutivo_pem = SelectField('Ejecutivo PEM', choices=[('','NO')])
 	fecha_ganado = StringField('Fecha Ganado')
 	fecha_inicio_pem = StringField('Fecha Inicio PEM')
@@ -46,7 +46,7 @@ class DealVentaForm(FlaskForm):
 	comercial = SelectField('Comercial', choices=[ ('','NO')])
 	plan_bsale = SelectField('Plan BSale', choices=[ ('','NO')])
 	categoria = StringField('Categoria')
-	estado = SelectField('Estado', choices=[('','NO')])
+	etapa = SelectField('Etapa', choices=[('','NO')])
 	fecha_ganado = StringField('Fecha Ganado')
 
 	submit = SubmitField('Submit')
@@ -64,7 +64,7 @@ class DealPEMForm(FlaskForm):
 class DealProdForm(FlaskForm):
 	title = 'Edit'
 
-	produccion = SelectField('Produccion', choices=[('','NO')])
+	estado = SelectField('Estado', choices=[('','NO')])
 	fecha_pase_produccion = StringField('Fecha de Pase a Produccion')
 	url_bsale = StringField('URL BSale')
 
@@ -87,6 +87,18 @@ class DealBajaForm(FlaskForm):
 													('MAL CALCE','MAL CALCE'),
 													('PEM','PEM'),
 													('PRECIO','PRECIO')])
+
+	submit = SubmitField('Submit')
+
+
+class CheckpointForm(FlaskForm):
+	title = 'Edit'
+
+	nombre = StringField('Nombre')
+	fecha = StringField('Fecha')
+	tipo = StringField('Tipo')
+	realizado = BooleanField('Realizado')
+	comentario = TextAreaField('Comentario')
 
 	submit = SubmitField('Submit')
 

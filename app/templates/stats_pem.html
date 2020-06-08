@@ -93,7 +93,6 @@
               <th>Razon Social</th>
               <th>Plan Bsale</th>
               <th>Fecha Ini PEM</th>
-              <th>Hizo Upselling</th>
               <th>Dias en PEM</th>
               <th>URL</th>
             </tr>
@@ -101,13 +100,12 @@
           <tbody>
           {% for item in items %}
             <tr>
-              <td><a href="/deal/show/{{item.cpn}}">{{item.ruc}}</a></td>
-              <td><a href="/deal/show/{{item.cpn}}">{{item.cpn}}</a></td>
+              <td><a href="/deal/show/{{item.negocio_id}}">{{item.ruc}}</a></td>
+              <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td>{{item.comercial}}</td>
-              <td><a href="/deal/show/{{item.cpn}}">{{item.razon_social}}</a></td>
+              <td><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.plan_bsale}}</td>
               <td>{{item.fecha_inicio_pem}}</td>
-              <td>{{item.hizo_upselling}}</td>
               <td>{{item.dias_pem()}}</td>
               <td align="right">
                 {% if item.tiene_url() %}

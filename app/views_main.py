@@ -12,8 +12,7 @@ import pandas as pd
 main = Blueprint('main', __name__)
 
 from . import db, config
-from .models import Seguimiento
-from .forms import SeguimientoForm, FileForm, LoginForm
+from .models import Deal
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Home
@@ -34,37 +33,37 @@ def home():
 @login_required
 def filtros_list():
 
-	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).distinct() ]
+	comerciales = [ deal.comercial for deal in db.session.query(Deal.comercial).distinct() ]
 	comerciales.sort()
 	if '' in comerciales:
 		comerciales.remove('')
 		comerciales.append('NA')
 
-	planes_bsale = [ deal.plan_bsale for deal in db.session.query(Seguimiento.plan_bsale).distinct() ]
+	planes_bsale = [ deal.plan_bsale for deal in db.session.query(Deal.plan_bsale).distinct() ]
 	planes_bsale.sort()
 	if '' in planes_bsale:
 		planes_bsale.remove('')
 		planes_bsale.append('NA')
 
-	categorias = [ deal.categoria for deal in db.session.query(Seguimiento.categoria).distinct() ]
+	categorias = [ deal.categoria for deal in db.session.query(Deal.categoria).distinct() ]
 	categorias.sort()
 	if '' in categorias: 
 		categorias.remove('')
 		categorias.append('NA')
 
-	estados = [ deal.estado for deal in db.session.query(Seguimiento.estado).distinct() ]
+	etapas = [ deal.etapa for deal in db.session.query(Deal.etapa).distinct() ]
+	etapas.sort()
+	if '' in etapas:
+		etapas.remove('')
+		etapas.append('NA')
+
+	estados = [ deal.estado for deal in db.session.query(Deal.estado).distinct() ]
 	estados.sort()
 	if '' in estados:
 		estados.remove('')
 		estados.append('NA')
 
-	producciones = [ deal.produccion for deal in db.session.query(Seguimiento.produccion).distinct() ]
-	producciones.sort()
-	if '' in producciones:
-		producciones.remove('')
-		producciones.append('NA')
-
-	ejecutivos = [ deal.ejecutivo_pem for deal in db.session.query(Seguimiento.ejecutivo_pem).distinct() if deal.ejecutivo_pem != None ]
+	ejecutivos = [ deal.ejecutivo_pem for deal in db.session.query(Deal.ejecutivo_pem).distinct() if deal.ejecutivo_pem != None ]
 	ejecutivos.sort()
 	if '' in ejecutivos:
 		ejecutivos.remove('')
@@ -76,23 +75,23 @@ def filtros_list():
 							comerciales=comerciales,
 							planes_bsale=planes_bsale,
 							categorias=categorias,
+							etapas=etapas,
 							estados=estados,
-							producciones=producciones,
 							ejecutivos=ejecutivos)
 
 #---------------------------------------------------------------------------------------------------------------------------------
-# List Estados
+# List Etapas
 #---------------------------------------------------------------------------------------------------------------------------------
-@main.route("/estado/list", methods=["GET"])
+@main.route("/etapa/list", methods=["GET"])
 @login_required
-def estado_list():
+def etapa_list():
 
-	items = [ seg.estado for seg in db.session.query(Seguimiento.estado).distinct() ]
+	items = [ deal.etapa for deal in db.session.query(Deal.etapa).distinct() ]
 	items.sort()
 
-	session['LAST_URL'] = url_for('main.estado_list')
+	session['LAST_URL'] = url_for('main.etapa_list')
 	
-	return render_template('list_estado.html', items=items)
+	return render_template('list_etapa.html', items=items)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # List Ejecutivo
@@ -101,7 +100,7 @@ def estado_list():
 @login_required
 def ejecutivo_pem_list():
 
-	items = [seg.ejecutivo_pem for seg in db.session.query(Seguimiento.ejecutivo_pem).distinct() if (seg.ejecutivo_pem != None) and (seg.ejecutivo_pem !='') ]
+	items = [ deal.ejecutivo_pem for deal in db.session.query(Deal.ejecutivo_pem).distinct() if (deal.ejecutivo_pem != None) and (deal.ejecutivo_pem !='') ]
 	items.sort()
 
 	session['LAST_URL'] = url_for('main.ejecutivo_pem_list')

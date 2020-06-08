@@ -8,7 +8,7 @@ from datetime import datetime as dt, timedelta
 stats = Blueprint('stats', __name__)
 
 from . import db
-from .models import Seguimiento
+from .models import Deal
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Venta vs Meta
@@ -34,7 +34,7 @@ def stats_ventas_meta(mes):
 	titles = []
 	colors = []
 
-	deals = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin)
+	deals = Deal.query.filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin)
 	venta_total = deals.count()
 
 
@@ -55,7 +55,7 @@ def stats_ventas_meta(mes):
 
 	titles.append('Ventas por Comercial - Mes {}'.format(mes))
 
-	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
+	comerciales = [ deal.comercial for deal in db.session.query(Deal.comercial).filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin).distinct() ]
 
 	data = []
 	metas = {'2020-05':12, '2020-04':12, '2020-03':12, '2020-02':12, '2020-01':12}
@@ -89,7 +89,7 @@ def stats_ventas_meta(mes):
 		fecha_ini = '{}-01'.format(mes_venta)
 		fecha_fin = '{}-31'.format(mes_venta)
 
-		ventas = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).count()
+		ventas = Deal.query.filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin).count()
 		data.append({'mes':mes_venta, 
 					'meta':meta_mes[mes_venta], 
 					'ventas':ventas, 
@@ -131,14 +131,14 @@ def stats_ventas_mes(mes):
 	titles = []
 	colors = []
 
-	deals = Seguimiento.query.filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin)
+	deals = Deal.query.filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin)
 	total = deals.count()
 
 	##--- Comerciales
 
 	titles.append('Ventas por Comercial')
 
-	comerciales = [ deal.comercial for deal in db.session.query(Seguimiento.comercial).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
+	comerciales = [ deal.comercial for deal in db.session.query(Deal.comercial).filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin).distinct() ]
 
 	data_all = []
 
@@ -155,7 +155,7 @@ def stats_ventas_mes(mes):
 
 	titles.append('Ventas por plan BSale')
 
-	planes_bsale = [ deal.plan_bsale for deal in db.session.query(Seguimiento.plan_bsale).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
+	planes_bsale = [ deal.plan_bsale for deal in db.session.query(Deal.plan_bsale).filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin).distinct() ]
 
 	data = []
 	for plan in planes_bsale:
@@ -171,7 +171,7 @@ def stats_ventas_mes(mes):
 
 	titles.append('Ventas por Categoria')
 
-	categorias = [ deal.categoria for deal in db.session.query(Seguimiento.categoria).filter(Seguimiento.fecha_ganado >= fecha_ini, Seguimiento.fecha_ganado <= fecha_fin).distinct() ]
+	categorias = [ deal.categoria for deal in db.session.query(Deal.categoria).filter(Deal.fecha_ganado >= fecha_ini, Deal.fecha_ganado <= fecha_fin).distinct() ]
 
 	data = []
 	for categoria in categorias:
@@ -209,14 +209,14 @@ def stats_ventas_pep(year):
 			fecha_ini = '{}-01'.format(mes)
 			fecha_fin = '{}-31'.format(mes)
 
-			deals = Seguimiento.query.filter(Seguimiento.fecha_ganado>=fecha_ini, Seguimiento.fecha_ganado<=fecha_fin)
+			deals = Deal.query.filter(Deal.fecha_ganado>=fecha_ini, Deal.fecha_ganado<=fecha_fin)
 				
 			deals_vend = deals.count()
-			deals_en_pem = len([deal for deal in deals if deal.estado == 'PEM'])
-			deals_en_prod = len([deal for deal in deals if deal.estado == 'PRODUCCION'])
-			deals_en_baja = len([deal for deal in deals if deal.estado == 'BAJA'])
+			deals_en_pem = len([deal for deal in deals if deal.etapa == 'PEM'])
+			deals_en_prod = len([deal for deal in deals if deal.etapa == 'PRODUCCION'])
+			deals_en_baja = len([deal for deal in deals if deal.etapa == 'BAJA'])
 
-			deals = Seguimiento.query.filter(Seguimiento.fecha_pase_produccion>=fecha_ini, Seguimiento.fecha_pase_produccion<=fecha_fin)
+			deals = Deal.query.filter(Deal.fecha_pase_produccion>=fecha_ini, Deal.fecha_pase_produccion<=fecha_fin)
 			deals_over_days = len([ deal for deal in deals if deal.dias_pem() != '' and deal.dias_pem() > 30 ])
 
 			deals_pep = deals.count()
@@ -252,7 +252,7 @@ def stats_ventas_pep(year):
 		fecha_ini = '{}-01-01'.format(year)
 		fecha_fin = '{}-12-31'.format(year)
 
-		deals = Seguimiento.query.filter(Seguimiento.fecha_pase_produccion>=fecha_ini, Seguimiento.fecha_pase_produccion<=fecha_fin)
+		deals = Deal.query.filter(Deal.fecha_pase_produccion>=fecha_ini, Deal.fecha_pase_produccion<=fecha_fin)
 
 		data_dias = [ {'fecha_pep':deal.fecha_pase_produccion, 'dias':deal.dias_pem()} for deal in deals if deal.dias_pem() != '']
 		data_dias.sort(key= lambda x: x['fecha_pep'])
@@ -271,7 +271,7 @@ def stats_ventas_pep(year):
 def stats_pem(ejecutivo, range_id):
 
 	##-- Stats
-	ejecutivos = [ deal.ejecutivo_pem for deal in db.session.query(Seguimiento.ejecutivo_pem).filter(Seguimiento.estado=='PEM').distinct() if deal.ejecutivo_pem != '']
+	ejecutivos = [ deal.ejecutivo_pem for deal in db.session.query(Deal.ejecutivo_pem).filter(Deal.etapa=='PEM').distinct() if deal.ejecutivo_pem != '']
 
 	day_ranges = [(0,15),(15,30),(30,60),(60,5000)]
 	range_names = ['0-15d', '15-30d', '30-60d', '>60d', 'Total']
@@ -281,7 +281,7 @@ def stats_pem(ejecutivo, range_id):
 	totales = [0,0,0,0]
 
 	for eje in ejecutivos:
-		deals_eje = Seguimiento.query.filter(Seguimiento.estado=='PEM', Seguimiento.ejecutivo_pem==eje)
+		deals_eje = Deal.query.filter(Deal.etapa=='PEM', Deal.ejecutivo_pem==eje)
 		deals_range = []
 		for idx, dr in enumerate(day_ranges):
 			deals = len([deal for deal in deals_eje if (deal.dias_pem() != '' and deal.dias_pem() > dr[0] and deal.dias_pem() <= dr[1])])
@@ -292,7 +292,7 @@ def stats_pem(ejecutivo, range_id):
 
 		data.append({'ejecutivo':eje, 'deals_range':deals_range})
 
-	deals_tot = Seguimiento.query.filter(Seguimiento.estado=='PEM').count()
+	deals_tot = Deal.query.filter(Deal.etapa=='PEM').count()
 	totales.append(deals_tot)
 
 	totales_prc = [ int(round(100 * tot / totales[4],0)) for tot in totales[0:4] ]
@@ -306,7 +306,7 @@ def stats_pem(ejecutivo, range_id):
 	else:
 		show_list = True
 
-		deals = Seguimiento.query.filter(Seguimiento.ejecutivo_pem==ejecutivo, Seguimiento.estado=='PEM').all()
+		deals = Deal.query.filter(Deal.ejecutivo_pem==ejecutivo, Deal.etapa=='PEM').all()
 
 		if int(range_id) < 4:
 			items = [ item for item in deals if (item.dias_pem()!='' and item.dias_pem() > day_ranges[int(range_id)][0] and item.dias_pem() <= day_ranges[int(range_id)][1]) ]
@@ -342,10 +342,10 @@ def stats_churn():
 		fecha_ini = '{}-01'.format(mes)
 		fecha_fin = '{}-31'.format(mes)
 
-		deals = Seguimiento.query.filter(Seguimiento.fecha_inicio_pem>=fecha_ini, Seguimiento.fecha_inicio_pem<=fecha_fin)
+		deals = Deal.query.filter(Deal.fecha_inicio_pem>=fecha_ini, Deal.fecha_inicio_pem<=fecha_fin)
 			
 		deals_vend = deals.count()
-		deals_en_baja = len([deal for deal in deals if deal.estado == 'BAJA'])
+		deals_en_baja = len([deal for deal in deals if deal.etapa == 'BAJA'])
 
 		data.append({'mes':mes, 'deals_vend':deals_vend, 'deals_en_baja':deals_en_baja })
 

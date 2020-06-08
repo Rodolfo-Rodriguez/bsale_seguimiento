@@ -13,8 +13,8 @@ import pandas as pd
 deal = Blueprint('deal', __name__)
 
 from . import db, config
-from .models import Seguimiento
-from .forms import SeguimientoForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealProdForm, DealBajaForm
+from .models import Deal
+from .forms import DealForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealProdForm, DealBajaForm
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Show Deal
@@ -23,7 +23,7 @@ from .forms import SeguimientoForm, FileForm, ConfirmForm, DealVentaForm, DealPE
 @login_required
 def deal_show(id):
 
-	deal = Seguimiento.query.get(id)
+	deal = Deal.query.get(id)
 
 	session['LAST_URL'] = url_for('deal.deal_show', id=id)
 	
@@ -49,7 +49,7 @@ def deal_list():
 		elif len(field_list)==1:
 			query_filter.append(field_list[0])	
 	
-	query = db.session.query(Seguimiento)
+	query = db.session.query(Deal)
 	query = apply_filters(query, query_filter)
 
 	items = query.all()
@@ -218,58 +218,58 @@ def deal_list_mes_produccion(mes):
 	return redirect(url_for('deal.deal_list'))
 
 #---------------------------------------------------------------------------------------------------------------------------------
-# Edit Seguimiento
+# Edit Deal
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/edit/<id>", methods=['GET', 'POST'])
 @login_required
 def deal_edit(id):
 
-	seguimiento = Seguimiento.query.get(id)
-	form = SeguimientoForm()
-	form.title = seguimiento.razon_social
+	deal = Deal.query.get(id)
+	form = DealForm()
+	form.title = deal.razon_social
 
-	form.comercial.choices = [('','NO')] + sorted([ (deal.comercial, deal.comercial) for deal in db.session.query(Seguimiento.comercial).distinct() if deal.comercial != '' ])
-	form.plan_bsale.choices = [('','NO')] + sorted([ (deal.plan_bsale, deal.plan_bsale) for deal in db.session.query(Seguimiento.plan_bsale).distinct() if deal.plan_bsale != ''])
-	form.estado.choices = sorted([ (deal.estado, deal.estado) for deal in db.session.query(Seguimiento.estado).distinct() ])
-	form.produccion.choices = [('','NO')] + sorted([ (deal.produccion, deal.produccion) for deal in db.session.query(Seguimiento.produccion).distinct() if deal.produccion != ''])
-	form.ejecutivo_pem.choices = [('','NO')] + sorted([ (deal.ejecutivo_pem, deal.ejecutivo_pem) for deal in db.session.query(Seguimiento.ejecutivo_pem).distinct() if deal.ejecutivo_pem != ''])
+	form.comercial.choices = [('','NO')] + sorted([ (deal.comercial, deal.comercial) for deal in db.session.query(Deal.comercial).distinct() if deal.comercial != '' ])
+	form.plan_bsale.choices = [('','NO')] + sorted([ (deal.plan_bsale, deal.plan_bsale) for deal in db.session.query(Deal.plan_bsale).distinct() if deal.plan_bsale != ''])
+	form.etapa.choices = sorted([ (deal.etapa, deal.etapa) for deal in db.session.query(Deal.etapa).distinct() ])
+	form.estado.choices = [('','NO')] + sorted([ (deal.estado, deal.estado) for deal in db.session.query(Deal.estado).distinct() if deal.estado != ''])
+	form.ejecutivo_pem.choices = [('','NO')] + sorted([ (deal.ejecutivo_pem, deal.ejecutivo_pem) for deal in db.session.query(Deal.ejecutivo_pem).distinct() if deal.ejecutivo_pem != ''])
          
 	if form.validate_on_submit():
         
-		seguimiento.razon_social = form.razon_social.data
-		seguimiento.comercial = form.comercial.data
-		seguimiento.plan_bsale = form.plan_bsale.data
-		seguimiento.categoria = form.categoria.data
-		seguimiento.estado = form.estado.data
-		seguimiento.produccion = form.produccion.data
-		seguimiento.ejecutivo_pem = form.ejecutivo_pem.data		
-		seguimiento.fecha_ganado = form.fecha_ganado.data
-		seguimiento.fecha_inicio_pem = form.fecha_inicio_pem.data
-		seguimiento.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
-		seguimiento.fecha_pase_produccion = form.fecha_pase_produccion.data		
-		seguimiento.fecha_baja = form.fecha_baja.data
-		seguimiento.url_bsale = form.url_bsale.data		
-		seguimiento.razon_baja = form.razon_baja.data	
+		deal.razon_social = form.razon_social.data
+		deal.comercial = form.comercial.data
+		deal.plan_bsale = form.plan_bsale.data
+		deal.categoria = form.categoria.data
+		deal.etapa = form.etapa.data
+		deal.estado = form.estado.data
+		deal.ejecutivo_pem = form.ejecutivo_pem.data		
+		deal.fecha_ganado = form.fecha_ganado.data
+		deal.fecha_inicio_pem = form.fecha_inicio_pem.data
+		deal.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
+		deal.fecha_pase_produccion = form.fecha_pase_produccion.data		
+		deal.fecha_baja = form.fecha_baja.data
+		deal.url_bsale = form.url_bsale.data		
+		deal.razon_baja = form.razon_baja.data	
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
-	form.razon_social.data = seguimiento.razon_social
-	form.comercial.data = seguimiento.comercial
-	form.plan_bsale.data = seguimiento.plan_bsale
-	form.categoria.data = seguimiento.categoria
-	form.estado.data = seguimiento.estado
-	form.produccion.data = seguimiento.produccion
-	form.ejecutivo_pem.data = seguimiento.ejecutivo_pem 
-	form.fecha_ganado.data = seguimiento.fecha_ganado
-	form.fecha_inicio_pem.data = seguimiento.fecha_inicio_pem
-	form.fecha_contacto_inicial.data = seguimiento.fecha_contacto_inicial
-	form.fecha_pase_produccion.data = seguimiento.fecha_pase_produccion
-	form.fecha_baja.data = seguimiento.fecha_baja
-	form.url_bsale.data = seguimiento.url_bsale
-	form.comentario.data = seguimiento.comentario
-	form.razon_baja.data = seguimiento.razon_baja
+	form.razon_social.data = deal.razon_social
+	form.comercial.data = deal.comercial
+	form.plan_bsale.data = deal.plan_bsale
+	form.categoria.data = deal.categoria
+	form.etapa.data = deal.etapa
+	form.estado.data = deal.estado
+	form.ejecutivo_pem.data = deal.ejecutivo_pem 
+	form.fecha_ganado.data = deal.fecha_ganado
+	form.fecha_inicio_pem.data = deal.fecha_inicio_pem
+	form.fecha_contacto_inicial.data = deal.fecha_contacto_inicial
+	form.fecha_pase_produccion.data = deal.fecha_pase_produccion
+	form.fecha_baja.data = deal.fecha_baja
+	form.url_bsale.data = deal.url_bsale
+	form.comentario.data = deal.comentario
+	form.razon_baja.data = deal.razon_baja
 
 	return render_template("edit_deal.html", form=form)
 
@@ -280,37 +280,37 @@ def deal_edit(id):
 @login_required
 def deal_edit_venta(id):
 
-	seguimiento = Seguimiento.query.get(id)
+	deal = Deal.query.get(id)
 	form = DealVentaForm()
-	form.title = seguimiento.razon_social
+	form.title = deal.razon_social
 
-	form.comercial.choices = [('','NO')] + sorted([ (deal.comercial, deal.comercial) for deal in db.session.query(Seguimiento.comercial).distinct() if deal.comercial != '' ])
-	form.plan_bsale.choices = [('','NO')] + sorted([ (deal.plan_bsale, deal.plan_bsale) for deal in db.session.query(Seguimiento.plan_bsale).distinct() if deal.plan_bsale != ''])
-	form.estado.choices = sorted([ (deal.estado, deal.estado) for deal in db.session.query(Seguimiento.estado).distinct() ])
+	form.comercial.choices = [('','NO')] + sorted([ (deal.comercial, deal.comercial) for deal in db.session.query(Deal.comercial).distinct() if deal.comercial != '' ])
+	form.plan_bsale.choices = [('','NO')] + sorted([ (deal.plan_bsale, deal.plan_bsale) for deal in db.session.query(Deal.plan_bsale).distinct() if deal.plan_bsale != ''])
+	form.etapa.choices = sorted([ (deal.etapa, deal.etapa) for deal in db.session.query(Deal.etapa).distinct() ])
          
 	if form.validate_on_submit():
         
-		seguimiento.cpn = form.cpn.data
-		seguimiento.ruc = form.ruc.data
-		seguimiento.razon_social = form.razon_social.data
-		seguimiento.comercial = form.comercial.data
-		seguimiento.plan_bsale = form.plan_bsale.data
-		seguimiento.categoria = form.categoria.data
-		seguimiento.fecha_ganado = form.fecha_ganado.data
-		seguimiento.estado = form.estado.data
+		deal.cpn = form.cpn.data
+		deal.ruc = form.ruc.data
+		deal.razon_social = form.razon_social.data
+		deal.comercial = form.comercial.data
+		deal.plan_bsale = form.plan_bsale.data
+		deal.categoria = form.categoria.data
+		deal.fecha_ganado = form.fecha_ganado.data
+		deal.etapa = form.etapa.data
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
-	form.cpn.data = seguimiento.cpn
-	form.ruc.data = seguimiento.ruc
-	form.razon_social.data = seguimiento.razon_social
-	form.comercial.data = seguimiento.comercial
-	form.plan_bsale.data = seguimiento.plan_bsale
-	form.categoria.data = seguimiento.categoria
-	form.fecha_ganado.data = seguimiento.fecha_ganado
-	form.estado.data = seguimiento.estado
+	form.cpn.data = deal.cpn
+	form.ruc.data = deal.ruc
+	form.razon_social.data = deal.razon_social
+	form.comercial.data = deal.comercial
+	form.plan_bsale.data = deal.plan_bsale
+	form.categoria.data = deal.categoria
+	form.fecha_ganado.data = deal.fecha_ganado
+	form.etapa.data = deal.etapa
 
 
 	return render_template("edit_deal_venta.html", form=form)
@@ -322,25 +322,25 @@ def deal_edit_venta(id):
 @login_required
 def deal_edit_pem(id):
 
-	seguimiento = Seguimiento.query.get(id)
+	deal = Deal.query.get(id)
 	form = DealPEMForm()
-	form.title = seguimiento.razon_social
+	form.title = deal.razon_social
 
-	form.ejecutivo_pem.choices = [('','NO')] + sorted([ (deal.ejecutivo_pem, deal.ejecutivo_pem) for deal in db.session.query(Seguimiento.ejecutivo_pem).distinct() if deal.ejecutivo_pem != ''])
+	form.ejecutivo_pem.choices = [('','NO')] + sorted([ (deal.ejecutivo_pem, deal.ejecutivo_pem) for deal in db.session.query(Deal.ejecutivo_pem).distinct() if deal.ejecutivo_pem != ''])
          
 	if form.validate_on_submit():
         
-		seguimiento.ejecutivo_pem = form.ejecutivo_pem.data		
-		seguimiento.fecha_inicio_pem = form.fecha_inicio_pem.data
-		seguimiento.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
+		deal.ejecutivo_pem = form.ejecutivo_pem.data		
+		deal.fecha_inicio_pem = form.fecha_inicio_pem.data
+		deal.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
-	form.ejecutivo_pem.data = seguimiento.ejecutivo_pem 
-	form.fecha_inicio_pem.data = seguimiento.fecha_inicio_pem
-	form.fecha_contacto_inicial.data = seguimiento.fecha_contacto_inicial
+	form.ejecutivo_pem.data = deal.ejecutivo_pem 
+	form.fecha_inicio_pem.data = deal.fecha_inicio_pem
+	form.fecha_contacto_inicial.data = deal.fecha_contacto_inicial
 
 	return render_template("edit_deal_pem.html", form=form)
 
@@ -351,25 +351,25 @@ def deal_edit_pem(id):
 @login_required
 def deal_edit_prod(id):
 
-	seguimiento = Seguimiento.query.get(id)
+	deal = Deal.query.get(id)
 	form = DealProdForm()
-	form.title = seguimiento.razon_social
+	form.title = deal.razon_social
 
-	form.produccion.choices = [('','NO')] + sorted([ (deal.produccion, deal.produccion) for deal in db.session.query(Seguimiento.produccion).distinct() if deal.produccion != ''])
+	form.estado.choices = [('','NO')] + sorted([ (deal.estado, deal.estado) for deal in db.session.query(Deal.estado).distinct() if deal.estado != ''])
          
 	if form.validate_on_submit():
         
-		seguimiento.produccion = form.produccion.data
-		seguimiento.fecha_pase_produccion = form.fecha_pase_produccion.data		
-		seguimiento.url_bsale = form.url_bsale.data		
+		deal.estado = form.estado.data
+		deal.fecha_pase_produccion = form.fecha_pase_produccion.data		
+		deal.url_bsale = form.url_bsale.data		
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
-	form.produccion.data = seguimiento.produccion
-	form.fecha_pase_produccion.data = seguimiento.fecha_pase_produccion
-	form.url_bsale.data = seguimiento.url_bsale
+	form.estado.data = deal.estado
+	form.fecha_pase_produccion.data = deal.fecha_pase_produccion
+	form.url_bsale.data = deal.url_bsale
 
 	return render_template("edit_deal_prod.html", form=form)
 
@@ -380,23 +380,23 @@ def deal_edit_prod(id):
 @login_required
 def deal_edit_baja(id):
 
-	seguimiento = Seguimiento.query.get(id)
+	deal = Deal.query.get(id)
 	form = DealBajaForm()
-	form.title = seguimiento.razon_social
+	form.title = deal.razon_social
          
 	if form.validate_on_submit():
         
-		seguimiento.fecha_baja = form.fecha_baja.data
-		seguimiento.razon_baja = form.razon_baja.data	
-		seguimiento.comentario = form.comentario.data
+		deal.fecha_baja = form.fecha_baja.data
+		deal.razon_baja = form.razon_baja.data	
+		deal.comentario = form.comentario.data
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
-	form.fecha_baja.data = seguimiento.fecha_baja
-	form.razon_baja.data = seguimiento.razon_baja
-	form.comentario.data = seguimiento.comentario
+	form.fecha_baja.data = deal.fecha_baja
+	form.razon_baja.data = deal.razon_baja
+	form.comentario.data = deal.comentario
 
 	return render_template("edit_deal_baja.html", form=form)
 
@@ -407,7 +407,7 @@ def deal_edit_baja(id):
 @login_required
 def deal_delete(id):
 
-	deal = Seguimiento.query.get(id)
+	deal = Deal.query.get(id)
 
 	form = ConfirmForm()
 
@@ -444,7 +444,7 @@ def deal_download():
 		elif len(field_list)==1:
 			query_filter.append(field_list[0])	
 	
-	query = db.session.query(Seguimiento)
+	query = db.session.query(Deal)
 	query = apply_filters(query, query_filter)
 
 	items = query.all()
@@ -464,8 +464,8 @@ def deal_download():
 	ws.cell(column=5, row=1).value = 'Razon Social'
 	ws.cell(column=6, row=1).value = 'Plan BSale'
 	ws.cell(column=7, row=1).value = 'Categoria'
-	ws.cell(column=8, row=1).value = 'Estado'
-	ws.cell(column=9, row=1).value = 'Produccion'
+	ws.cell(column=8, row=1).value = 'Etapa'
+	ws.cell(column=9, row=1).value = 'Estado'
 	ws.cell(column=10, row=1).value = 'Ejecutivo PEM'
 	ws.cell(column=11, row=1).value = 'Fecha Ganado'
 	ws.cell(column=12, row=1).value = 'Fecha Inicio PEM'
@@ -485,8 +485,8 @@ def deal_download():
 		ws.cell(column=5, row=row+2).value = item.razon_social
 		ws.cell(column=6, row=row+2).value = item.plan_bsale
 		ws.cell(column=7, row=row+2).value = item.categoria
-		ws.cell(column=8, row=row+2).value = item.estado
-		ws.cell(column=9, row=row+2).value = item.produccion
+		ws.cell(column=8, row=row+2).value = item.etapa
+		ws.cell(column=9, row=row+2).value = item.estado
 		ws.cell(column=10, row=row+2).value = item.ejecutivo_pem
 		ws.cell(column=11, row=row+2).value = item.fecha_ganado
 		ws.cell(column=12, row=row+2).value = item.fecha_inicio_pem
@@ -570,8 +570,8 @@ def deal_load():
 		#df_merge.drop_duplicates(subset ='cpn', keep='first', inplace=True)
 
 		if not df_merge.empty:
+			df_merge.loc[:,'etapa'] = ''
 			df_merge.loc[:,'estado'] = ''
-			df_merge.loc[:,'produccion'] = ''
 			df_merge.loc[:,'ejecutivo_pem'] = ''
 			df_merge.loc[:,'fecha_inicio_pem'] = ''
 			df_merge.loc[:,'fecha_contacto_inicial'] = ''
