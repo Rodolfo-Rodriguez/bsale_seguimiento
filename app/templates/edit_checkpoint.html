@@ -34,19 +34,10 @@
           
               <div class="row">
                 <div class="col-lg-4 text-right">
-                  <div class="form-group">{{form.nombre.label}}</div>
+                  <div class="form-group"></div>
                 </div>
                 <div class="col-lg-7">
-                  <div class="form-group">{{form.nombre(class="form-control")}}</div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-4 text-right">
-                  <div class="form-group">{{form.fecha.label}}</div>
-                </div>
-                <div class="col-lg-7">               
-                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha(class="form-control")}}</div>
+                  <div class="form-group input-group">{{checkpoint.nombre}}</div>
                 </div>
               </div>
 
@@ -56,6 +47,24 @@
                 </div>
                 <div class="col-lg-7">
                   <div class="form-group input-group">{{form.realizado}}</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.fecha_realizado.label}}</div>
+                </div>
+                <div class="col-lg-7">               
+                  <div class="form-group input-group"><span class="input-group-addon">YYYY-MM-DD</span>{{form.fecha_realizado(class="form-control")}}</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 text-right">
+                  <div class="form-group">{{form.estado.label}}</div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">{{form.estado(class="form-control")}}</div>
                 </div>
               </div>
 

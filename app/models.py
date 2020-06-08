@@ -56,23 +56,59 @@ class Deal(db.Model):
             except:
                 return('')
 
+    def dias_prod(self):
+
+        if self.etapa == 'PRODUCCION':
+            try:
+                return ((dt.today().date() - dt.strptime(self.fecha_pase_produccion, '%Y-%m-%d').date()).days)
+            except:
+                return('')
+        else:
+            return('')
+
     def tiene_url(self):
         
         return ( self.url_bsale.startswith('http') if self.url_bsale else False)
 
+
+    def checkpoint(self, idx):
+
+        checkpoints = sorted(self.checkpoints, key=lambda x:x.fecha)
+
+        return checkpoints[idx]
+
+    def al_dia(self):
+
+        fecha_hoy = dt.today().strftime("%Y-%m-%d")
+        checkpoints = sorted(self.checkpoints, key=lambda x:x.fecha)
+
+        al_dia = False
+        for cp in checkpoints:
+            if cp.fecha < fecha_hoy:
+                al_dia = cp.realizado
+
+        return('SI' if al_dia else 'NO')
 
 class Checkpoint(db.Model):
     __tablename__ = 'checkpoints'
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     nombre = db.Column(db.String, nullable=True)
     fecha = db.Column(db.String, nullable=True)
-    tipo = db.Column(db.String, nullable=True)
     realizado = db.Column(db.Boolean, default=False)
+    fecha_realizado = db.Column(db.String, nullable=True)
+    estado = db.Column(db.String, nullable=True)
     comentario = db.Column(db.String, nullable=True)
     deal_id = db.Column(db.Integer, db.ForeignKey('deals.negocio_id'))
     
     def __repr__(self):
         return '<Role %r>' % self.name
+
+    def expirado(self):
+
+        if self.fecha != '':
+            return (dt.strptime(self.fecha, '%Y-%m-%d').date() < dt.today().date())
+        else:
+            return False
 
 class Role(db.Model):
     __tablename__ = 'roles'

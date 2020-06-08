@@ -118,44 +118,14 @@
                 <div class="col-lg-7 text-left text-info"><p>{{deal.dias_pem()}}</p></div>
               </div>
 
-          </div>
-
-        </div>
-
-      {% endif %}
-  
-      </div>
-
-      <div class="col-lg-6">
-
-      {% if deal.etapa in ['PRODUCCION', 'BAJA'] %}
-
-      <div class="panel panel-primary">
-
-        <div class="panel-heading">
-          
-          <div class="row">
-              <div class="col-lg-10">
-                <div class="text-heading">Estado</div>
-              </div>
-              <div class="col-lg-2">
-                <div class="text-heading text-right"><a href="/deal/edit_prod/{{deal.negocio_id}}"><i class="fas fa-edit icon-header"></i></a></div>
-              </div>
-          </div>
-        
-        </div>
-
-        <div class="panel-body">
-              
-              <div class="row">
-                <div class="col-lg-5"><p class="text-right"><strong>Estado</strong></p></div>
-                <div class="col-lg-7 text-left text-info"><p>{{deal.estado}}</p></div>
-              </div>
-
-
               <div class="row">
                 <div class="col-lg-5"><p class="text-right"><strong>Fecha Pase a Produccion</strong></p></div>
                 <div class="col-lg-7 text-left text-info"><p>{{deal.fecha_pase_produccion}}</p></div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-5"><p class="text-right"><strong>Dias en Produccion</strong></p></div>
+                <div class="col-lg-7 text-left text-info"><p>{{deal.dias_prod()}}</p></div>
               </div>
 
               <div class="row">
@@ -169,105 +139,82 @@
                 </div>
               </div>
 
-          </div>
-
-        </div>
-
-
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            
-            <div class="row">
-                <div class="col-lg-10">
-                  <div class="text-heading">Checkpoints</div>
-                </div>
-                <div class="col-lg-2">
-                  <div class="text-heading text-right"><a href="/deal/checkpoint/add/{{deal.negocio_id}}"><i class="fas fa-plus-circle"></i></a></div>
-                </div>
-            </div>
-          
-          </div>
-
-          <div class="panel-body">
-  
-          {% for cp in deal.checkpoints %}
-            
-              <div class="panel panel-primary">
-                  
-                <div class="row">
-                  <div class="col-lg-12"><p class="text-right"><a href="/deal/checkpoint/edit/{{cp.id}}"><i class="fas fa-edit icon-header"></i></a></p></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Nombre</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{cp.nombre}}</p></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Fecha</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{cp.fecha}}</p></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Realizado</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{cp.realizado}}</p></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Comentario</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{cp.comentario}}</p></div>
-                </div>
-
+              <div class="row">
+                <div class="col-lg-5"><p class="text-right"><strong>Estado</strong></p></div>
+                <div class="col-lg-7 text-left text-info"><p>{{deal.estado}}</p></div>
               </div>
 
-          {% endfor %}
 
           </div>
 
         </div>
 
-        {% endif %}
+      {% endif %}
+  
+      </div>
 
-        {% if deal.etapa in ['BAJA'] %}
+      <div class="col-lg-6">
+
+      {% if deal.etapa in ['PRODUCCION', 'BAJA'] %}
 
         <div class="panel panel-primary">
-
           <div class="panel-heading">
-            
             <div class="row">
-                <div class="col-lg-10">
-                  <div class="text-heading">Baja</div>
-                </div>
-                <div class="col-lg-2">
-                  <div class="text-heading text-right"><a href="/deal/edit_baja/{{deal.negocio_id}}"><i class="fas fa-edit icon-header"></i></a></div>
-                </div>
+              <div class="col-lg-12">
+                <div class="text-heading">Seguimiento</div>
+              </div>
             </div>
-          
           </div>
 
           <div class="panel-body">
-                
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Fecha de Baja</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{deal.fecha_baja}}</p></div>
-                </div>
 
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Razón de Baja</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{deal.razon_baja}}</p></div>
-                </div>
+            <ul class="timeline">
 
-                <div class="row">
-                  <div class="col-lg-5"><p class="text-right"><strong>Comentario</strong></p></div>
-                  <div class="col-lg-7 text-left text-info"><p>{{deal.comentario}}</p></div>
+            {% for cp in deal.checkpoints %}
+
+              {% if cp.realizado %}
+              <li class="timeline-inverted">
+                  <div class="timeline-badge success"><i class="far fa-calendar-check"></i></div>
+              {% elif cp.expirado() %}
+              <li class="timeline-inverted">
+                  <div class="timeline-badge danger"><i class="far fa-calendar-times"></i></div>
+              {% else %}
+              <li>
+                  <div class="timeline-badge"><i class="far fa-calendar-alt"></i></div>
+              {% endif %}
+
+                <div class="timeline-panel">
+                  <div class="timeline-heading">
+                    <h4 class="timeline-title">{{cp.nombre}}</h4>
+                    
+                    {% if cp.realizado %}
+                      <p><i class="far fa-calendar-alt"></i> {{cp.fecha}}</p>
+                      <p class="text-muted"><i class="far fa-calendar-check"></i> {{cp.fecha_realizado}} - {{cp.estado}}</p>
+                    {% else %}
+                      <p><i class="far fa-calendar-alt"></i> {{cp.fecha}}</p>
+                    {% endif %}
+                  </div>
+                  <div class="timeline-body">
+                    {% if cp.realizado %}
+                      <p>{{cp.comentario}}</p>
+                    {% endif %}
+                    {% if cp.expirado() %}
+                    <p class="text-right"><a href="/deal/checkpoint/edit/{{cp.id}}"><i class="fas fa-edit icon-header"></i></a></p>
+                    {% endif %}
+                  </div>
                 </div>
+              </li>
+
+            {% endfor %}
+
+            </ul>
 
           </div>
+        
+        </div>
 
-          </div>
+      {% endif %}
 
-          {% endif %}
-  
       </div>
 
       </div>     

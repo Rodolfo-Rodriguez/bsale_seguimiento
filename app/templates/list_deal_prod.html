@@ -10,12 +10,9 @@
   <div class="panel-heading">
     
     <div class="row">
-        <div class="col-lg-11">
-          <div class="text-heading"> Deals en Producción
+        <div class="col-lg-12">
+          <div class="text-heading"> Seguimiento Atención al Cliente
           </div>
-        </div>
-        <div class="col-lg-1 text-right text-heading">
-          <a href="/deal/download"><i class="fas fa-download"></i></a>
         </div>
 
     </div>
@@ -32,14 +29,15 @@
             <tr>
               <th>RUC</th>
               <th>CPN</th>
-              <th>Comercial</th>
-              <th>Razon Social</th>
-              <th>Plan Bsale</th>
-              <th>Categoria</th>
-              <th>Estado</th>
-              <th>Ejecutivo PEM</th>
+              <th class="table-border-right">Razon Social</th>
               <th>Fecha Prod.</th>
-              <th width="60px"></th>
+              <th class="table-border-right">Al Dia</th>
+
+              {% for idx in range(0,5) %}
+                <th>Check {{idx+1}}</th>
+                <th>Fecha</th>
+                <th class="table-border-right">Estado</th>
+              {% endfor %}
             </tr>
           </thead>
           <tbody>
@@ -47,18 +45,34 @@
             <tr>
               <td><a href="/deal/prod/show/{{item.negocio_id}}">{{item.ruc}}</a></td>
               <td><a href="/deal/prod/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
-              <td>{{item.comercial}}</td>
-              <td><a href="/deal/prod/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
-              <td>{{item.plan_bsale}}</td>
-              <td>{{item.categoria}}</td>
-              <td>{{item.estado}}</td>
-              <td>{{item.ejecutivo_pem}}</td>             
+              <td class="table-border-right"><a href="/deal/prod/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.fecha_pase_produccion}}</td>
-              <td align="right">
-                {% if item.tiene_url() %}
-                  <a href="{{item.url_bsale}}" target="_new" class="icon-list"><i class="fas fa-link"></i></a>
+              {% if item.al_dia() == 'NO' %}
+                <td class="text-danger table-border-right">{{item.al_dia()}}</td>
+              {% else %}
+                <td class="text-success table-border-right">{{item.al_dia()}}</td>
+              {% endif %}
+
+              {% for idx in range(0,5) %}
+  
+                {% if item.checkpoint(idx).realizado %}
+                  <td align="center" class="text-success"><i class="fas fa-check"></i></td>
+                  <td class="text-success"><a href="/deal/checkpoint/edit/{{item.checkpoint(idx).id}}" class="text-green">{{item.checkpoint(idx).fecha}}</a></td>
+                  <td class="text-success table-border-right">{{item.checkpoint(idx).estado}}</td>
+                {% else %}
+                  {% if item.checkpoint(idx).expirado() %}
+                    <td align="center" class="text-danger"><i class="fas fa-times"></i></td>
+                    <td><a href="/deal/checkpoint/edit/{{item.checkpoint(idx).id}}" class="text-red">{{item.checkpoint(idx).fecha}}</a></td>
+                    <td class="table-border-right"></td>
+                  {% else %}
+                    <td align="center"></td>
+                    <td>{{item.checkpoint(idx).fecha}}</td>
+                    <td class="table-border-right"></td>
+                  {% endif %}
                 {% endif %}
-              </td>
+
+              {% endfor %}
+
              </tr>
           {% endfor %}
          </tbody>
@@ -81,7 +95,7 @@
   <script>
       $(document).ready(function() {
           $('#dataTables').DataTable({
-              responsive: true,
+              responsive: false,
               stateSave: true,
               searching: true,
               info: true,

@@ -31,7 +31,8 @@ def deal_prod_show(id):
 def deal_prod_list():
 	
 
-	items = Deal.query.filter_by(etapa='PRODUCCION')
+#	items = Deal.query.filter(Deal.etapa=='PRODUCCION', Deal.fecha_pase_produccion >= '2020-01-01')
+	items = Deal.query.filter(Deal.etapa=='PRODUCCION')
 
 	session['LAST_URL'] = url_for('prod.deal_prod_list')
 	
@@ -73,22 +74,22 @@ def deal_checkpoint_edit(id):
 
 	checkpoint = Checkpoint.query.get(id)
 	form = CheckpointForm()
-	form.title = checkpoint.deal.razon_social
+	form.title = '{}'.format(checkpoint.deal.razon_social)
          
 	if form.validate_on_submit():
         
-		checkpoint.nombre = form.nombre.data
-		checkpoint.fecha = form.fecha.data
 		checkpoint.realizado = form.realizado.data
 		checkpoint.comentario = form.comentario.data
+		checkpoint.fecha_realizado = form.fecha_realizado.data
+		checkpoint.estado = form.estado.data
 
 		db.session.commit()
 
 		return redirect(session['LAST_URL'])
 
-	form.nombre.data = checkpoint.nombre
-	form.fecha.data = checkpoint.fecha
 	form.realizado.data = checkpoint.realizado
 	form.comentario.data = checkpoint.comentario
+	form.fecha_realizado.data = dt.today().strftime("%Y-%m-%d") if checkpoint.fecha_realizado == '' else checkpoint.fecha_realizado
+	form.estado.data = checkpoint.estado
 
-	return render_template("edit_checkpoint.html", form=form)
+	return render_template("edit_checkpoint.html", form=form, checkpoint=checkpoint)

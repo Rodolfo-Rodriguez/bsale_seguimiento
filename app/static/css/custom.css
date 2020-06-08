@@ -61,6 +61,14 @@
   color: white;
 }
 
+.text-red {
+  color: #A94442;
+}
+
+.text-green {
+  color: #3c763d;
+}
+
 .icon-header{
   padding-right: 15px;
 }
@@ -68,6 +76,10 @@
 .icon-list{
   padding-right: 8px;
   font-size: 16px;
+}
+
+.table-border-right {
+  border-right: 1px solid #ddd;
 }
 
  

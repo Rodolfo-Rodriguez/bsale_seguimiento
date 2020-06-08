@@ -94,11 +94,10 @@ class DealBajaForm(FlaskForm):
 class CheckpointForm(FlaskForm):
 	title = 'Edit'
 
-	nombre = StringField('Nombre')
-	fecha = StringField('Fecha')
-	tipo = StringField('Tipo')
+	fecha_realizado = StringField('Fecha')
 	realizado = BooleanField('Realizado')
 	comentario = TextAreaField('Comentario')
+	estado = SelectField('Estado', choices=[('','NO'),('CON USO','CON USO'),('SIN USO','SIN USO'),('BLOQUEADO','BLOQUEADO')])
 
 	submit = SubmitField('Submit')
 
