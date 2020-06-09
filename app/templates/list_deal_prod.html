@@ -32,12 +32,12 @@
               <th class="table-border-right">Razon Social</th>
               <th>Fecha Prod.</th>
               <th class="table-border-right">Al Dia</th>
-
               {% for idx in range(0,5) %}
                 <th>Check {{idx+1}}</th>
                 <th>Fecha</th>
                 <th class="table-border-right">Estado</th>
               {% endfor %}
+
             </tr>
           </thead>
           <tbody>
@@ -52,28 +52,28 @@
               {% else %}
                 <td class="text-success table-border-right">{{item.al_dia()}}</td>
               {% endif %}
-
-              {% for idx in range(0,5) %}
+              
+              {% for cp in item.checkpoints %}
   
-                {% if item.checkpoint(idx).realizado %}
+                {% if cp.realizado %}
                   <td align="center" class="text-success"><i class="fas fa-check"></i></td>
-                  <td class="text-success"><a href="/deal/checkpoint/edit/{{item.checkpoint(idx).id}}" class="text-green">{{item.checkpoint(idx).fecha}}</a></td>
-                  <td class="text-success table-border-right">{{item.checkpoint(idx).estado}}</td>
+                  <td class="text-success"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-green">{{cp.fecha}}</a></td>
+                  <td class="text-success table-border-right">{{cp.estado}}</td>
                 {% else %}
-                  {% if item.checkpoint(idx).expirado() %}
+                  {% if cp.expirado() %}
                     <td align="center" class="text-danger"><i class="fas fa-times"></i></td>
-                    <td><a href="/deal/checkpoint/edit/{{item.checkpoint(idx).id}}" class="text-red">{{item.checkpoint(idx).fecha}}</a></td>
+                    <td><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-red">{{cp.fecha}}</a></td>
                     <td class="table-border-right"></td>
                   {% else %}
                     <td align="center"></td>
-                    <td>{{item.checkpoint(idx).fecha}}</td>
+                    <td>{{cp.fecha}}</td>
                     <td class="table-border-right"></td>
                   {% endif %}
                 {% endif %}
 
               {% endfor %}
 
-             </tr>
+            </tr>
           {% endfor %}
          </tbody>
         </table>
