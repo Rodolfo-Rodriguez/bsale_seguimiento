@@ -66,12 +66,12 @@
               {% for cp in item.checkpoints %}
   
                 {% if cp.realizado %}
-                  <td class="text-success" align="center"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-green"><strong>{{cp.fecha}}</strong></a></td>
+                  <td class="text-success" align="center"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-green">{{cp.fecha}}</a></td>
                   <td class="text-success table-border-right">{{cp.estado}}</td>
                 {% else %}
                   {% if cp.expirado() %}
                     {% if cp.fecha == ultima_fecha %}
-                      <td align="center"><strong><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-red">{{cp.fecha}}</a></strong></td>
+                      <td align="center"><strong><a href="/deal/checkpoint/edit/{{cp.id}}">{{cp.fecha}}</a></strong></td>
                       <td class="table-border-right" align="center"></td>
                     {% else %}
                       <td align="center"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-red">{{cp.fecha}}</a></td>
@@ -117,9 +117,7 @@
               "lengthChange": true,
               "lengthMenu": [ 20, 50, 100 ],
               "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
-              "columnDefs": [
-                                { "width": "60px", "targets": [2,5,7,9,11,13] }
-                            ]
+              "columnDefs": [ { "width": "60px", "targets": [2,5,7,9,11,13] } ]
           });
           $('.dataTables_filter input').css({"width": "60%"});
       });          

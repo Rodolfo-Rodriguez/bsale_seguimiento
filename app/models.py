@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 seguimientos = {
-                'Seguimiento Pasa a Produccion':1,
+                'Seguimiento Pasa a Produccion':3,
                 'Seguimiento dia 7':7,
                 'Seguimiento dia 15':15,
                 'Seguimiento dia 30':30,
@@ -68,6 +68,13 @@ class Deal(db.Model):
         else:
             return('')
 
+    def dias_ganado(self):
+
+        try:
+            return ((dt.today().date() - dt.strptime(self.fecha_ganado, '%Y-%m-%d').date()).days)
+        except:
+            return('')
+
     def dias_pem(self):
 
         if self.etapa == 'PEM':
@@ -86,6 +93,16 @@ class Deal(db.Model):
         if self.etapa == 'PRODUCCION':
             try:
                 return ((dt.today().date() - dt.strptime(self.fecha_pase_produccion, '%Y-%m-%d').date()).days)
+            except:
+                return('')
+        else:
+            return('')
+
+    def dias_baja(self):
+
+        if self.etapa == 'BAJA':
+            try:
+                return ((dt.today().date() - dt.strptime(self.fecha_baja, '%Y-%m-%d').date()).days)
             except:
                 return('')
         else:
@@ -118,6 +135,24 @@ class Deal(db.Model):
     
 
         return( ('SI',ultima_fecha) if al_dia else ('NO',ultima_fecha) )
+
+    def etapa_txt(self):
+
+        return( self.etapa if self.etapa != '' else 'Vendido')
+
+
+    def etapa_dias(self):
+
+        if self.etapa == 'PEM':
+            dias_txt = '{} Dias'.format( self.dias_pem() if self.dias_pem() != '' else '?')
+        elif self.etapa == 'PRODUCCION':
+            dias_txt = '{} Dias'.format( self.dias_prod() if self.dias_prod() != '' else '?')
+        elif self.etapa == 'BAJA':
+            dias_txt = '{} Dias'.format( self.dias_baja() if self.dias_baja() != '' else '?')
+        else:
+            dias_txt = '{} Dias'.format( self.dias_ganado() if self.dias_ganado() != '' else '?')
+
+        return(dias_txt)
 
 class Checkpoint(db.Model):
     __tablename__ = 'checkpoints'

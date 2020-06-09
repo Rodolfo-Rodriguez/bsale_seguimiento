@@ -21,7 +21,7 @@ def deal_prod_show(id):
 
 	session['LAST_URL'] = url_for('prod.deal_prod_show', id=id)
 	
-	return render_template('show_deal_prod.html', deal=deal)
+	return render_template('show_deal.html', deal=deal)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Deal en Produccion - List

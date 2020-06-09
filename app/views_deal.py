@@ -14,7 +14,7 @@ deal = Blueprint('deal', __name__)
 
 from . import db, config
 from .models import Deal, Checkpoint
-from .forms import DealForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealProdForm, DealBajaForm
+from .forms import DealForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealBajaForm, DealEtapaForm
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Show Deal
@@ -274,6 +274,40 @@ def deal_edit(id):
 	return render_template("edit_deal.html", form=form)
 
 #---------------------------------------------------------------------------------------------------------------------------------
+# Edit Deal Etapa
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/edit_etapa/<id>", methods=['GET', 'POST'])
+@login_required
+def deal_edit_etapa(id):
+
+	fecha_today = dt.today().strftime("%Y-%m-%d")
+
+	deal = Deal.query.get(id)
+	form = DealEtapaForm()
+	form.title = deal.razon_social
+         
+	form.etapa.choices = [('','NO')] + sorted([ (deal.etapa, deal.etapa) for deal in db.session.query(Deal.etapa).distinct() if deal.etapa != ''])
+
+	if form.validate_on_submit():
+        
+		deal.etapa = form.etapa.data
+
+		if (form.etapa.data == 'PEM') and (deal.fecha_inicio_pem == ''):
+			deal.fecha_inicio_pem = fecha_today
+		elif (form.etapa.data == 'PRODUCCION') and (deal.fecha_pase_produccion == ''):
+			deal.set_fecha_pase_produccion(fecha_today)
+		elif (form.etapa.data == 'BAJA') and (deal.fecha_baja)=='':
+			deal.fecha_baja = fecha_today
+
+		db.session.commit()
+
+		return redirect(session['LAST_URL'])
+
+	form.etapa.data = deal.etapa
+
+	return render_template("edit_deal_etapa.html", form=form)
+
+#---------------------------------------------------------------------------------------------------------------------------------
 # Edit Deal - Venta
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/edit_venta/<id>", methods=['GET', 'POST'])
@@ -333,6 +367,8 @@ def deal_edit_pem(id):
 		deal.ejecutivo_pem = form.ejecutivo_pem.data		
 		deal.fecha_inicio_pem = form.fecha_inicio_pem.data
 		deal.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
+		deal.set_fecha_pase_produccion(form.fecha_pase_produccion.data)
+		deal.url_bsale = form.url_bsale.data		
 
 		db.session.commit()
 
@@ -341,37 +377,11 @@ def deal_edit_pem(id):
 	form.ejecutivo_pem.data = deal.ejecutivo_pem 
 	form.fecha_inicio_pem.data = deal.fecha_inicio_pem
 	form.fecha_contacto_inicial.data = deal.fecha_contacto_inicial
-
-	return render_template("edit_deal_pem.html", form=form)
-
-#---------------------------------------------------------------------------------------------------------------------------------
-# Edit Deal Produccion
-#---------------------------------------------------------------------------------------------------------------------------------
-@deal.route("/deal/edit_prod/<id>", methods=['GET', 'POST'])
-@login_required
-def deal_edit_prod(id):
-
-	deal = Deal.query.get(id)
-	form = DealProdForm()
-	form.title = deal.razon_social
-
-	form.estado.choices = [('','NO')] + sorted([ (deal.estado, deal.estado) for deal in db.session.query(Deal.estado).distinct() if deal.estado != ''])
-         
-	if form.validate_on_submit():
-        
-		deal.estado = form.estado.data		
-		deal.set_fecha_pase_produccion(form.fecha_pase_produccion.data)
-		deal.url_bsale = form.url_bsale.data		
-
-		db.session.commit()
-
-		return redirect(session['LAST_URL'])
-
-	form.estado.data = deal.estado
 	form.fecha_pase_produccion.data = deal.fecha_pase_produccion
 	form.url_bsale.data = deal.url_bsale
 
-	return render_template("edit_deal_prod.html", form=form)
+	return render_template("edit_deal_pem.html", form=form)
+
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Edit Deal Baja
@@ -588,7 +598,7 @@ def deal_load():
 			#--- Add CheckPoints
 
 			seguimientos = {
-				'Seguimiento Pasa a Produccion':1,
+				'Seguimiento Pasa a Produccion':3,
 				'Seguimiento dia 7':7,
 				'Seguimiento dia 15':15,
 				'Seguimiento dia 30':30,

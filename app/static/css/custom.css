@@ -26,8 +26,42 @@
   text-decoration: none;
 }
 
+.icon-heading {
+  font-size: 15px;
+  color: white;
+}
+
+.heading-big {
+  font-size: 20px;
+  color: white;
+  height: 49px;
+}
+
+.text-heading-big {
+  font-size: 20px;
+  color: white;
+}
+
+.text-heading-small {
+  font-size: 15px;
+  color: white;
+}
+
+.text-heading-small a {
+  font-size: 15px;
+  color: white;
+}
+
 .text-heading a:hover{
   color: lightgrey;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-white a {
+  color: white;
 }
 
 .text-filter-head {

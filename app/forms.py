@@ -37,6 +37,13 @@ class DealForm(FlaskForm):
 	submit = SubmitField('Submit')
 
 
+class DealEtapaForm(FlaskForm):
+	title = 'Edit'
+
+	etapa = SelectField('Etapa', choices=[('','NO')])
+
+	submit = SubmitField('Submit')
+
 class DealVentaForm(FlaskForm):
 	title = 'Edit'
 
@@ -57,18 +64,11 @@ class DealPEMForm(FlaskForm):
 	ejecutivo_pem = SelectField('Ejecutivo PEM', choices=[('','NO')])
 	fecha_inicio_pem = StringField('Fecha Inicio PEM')
 	fecha_contacto_inicial = StringField('Fecha de Contacto Inicial')
-
-	submit = SubmitField('Submit')
-
-
-class DealProdForm(FlaskForm):
-	title = 'Edit'
-
-	estado = SelectField('Estado', choices=[('','NO')])
 	fecha_pase_produccion = StringField('Fecha de Pase a Produccion')
 	url_bsale = StringField('URL BSale')
 
 	submit = SubmitField('Submit')
+
 
 class DealBajaForm(FlaskForm):
 	title = 'Edit'
