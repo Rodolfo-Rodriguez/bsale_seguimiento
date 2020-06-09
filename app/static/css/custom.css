@@ -82,6 +82,9 @@
   border-right: 1px solid #ddd;
 }
 
+.table-fecha {
+  width: 90px;
+}
  
 div.dataTables_filter {
     float: left;

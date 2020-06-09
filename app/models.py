@@ -1,10 +1,17 @@
 
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from . import db, login_manager
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+seguimientos = {
+                'Seguimiento Pasa a Produccion':1,
+                'Seguimiento dia 7':7,
+                'Seguimiento dia 15':15,
+                'Seguimiento dia 30':30,
+                'Seguimiento dia 60':60,
+                }
 
 class Deal(db.Model):
     __tablename__ = 'deals'
@@ -26,10 +33,28 @@ class Deal(db.Model):
     comentario = db.Column(db.String, nullable=True)
     razon_baja = db.Column(db.String, nullable=True)
     fecha_baja = db.Column(db.String, nullable=True)
-    checkpoints = db.relationship('Checkpoint', backref='deal', lazy='dynamic')
+    checkpoints = db.relationship('Checkpoint', backref='deal', lazy='dynamic', cascade="delete")
 
     def __repr__(self):
         return f'<Deal (id={self.negocio_id}, (cpn={self.cpn}, ruc={self.ruc})>'
+
+    def set_fecha_pase_produccion(self, fecha):
+        self.fecha_pase_produccion = fecha
+
+        for nombre, dias in seguimientos.items():
+
+            if self.fecha_pase_produccion != '':
+                fecha_dt = dt.strptime(self.fecha_pase_produccion, '%Y-%m-%d').date() + timedelta(days=dias)
+                fecha_str = fecha_dt.strftime("%Y-%m-%d")
+            else:
+                fecha_str = ''
+            
+            checkpoint = Checkpoint.query.filter(Checkpoint.nombre==nombre, Checkpoint.deal_id==self.negocio_id).first()
+            checkpoint.fecha = fecha_str
+
+        #db.session.commit()
+
+
 
     def anio(self):
         if self.fecha_inicio_pem:
@@ -80,14 +105,19 @@ class Deal(db.Model):
     def al_dia(self):
 
         fecha_hoy = dt.today().strftime("%Y-%m-%d")
-        checkpoints = sorted(self.checkpoints, key=lambda x:x.fecha)
+        #checkpoints = sorted(self.checkpoints, key=lambda x:x.fecha)
 
         al_dia = False
-        for cp in checkpoints:
+        ultima_fecha = ''
+        for cp in self.checkpoints:
             if cp.fecha < fecha_hoy:
                 al_dia = cp.realizado
+                ultima_fecha = cp.fecha
+            else:
+                break
+    
 
-        return('SI' if al_dia else 'NO')
+        return( ('SI',ultima_fecha) if al_dia else ('NO',ultima_fecha) )
 
 class Checkpoint(db.Model):
     __tablename__ = 'checkpoints'
@@ -101,7 +131,7 @@ class Checkpoint(db.Model):
     deal_id = db.Column(db.Integer, db.ForeignKey('deals.negocio_id'))
     
     def __repr__(self):
-        return '<Role %r>' % self.name
+        return f'<Checkpoint (id={self.id}, (nombre={self.nombre}>'
 
     def expirado(self):
 

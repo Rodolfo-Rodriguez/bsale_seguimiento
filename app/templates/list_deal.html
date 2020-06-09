@@ -44,6 +44,7 @@
          <table width="100%" class="table table-striped table-hover" id="dataTables">
           <thead>
             <tr>
+              <th>ID</th>
               <th>RUC</th>
               <th>CPN</th>
               <th>Comercial</th>
@@ -55,13 +56,13 @@
               <th>Ejecutivo PEM</th>
               <th>Fecha Gan.</th>
               <th>Dias en PEM</th>
-              <th>Coment.</th>
               <th width="60px"></th>
             </tr>
           </thead>
           <tbody>
           {% for item in items %}
             <tr>
+              <td><a href="/deal/show/{{item.negocio_id}}">{{item.negocio_id}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.ruc}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td><a href="/deal/add_filter?field=comercial&op===&value={{item.comercial}}">{{item.comercial}}</td>
@@ -72,8 +73,7 @@
               <td><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
               <td><a href="/deal/add_filter?field=ejecutivo_pem&op===&value={{item.ejecutivo_pem}}">{{item.ejecutivo_pem}}</a></td>             
               <td>{{item.fecha_ganado}}</td>
-              <td>{{item.dias_pem()}}</td>
-              <td>{{item.comentario}}</td>
+              <td align="center">{{item.dias_pem()}}</td>
               <td align="right">
                 {% if item.tiene_url() %}
                   <a href="{{item.url_bsale}}" target="_new" class="icon-list"><i class="fas fa-link"></i></a>
@@ -112,7 +112,8 @@
               "pageLength": 20,
               "lengthChange": true,
               "lengthMenu": [ 20, 50, 100 ],
-              "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>"
+              "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+              "columnDefs": [ { "width": "60px", "targets": [10] } ]
           });
           $('.dataTables_filter input').css({"width": "60%"});
       });          

@@ -24,13 +24,22 @@
   <div class="row">
         <div class="col-lg-12">
 
-         <table width="100%" class="table table-striped table-hover" id="dataTables">
+         <table width="100%" class="table table-striped table-hover table-compact" id="dataTables">
           <thead>
+            <tr>
+              <th colspan="2" class="table-border-right">Cliente</th>
+              <th colspan="3" class="table-border-right">Deal</th>
+              <th colspan="2" class="table-border-right" align="center">Seguimiento Pasa a Produccion</th>
+              <th colspan="2" class="table-border-right" align="center">Seguimiento dia 7</th>
+              <th colspan="2" class="table-border-right" align="center">Seguimiento dia 15</th>
+              <th colspan="2" class="table-border-right" align="center">Seguimiento dia 30</th>
+              <th colspan="2" class="table-border-right" align="center">Seguimiento dia 60</th>
+            </tr>
             <tr>
               <th>CPN</th>
               <th class="table-border-right">Razon Social</th>
               <th>Fecha Prod.</th>
-              <th>Estado</th>
+              <th class="table-border-right">Estado</th>
               <th class="table-border-right">Al Dia</th>
               {% for idx in range(0,5) %}
                 <th>Fecha</th>
@@ -42,27 +51,34 @@
           <tbody>
           {% for item in items %}
             <tr>
+              {% set al_dia, ultima_fecha = item.al_dia() %}
+
               <td><a href="/deal/prod/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td class="table-border-right"><a href="/deal/prod/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.fecha_pase_produccion}}</td>
-              <td>{{item.estado}}</td>
-              {% if item.al_dia() == 'NO' %}
-                <td class="text-danger table-border-right">{{item.al_dia()}}</td>
+              <td class="table-border-right">{{item.estado}}</td>
+              {% if al_dia == 'NO' %}
+                <td class="text-danger table-border-right" align="center">{{al_dia}}</td>
               {% else %}
-                <td class="text-success table-border-right">{{item.al_dia()}}</td>
+                <td class="text-success table-border-right" align="center">{{al_dia}}</td>
               {% endif %}
               
               {% for cp in item.checkpoints %}
   
                 {% if cp.realizado %}
-                  <td class="text-success"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-green">{{cp.fecha}}</a></td>
+                  <td class="text-success" align="center"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-green"><strong>{{cp.fecha}}</strong></a></td>
                   <td class="text-success table-border-right">{{cp.estado}}</td>
                 {% else %}
                   {% if cp.expirado() %}
-                    <td><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-red">{{cp.fecha}}</a></td>
-                    <td class="table-border-right"></td>
+                    {% if cp.fecha == ultima_fecha %}
+                      <td align="center"><strong><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-red">{{cp.fecha}}</a></strong></td>
+                      <td class="table-border-right" align="center"></td>
+                    {% else %}
+                      <td align="center"><a href="/deal/checkpoint/edit/{{cp.id}}" class="text-red">{{cp.fecha}}</a></td>
+                      <td class="table-border-right" align="center"></td>
+                    {% endif %}
                   {% else %}
-                    <td>{{cp.fecha}}</td>
+                    <td align="center" class="text-muted">{{cp.fecha}}</td>
                     <td class="table-border-right"></td>
                   {% endif %}
                 {% endif %}
@@ -100,7 +116,10 @@
               "pageLength": 20,
               "lengthChange": true,
               "lengthMenu": [ 20, 50, 100 ],
-              "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>"
+              "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+              "columnDefs": [
+                                { "width": "60px", "targets": [2,5,7,9,11,13] }
+                            ]
           });
           $('.dataTables_filter input').css({"width": "60%"});
       });          

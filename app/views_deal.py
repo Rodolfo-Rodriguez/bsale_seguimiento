@@ -13,7 +13,7 @@ import pandas as pd
 deal = Blueprint('deal', __name__)
 
 from . import db, config
-from .models import Deal
+from .models import Deal, Checkpoint
 from .forms import DealForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealProdForm, DealBajaForm
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -246,7 +246,7 @@ def deal_edit(id):
 		deal.fecha_ganado = form.fecha_ganado.data
 		deal.fecha_inicio_pem = form.fecha_inicio_pem.data
 		deal.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
-		deal.fecha_pase_produccion = form.fecha_pase_produccion.data		
+		deal.set_fecha_pase_produccion(form.fecha_pase_produccion.data)
 		deal.fecha_baja = form.fecha_baja.data
 		deal.url_bsale = form.url_bsale.data		
 		deal.razon_baja = form.razon_baja.data	
@@ -359,8 +359,8 @@ def deal_edit_prod(id):
          
 	if form.validate_on_submit():
         
-		deal.estado = form.estado.data
-		deal.fecha_pase_produccion = form.fecha_pase_produccion.data		
+		deal.estado = form.estado.data		
+		deal.set_fecha_pase_produccion(form.fecha_pase_produccion.data)
 		deal.url_bsale = form.url_bsale.data		
 
 		db.session.commit()
@@ -513,7 +513,7 @@ def deal_load():
         
 	if form.validate_on_submit():
 
-		df = pd.read_sql_table('seguimiento', con=db.engine, columns=['negocio_id'])
+		df = pd.read_sql_table('deals', con=db.engine, columns=['negocio_id'])
 
 		excel_file = form.filename.data
 		local_excel_file = os.path.join(config['DATA_DIR'], config['DEALS_FILE'])
@@ -561,6 +561,8 @@ def deal_load():
 
 		df_new.loc[:,'plan_bsale'] = df_new.loc[:,'plan_bsale'].apply(lambda x: planes[x] if x in planes else '')
 
+		# Merge
+
 		df_merge = pd.merge(df, df_new, how='outer', indicator=True)
 
 		df_merge = df_merge[ df_merge['_merge']=='right_only']
@@ -576,11 +578,39 @@ def deal_load():
 			df_merge.loc[:,'fecha_inicio_pem'] = ''
 			df_merge.loc[:,'fecha_contacto_inicial'] = ''
 			df_merge.loc[:,'fecha_pase_produccion'] = ''
-			df_merge.loc[:,'hizo_upselling'] = ''
 			df_merge.loc[:,'url_bsale'] = ''
 			df_merge.loc[:,'comentario'] = 'Nuevo'
 
-			df_merge.to_sql('seguimiento', con=db.engine, if_exists='append', index=False)
+			#--- Write to DB
+
+			df_merge.to_sql('deals', con=db.engine, if_exists='append', index=False)
+
+			#--- Add CheckPoints
+
+			seguimientos = {
+				'Seguimiento Pasa a Produccion':1,
+				'Seguimiento dia 7':7,
+				'Seguimiento dia 15':15,
+				'Seguimiento dia 30':30,
+				'Seguimiento dia 60':60,
+				}
+
+			for id in df_merge.loc[:,'negocio_id']:
+
+				for nombre, dias in seguimientos.items():
+					
+					checkpoint = Checkpoint(nombre=nombre, 
+											fecha='', 
+											realizado=False, 
+											comentario='', 
+											fecha_realizado='', 
+											estado='', 
+											deal_id=id)
+
+					db.session.add(checkpoint)
+
+				db.session.commit()
+				
 
 		return redirect(url_for('main.home'))
 
