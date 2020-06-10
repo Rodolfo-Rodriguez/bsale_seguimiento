@@ -382,7 +382,11 @@ def deal_download():
 
 	items = query.all()
 
-	io_manager.deal_download(items)
+	today = dt.today().strftime("%Y-%m-%d-%H%M%S")
+	filename = 'deals-{}.xlsx'.format(today)
+	filepath = 'export/{}'.format(filename)
+
+	io_manager.deal_download(items, filepath)
 	
 	return send_from_directory('../export', filename, cache_timeout=0, as_attachment=True)
 

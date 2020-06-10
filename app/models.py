@@ -79,7 +79,7 @@ class Deal(db.Model):
 
     def dias_pem(self):
 
-        if self.etapa == 'PEM':
+        if self.etapa in ['PEM']:
             try:
                 return ((dt.today().date() - dt.strptime(self.fecha_inicio_pem, '%Y-%m-%d').date()).days)
             except:
@@ -90,6 +90,11 @@ class Deal(db.Model):
             except:
                 return('')
 
+    def pem_excedido(self):
+
+        return(  True if (self.dias_pem() != '' and self.dias_pem() > 30) else False )
+        
+
     def dias_prod(self):
 
         if self.etapa == 'PRODUCCION':
@@ -98,7 +103,10 @@ class Deal(db.Model):
             except:
                 return('')
         else:
-            return('')
+            try:
+                return((dt.strptime(self.fecha_baja, '%Y-%m-%d').date() - dt.strptime(self.fecha_pase_produccion, '%Y-%m-%d').date()).days)
+            except:
+                return('')
 
     def dias_baja(self):
 
@@ -140,16 +148,26 @@ class Deal(db.Model):
 
         return( self.etapa if self.etapa != '' else 'Vendido')
 
-    def etapa_dias(self):
+    def etapa_dias_txt(self):
+
+        dias_gan = self.dias_ganado() if self.dias_ganado() != '' else '?'
+        dias_pem = self.dias_pem() if self.dias_pem() != '' else '?'
+        dias_prod = self.dias_prod() if self.dias_prod() != '' else '?'
+        dias_baja = self.dias_baja() if self.dias_baja() != '' else '?'
+
+        dias_pem_txt = '{} Día en PEM'.format(dias_pem) if dias_pem==1 else '{} Días en PEM'.format(dias_pem)
+        dias_prod_txt = '{} Día en PRO'.format(dias_prod) if dias_prod==1 else '{} Días en PRO'.format(dias_prod)
+        dias_baja_txt = '{} Día en BAJA'.format(dias_baja) if dias_baja==1 else '{} Días en BAJA'.format(dias_baja)
+        dias_gan_txt = '{} Día'.format(dias_gan) if dias_gan==1 else '{} Días'.format(dias_gan)
 
         if self.etapa == 'PEM':
-            dias_txt = '{} Dias'.format( self.dias_pem() if self.dias_pem() != '' else '?')
+            dias_txt = '{}'.format(dias_pem_txt)
         elif self.etapa == 'PRODUCCION':
-            dias_txt = '{} Dias'.format( self.dias_prod() if self.dias_prod() != '' else '?')
+            dias_txt = '{}, {}'.format(dias_pem_txt, dias_prod_txt)
         elif self.etapa == 'BAJA':
-            dias_txt = '{} Dias'.format( self.dias_baja() if self.dias_baja() != '' else '?')
+            dias_txt = '{}, {}, {}'.format(dias_pem_txt, dias_prod_txt, dias_baja_txt)
         else:
-            dias_txt = '{} Dias'.format( self.dias_ganado() if self.dias_ganado() != '' else '?')
+            dias_txt = '{}'.format(dias_gan_txt)
 
         return(dias_txt)
 

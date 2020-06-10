@@ -71,8 +71,8 @@
             <tr>
               {% set al_dia, ultima_fecha = item.al_dia() %}
 
-              <td><a href="/deal/prod/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
-              <td class="table-border-right"><a href="/deal/prod/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
+              <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
+              <td class="table-border-right"><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.fecha_pase_produccion}}</td>
               <td class="table-border-right"><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
               {% if al_dia == 'NO' %}

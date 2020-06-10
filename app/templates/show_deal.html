@@ -51,6 +51,8 @@
                 {% else %}
                   <div class="panel panel-yellow">
                 {% endif %}
+              {% elif deal.etapa == 'PEM' and deal.pem_excedido() %}
+                  <div class="panel panel-yellow">
               {% else %}
                 <div class="panel panel-primary">
               {% endif %}
@@ -60,7 +62,6 @@
                   <div class="row">
                       <div class="col-lg-5">
                         <div class="text-heading-big text-left">{{deal.etapa_txt()}}</div>
-                        <div class="text-heading-small text-left">{{deal.etapa_dias()}}</div>
                       </div>
                       <div class="col-lg-5 text-right">
                         <div class="text-heading-big">{{deal.estado}}</div>
@@ -68,6 +69,11 @@
                       <div class="col-lg-2 text-right">
                         <a href="/deal/edit_etapa/{{deal.negocio_id}}"><div class="text-heading-big"><i class="fas fa-edit"></i></div></a>
                       </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="text-heading-small text-left">{{deal.etapa_dias_txt()}}</div>
+                    </div>
                   </div>
 
                 </div>

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, Blueprint, session, url_for
+from flask import render_template, redirect, Blueprint, session, url_for, request
 from sqlalchemy_filters import apply_filters
 from flask_login import login_required
 
@@ -32,10 +32,16 @@ def deal_prod_show(id):
 @login_required
 def deal_prod_list():
 
-	fecha_ini = (dt.today() - timedelta(120)).strftime("%Y-%m-%d")
+
+	filter = request.args.get('filter')
+	print(filter)
+
+	if filter == 'default':
+
+		fecha_ini = (dt.today() - timedelta(120)).strftime("%Y-%m-%d")
 	
-	session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'etapa','==','PRODUCCION')
-	session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'fecha_pase_produccion','>=',fecha_ini)
+		session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'etapa','==','PRODUCCION')
+		session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'fecha_pase_produccion','>=',fecha_ini)
 	
 	query_filter = fm.create_query_filter(session)
 	query = db.session.query(Deal)
