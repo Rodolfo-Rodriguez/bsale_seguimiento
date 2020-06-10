@@ -27,11 +27,11 @@ def deal_show(id):
 
 	deal = Deal.query.get(id)
 
-	all_ids = [ d.negocio_id for d in Deal.query.filter(Deal.ruc==deal.ruc).all() ]
+	planes = [ {'id':d.negocio_id, 'plan':d.plan_bsale} for d in Deal.query.filter(Deal.ruc==deal.ruc).all() ]
 
 	session['LAST_URL'] = url_for('deal.deal_show', id=id)
 	
-	return render_template('show_deal.html', deal=deal, all_ids=all_ids)
+	return render_template('show_deal.html', deal=deal, planes=planes)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Deal - List

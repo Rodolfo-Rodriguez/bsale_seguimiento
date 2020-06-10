@@ -54,6 +54,21 @@
   color: white;
 }
 
+.text-heading-small a {
+  font-size: 15px;
+  color: white;
+  height: 49px;
+  text-decoration: none;
+  padding: 6px 6px 6px 6px;
+  margin-left: 0px;
+  margin-right: 15px;
+  border-radius: 20px;
+}
+
+.back-orange {
+  background: #ED7131;
+}
+
 .text-heading-small {
   font-size: 15px;
   color: white;

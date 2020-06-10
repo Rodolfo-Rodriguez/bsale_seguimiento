@@ -19,26 +19,26 @@
                 <div class="panel-heading">
 
                   <div class="row">
-                      <div class="col-lg-10">
-                        <div class="text-left heading-big">{{deal.razon_social}}</div>
-                      </div>
-                      <div class="col-lg-2">
-                        <div class="text-right heading-big">
-                          {% for id in all_ids %}
-                            {%  if id == deal.negocio_id %}                     
-                              <a href="/deal/show/{{id}}">{{id}}</a>
-                            {% else %}
-                              <a href="/deal/show/{{id}}">{{id}}</a>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
+                      <div class="col-lg-12">
+                        <div class="text-heading-big text-left">{{deal.razon_social}}</div>
                       </div>
                   </div>
-
+                  <div class="row"> 
+                    <div class="col-lg-12">                 
+                      <div class="text-heading-small text-right">
+                          {% for plan in planes %}
+                            {%  if plan['id'] == deal.negocio_id %}                     
+                              <a href="/deal/show/{{plan['id']}}" class="back-orange">{{plan['plan']}}</a>
+                            {% else %}
+                              <a href="/deal/show/{{plan['id']}}">{{plan['plan']}}</a>
+                            {% endif %}
+                          {% endfor %}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
               </div>
-            
+
             </div>
 
             <div class="col-lg-3">  
@@ -93,11 +93,6 @@
 
           <div class="panel-body">
                 
-                <div class="row">
-                  <div class="col-lg-4"><p class="text-right"><strong>ID Negocio</strong></p></div>
-                  <div class="col-lg-8 text-left text-info"><p>{{deal.negocio_id}}</p></div>
-                </div>
-
                 <div class="row">
                   <div class="col-lg-4"><p class="text-right"><strong>CPN</strong></p></div>
                   <div class="col-lg-8 text-left text-info"><p>{{deal.cpn}}</p></div>

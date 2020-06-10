@@ -15,58 +15,60 @@ class IOManager():
 		ws = wb.active
 		ws.title = 'Deals'
 
-		ws.cell(column=1, row=1).value = 'ID NEgocio'
+		ws.cell(column=1, row=1).value = 'ID'
 		ws.cell(column=2, row=1).value = 'RUC'
 		ws.cell(column=3, row=1).value = 'CPN'
-		ws.cell(column=4, row=1).value = 'Comercial'
-		ws.cell(column=5, row=1).value = 'Razon Social'
-		ws.cell(column=6, row=1).value = 'Plan BSale'
-		ws.cell(column=7, row=1).value = 'Categoria'
-		ws.cell(column=8, row=1).value = 'Etapa'
-		ws.cell(column=9, row=1).value = 'Estado'
-		ws.cell(column=10, row=1).value = 'Ejecutivo PEM'
-		ws.cell(column=11, row=1).value = 'Fecha Ganado'
+		ws.cell(column=4, row=1).value = 'Razon Social'
+		ws.cell(column=5, row=1).value = 'Fecha Ganado'
+		ws.cell(column=6, row=1).value = 'Comercial'
+		ws.cell(column=7, row=1).value = 'Plan BSale'
+		ws.cell(column=8, row=1).value = 'Categoria'
+		ws.cell(column=9, row=1).value = 'Ejecutivo PEM'
+		ws.cell(column=10, row=1).value = 'Etapa'
+		ws.cell(column=11, row=1).value = 'Estado'
 		ws.cell(column=12, row=1).value = 'Fecha Inicio PEM'
 		ws.cell(column=13, row=1).value = 'Fecha Contacto Inicial'
 		ws.cell(column=14, row=1).value = 'Fecha Pase a Produccion'
 		ws.cell(column=15, row=1).value = 'Dias en PEM'
-		ws.cell(column=16, row=1).value = 'URL BSale'
-		ws.cell(column=17, row=1).value = 'Fecha de Baja'
-		ws.cell(column=18, row=1).value = 'Razon de Baja'
-		ws.cell(column=19, row=1).value = 'Comentario'
-		ws.cell(column=20, row=1).value = 'Al Dia'
+		ws.cell(column=16, row=1).value = 'Dias en Prod.'
+		ws.cell(column=17, row=1).value = 'URL BSale'
+		ws.cell(column=18, row=1).value = 'Fecha de Baja'
+		ws.cell(column=19, row=1).value = 'Razon de Baja'
+		ws.cell(column=20, row=1).value = 'Comentario'
+		ws.cell(column=21, row=1).value = 'Al Dia'
 		
 		for idx in range(0,5):
-			ws.cell(column=21+idx*3, row=1).value = 'Check {}'.format(idx+1)
-			ws.cell(column=21+idx*3+1, row=1).value = 'Fecha Check {}'.format(idx+1)
-			ws.cell(column=21+idx*3+2, row=1).value = 'Estado Check {}'.format(idx+1)
+			ws.cell(column=22+idx*3, row=1).value = 'Check {}'.format(idx+1)
+			ws.cell(column=22+idx*3+1, row=1).value = 'Fecha Check {}'.format(idx+1)
+			ws.cell(column=22+idx*3+2, row=1).value = 'Estado Check {}'.format(idx+1)
 
 		for row, item in enumerate(items):
 			ws.cell(column=1, row=row+2).value = item.negocio_id
 			ws.cell(column=2, row=row+2).value = item.ruc
 			ws.cell(column=3, row=row+2).value = item.cpn
-			ws.cell(column=4, row=row+2).value = item.comercial
-			ws.cell(column=5, row=row+2).value = item.razon_social
-			ws.cell(column=6, row=row+2).value = item.plan_bsale
-			ws.cell(column=7, row=row+2).value = item.categoria
-			ws.cell(column=8, row=row+2).value = item.etapa
-			ws.cell(column=9, row=row+2).value = item.estado
-			ws.cell(column=10, row=row+2).value = item.ejecutivo_pem
-			ws.cell(column=11, row=row+2).value = item.fecha_ganado
+			ws.cell(column=4, row=row+2).value = item.razon_social
+			ws.cell(column=5, row=row+2).value = item.fecha_ganado
+			ws.cell(column=6, row=row+2).value = item.comercial
+			ws.cell(column=7, row=row+2).value = item.plan_bsale
+			ws.cell(column=8, row=row+2).value = item.categoria
+			ws.cell(column=9, row=row+2).value = item.ejecutivo_pem
+			ws.cell(column=10, row=row+2).value = item.etapa
+			ws.cell(column=11, row=row+2).value = item.estado
 			ws.cell(column=12, row=row+2).value = item.fecha_inicio_pem
 			ws.cell(column=13, row=row+2).value = item.fecha_contacto_inicial
 			ws.cell(column=14, row=row+2).value = item.fecha_pase_produccion
 			ws.cell(column=15, row=row+2).value = item.dias_pem()
-			ws.cell(column=16, row=row+2).value = item.url_bsale
-			ws.cell(column=17, row=row+2).value = item.fecha_baja
-			ws.cell(column=18, row=row+2).value = item.razon_baja
-			ws.cell(column=19, row=row+2).value = item.comentario
-			ws.cell(column=20, row=row+2).value = item.al_dia()[0]
+			ws.cell(column=16, row=row+2).value = item.dias_prod()
+			ws.cell(column=17, row=row+2).value = item.url_bsale
+			ws.cell(column=18, row=row+2).value = item.fecha_baja
+			ws.cell(column=19, row=row+2).value = item.razon_baja
+			ws.cell(column=20, row=row+2).value = item.comentario
+			ws.cell(column=21, row=row+2).value = item.al_dia()[0]
 
 			for idx, cp in enumerate(item.checkpoints):
-				ws.cell(column=21+idx*3, row=row+2).value = 'SI' if cp.realizado else 'NO'
-				ws.cell(column=21+idx*3+1, row=row+2).value = cp.fecha
-				ws.cell(column=21+idx*3+2, row=row+2).value = cp.estado
+				ws.cell(column=22+idx*3, row=row+2).value = 'SI' if cp.realizado else 'NO'
+				ws.cell(column=22+idx*3+1, row=row+2).value = cp.fecha
+				ws.cell(column=22+idx*3+2, row=row+2).value = cp.estado
 
 		wb.save(filename = filepath)
 		
