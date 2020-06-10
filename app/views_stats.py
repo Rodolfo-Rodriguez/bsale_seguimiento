@@ -332,9 +332,9 @@ def stats_pem(ejecutivo, range_id):
 @login_required
 def stats_churn():
 	
-	colors = ['#4E9AAB','#64B474','#E58C77', '#2B629F']
+	colors = ['#64B474', '#E58C77', '#F5C150', '#4E9AAB']
 
-	meses = ['2019-10','2019-11','2019-12','2020-01','2020-02','2020-03','2020-04','2020-05']
+	meses = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06']
 
 	data = []
 
@@ -342,16 +342,31 @@ def stats_churn():
 		fecha_ini = '{}-01'.format(mes)
 		fecha_fin = '{}-31'.format(mes)
 
-		deals = Deal.query.filter(Deal.fecha_inicio_pem>=fecha_ini, Deal.fecha_inicio_pem<=fecha_fin)
+		deals_vend_d1 = Deal.query.filter(Deal.fecha_ganado<=fecha_ini)
+		deals_vend_m = Deal.query.filter(Deal.fecha_ganado>=fecha_ini, Deal.fecha_ganado<=fecha_fin)
+
+		deals_baja_d1 = Deal.query.filter(Deal.fecha_baja<=fecha_ini, Deal.fecha_baja != '')
+		deals_baja_m = Deal.query.filter(Deal.fecha_baja>=fecha_ini, Deal.fecha_baja<=fecha_fin)
 			
-		deals_vend = deals.count()
-		deals_en_baja = len([deal for deal in deals if deal.etapa == 'BAJA'])
+		tot_clientes_d1 = deals_vend_d1.count()
+		tot_clientes_m = deals_vend_m.count()
+		tot_clientes = tot_clientes_d1 + tot_clientes_m
+		tot_bajas_d1 = deals_baja_d1.count()
+		tot_bajas_m = deals_baja_m.count()
+		tot_bajas = tot_bajas_d1 + tot_bajas_m
+		neto = tot_clientes_m - tot_bajas_m
 
-		data.append({'mes':mes, 'deals_vend':deals_vend, 'deals_en_baja':deals_en_baja })
+		churn = round(100 * tot_bajas_m / tot_clientes_d1, 1)
 
-	totales = [ sum([ d['deals_vend'] for d in data ]), 
-				sum([ d['deals_en_baja'] for d in data ]) ]
-
+		data.append({'mes':mes, 
+					'clientes_d1':tot_clientes_d1, 
+					'clientes_m':tot_clientes_m ,
+					'clientes':tot_clientes, 
+					'bajas_d1':tot_bajas_d1, 
+					'bajas_mes':tot_bajas_m, 
+					'bajas':tot_bajas,
+					'neto':neto,
+					'churn':churn })
 	
-	return render_template('stats_churn.html', data=data, totales=totales, colors=colors)	
+	return render_template('stats_churn.html', data=data, colors=colors)	
 

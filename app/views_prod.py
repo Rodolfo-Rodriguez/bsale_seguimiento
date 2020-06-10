@@ -92,11 +92,17 @@ def deal_checkpoint_edit(id):
 	form.title = '{}'.format(checkpoint.deal.razon_social)
          
 	if form.validate_on_submit():
+
+		deal = Deal.query.get(checkpoint.deal_id)
+		al_dia, ultima_fecha = deal.al_dia()
         
 		checkpoint.realizado = form.realizado.data
 		checkpoint.comentario = form.comentario.data
 		checkpoint.fecha_realizado = form.fecha_realizado.data
 		checkpoint.estado = form.estado.data
+
+		if checkpoint.fecha == ultima_fecha:
+			deal.estado = checkpoint.estado
 
 		db.session.commit()
 
