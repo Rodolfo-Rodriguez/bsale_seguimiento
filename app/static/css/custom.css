@@ -37,6 +37,18 @@
   height: 49px;
 }
 
+.heading-big a {
+  font-size: 20px;
+  color: white;
+  height: 49px;
+  text-decoration: none;
+  background: #ED7131;
+  padding: 6px 6px 6px 6px;
+  margin-left: 0px;
+  margin-right: 15px;
+  border-radius: 20px;
+}
+
 .text-heading-big {
   font-size: 20px;
   color: white;

@@ -10,14 +10,32 @@
   <div class="panel-heading">
     
     <div class="row">
-        <div class="col-lg-12">
-          <div class="text-heading"> Seguimiento Atención al Cliente
+        <div class="col-lg-11">
+          <div class="text-heading"> Seguimiento 
+            {% for field, field_list in session['DEAL_FILTERS'].items() %}
+              {% for df in field_list%}
+                  <span class="text-filter-head">
+                    {% if df['value'] == '' %}
+                      {{df['field']}} == NA
+                      <a href="/deal/remove_filter?field={{df['field']}}&op={{df['op']}}&value=NA"><i class="fas fa-times-circle"></i></a>
+                    {% else %}
+                      {{df['field']}} {{df['op']}} {{df['value']}} 
+                      <a href="/deal/remove_filter?field={{df['field']}}&op={{df['op']}}&value={{df['value']}}"><i class="fas fa-times-circle"></i></a>
+                    {% endif %}
+                  </span> 
+              {% endfor %}
+            {% endfor %}
+
           </div>
+        </div>
+        <div class="col-lg-1 text-right text-heading">
+          <a href="/deal/download"><i class="fas fa-download"></i></a>
         </div>
 
     </div>
   
   </div>
+
 
   <div class="panel-body">
 
@@ -56,7 +74,7 @@
               <td><a href="/deal/prod/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td class="table-border-right"><a href="/deal/prod/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.fecha_pase_produccion}}</td>
-              <td class="table-border-right">{{item.estado}}</td>
+              <td class="table-border-right"><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
               {% if al_dia == 'NO' %}
                 <td class="text-danger table-border-right" align="center">{{al_dia}}</td>
               {% else %}

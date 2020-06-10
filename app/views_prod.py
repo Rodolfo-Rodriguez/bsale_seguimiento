@@ -10,6 +10,8 @@ from . import db, config
 from .models import Deal, Checkpoint
 from .forms import CheckpointForm
 
+from .filter_manager import filter_manager as fm
+
 #---------------------------------------------------------------------------------------------------------------------------------
 # Show Deal en Prod
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -29,10 +31,17 @@ def deal_prod_show(id):
 @prod.route("/deal/prod/list", methods=["GET"])
 @login_required
 def deal_prod_list():
-	
 
-#	items = Deal.query.filter(Deal.etapa=='PRODUCCION', Deal.fecha_pase_produccion >= '2020-01-01')
-	items = Deal.query.filter(Deal.etapa=='PRODUCCION')
+	fecha_ini = (dt.today() - timedelta(120)).strftime("%Y-%m-%d")
+	
+	session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'etapa','==','PRODUCCION')
+	session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'fecha_pase_produccion','>=',fecha_ini)
+	
+	query_filter = fm.create_query_filter(session)
+	query = db.session.query(Deal)
+	query = apply_filters(query, query_filter)
+
+	items = query.all()
 
 	session['LAST_URL'] = url_for('prod.deal_prod_list')
 	

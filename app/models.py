@@ -13,6 +13,9 @@ seguimientos = {
                 'Seguimiento dia 60':60,
                 }
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Deal Class
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Deal(db.Model):
     __tablename__ = 'deals'
     negocio_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
@@ -53,7 +56,6 @@ class Deal(db.Model):
             checkpoint.fecha = fecha_str
 
         #db.session.commit()
-
 
 
     def anio(self):
@@ -122,7 +124,6 @@ class Deal(db.Model):
     def al_dia(self):
 
         fecha_hoy = dt.today().strftime("%Y-%m-%d")
-        #checkpoints = sorted(self.checkpoints, key=lambda x:x.fecha)
 
         al_dia = False
         ultima_fecha = ''
@@ -132,14 +133,12 @@ class Deal(db.Model):
                 ultima_fecha = cp.fecha
             else:
                 break
-    
 
         return( ('SI',ultima_fecha) if al_dia else ('NO',ultima_fecha) )
 
     def etapa_txt(self):
 
         return( self.etapa if self.etapa != '' else 'Vendido')
-
 
     def etapa_dias(self):
 
@@ -154,6 +153,9 @@ class Deal(db.Model):
 
         return(dias_txt)
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Checkpoint Class
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Checkpoint(db.Model):
     __tablename__ = 'checkpoints'
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
@@ -175,6 +177,9 @@ class Checkpoint(db.Model):
         else:
             return False
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Role Class
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
@@ -186,6 +191,9 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role %r>' % self.name
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# User Class
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
 

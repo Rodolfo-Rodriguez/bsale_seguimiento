@@ -48,15 +48,15 @@
               <th>RUC</th>
               <th>CPN</th>
               <th>Comercial</th>
-              <th>Razon Social</th>
+              <th class="table-border-right">Razon Social</th>
               <th>Plan Bsale</th>
               <th>Categoria</th>
               <th>Etapa</th>
               <th>Estado</th>
               <th>Ejecutivo PEM</th>
               <th>Fecha Gan.</th>
-              <th>Dias en PEM</th>
-              <th width="60px"></th>
+              <th class="table-border-right">Dias en PEM</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -66,14 +66,14 @@
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.ruc}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td><a href="/deal/add_filter?field=comercial&op===&value={{item.comercial}}">{{item.comercial}}</td>
-              <td><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
+              <td class="table-border-right"><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td><a href="/deal/add_filter?field=plan_bsale&op===&value={{item.plan_bsale}}">{{item.plan_bsale}}</td>
               <td><a href="/deal/add_filter?field=categoria&op===&value={{item.categoria}}">{{item.categoria}}</td>
               <td><a href="/deal/add_filter?field=etapa&op===&value={{item.etapa}}">{{item.etapa}}</a></td>
               <td><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
               <td><a href="/deal/add_filter?field=ejecutivo_pem&op===&value={{item.ejecutivo_pem}}">{{item.ejecutivo_pem}}</a></td>             
               <td>{{item.fecha_ganado}}</td>
-              <td align="center">{{item.dias_pem()}}</td>
+              <td align="center" class="table-border-right">{{item.dias_pem()}}</td>
               <td align="right">
                 {% if item.tiene_url() %}
                   <a href="{{item.url_bsale}}" target="_new" class="icon-list"><i class="fas fa-link"></i></a>
@@ -112,7 +112,8 @@
               "lengthChange": true,
               "lengthMenu": [ 20, 50, 100 ],
               "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
-              "columnDefs": [ { "width": "60px", "targets": [10] } ]
+              "columnDefs": [ { "width": "60px", "targets": [10] },
+                              { "width": "43px", "targets": [12]}]
           });
           $('.dataTables_filter input').css({"width": "60%"});
       });          
