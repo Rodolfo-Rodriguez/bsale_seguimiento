@@ -46,7 +46,7 @@
           <thead>
             <tr>
               <th colspan="2" class="table-border-right">Cliente</th>
-              <th colspan="3" class="table-border-right">Deal</th>
+              <th colspan="4" class="table-border-right">Produccion</th>
               <th colspan="2" class="table-border-right" align="center">Seguimiento Pasa a Produccion</th>
               <th colspan="2" class="table-border-right" align="center">Seguimiento dia 7</th>
               <th colspan="2" class="table-border-right" align="center">Seguimiento dia 15</th>
@@ -57,6 +57,7 @@
               <th>CPN</th>
               <th class="table-border-right">Razon Social</th>
               <th>Fecha Prod.</th>
+              <th>Dias en Prod.</th>
               <th class="table-border-right">Estado</th>
               <th class="table-border-right">Al Dia</th>
               {% for idx in range(0,5) %}
@@ -74,6 +75,7 @@
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td class="table-border-right"><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.fecha_pase_produccion}}</td>
+              <td>{{item.dias_prod()}}</td>
               <td class="table-border-right"><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
               {% if al_dia == 'NO' %}
                 <td class="text-danger table-border-right" align="center">{{al_dia}}</td>
@@ -135,7 +137,7 @@
               "lengthChange": true,
               "lengthMenu": [ 20, 50, 100 ],
               "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
-              "columnDefs": [ { "width": "60px", "targets": [2,5,7,9,11,13] } ]
+              "columnDefs": [ { "width": "60px", "targets": [2,6,8,10,12,14] } ]
           });
           $('.dataTables_filter input').css({"width": "60%"});
       });          
