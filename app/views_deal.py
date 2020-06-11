@@ -27,7 +27,10 @@ def deal_show(id):
 
 	deal = Deal.query.get(id)
 
-	planes = [ {'id':d.negocio_id, 'plan':d.plan_bsale} for d in Deal.query.filter(Deal.ruc==deal.ruc).all() ]
+	if deal.ruc != '':
+		planes = [ {'id':d.negocio_id, 'plan':d.plan_bsale} for d in Deal.query.filter(Deal.ruc==deal.ruc).all() if deal.ruc != '']
+	else:
+		planes = [ {'id':deal.negocio_id, 'plan':deal.plan_bsale} ]
 
 	session['LAST_URL'] = url_for('deal.deal_show', id=id)
 	
