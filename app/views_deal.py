@@ -84,6 +84,18 @@ def deal_remove_filter():
 	return redirect(session['LAST_URL'])
 
 #---------------------------------------------------------------------------------------------------------------------------------
+# Deal - Clear Filters
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/clear_filters", methods=["GET"])
+@login_required
+def deal_clear_filters():
+
+	if 'DEAL_FILTERS' in session:
+		del session['DEAL_FILTERS']
+
+	return redirect(session['LAST_URL'])
+
+#---------------------------------------------------------------------------------------------------------------------------------
 # Deal por Field
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/<field>/<value>", methods=["GET"])
@@ -105,9 +117,8 @@ def deal_list_field_value(field, value):
 	
 	return redirect(url_for('deal.deal_list'))
 
-
 #---------------------------------------------------------------------------------------------------------------------------------
-# Deal - List para un Mes
+# Deal - List Ventas en un Mes
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/mes/<mes>", methods=["GET"])
 @login_required
@@ -117,6 +128,20 @@ def deal_list_mes(mes):
 	fecha_fin = '{}-31'.format(mes)
 	
 	session['DEAL_FILTERS'] = fm.add_date_range_filter_to_session(session, 'fecha_ganado', fecha_ini, fecha_fin)
+
+	return redirect(url_for('deal.deal_list'))
+
+#---------------------------------------------------------------------------------------------------------------------------------
+# Deal - List Bajas en un Mes
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/list/bajas/mes/<mes>", methods=["GET"])
+@login_required
+def deal_list_bajas_mes(mes):
+
+	fecha_ini = '{}-01'.format(mes)
+	fecha_fin = '{}-31'.format(mes)
+	
+	session['DEAL_FILTERS'] = fm.add_date_range_filter_to_session(session, 'fecha_baja', fecha_ini, fecha_fin)
 
 	return redirect(url_for('deal.deal_list'))
 

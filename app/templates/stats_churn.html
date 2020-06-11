@@ -27,7 +27,7 @@
             <tr>
               <th>Mes</th>
               <th align="center">Clientes D1</th>
-              <th align="center">Clientes Mes</th>
+              <th align="center">Ventas Mes</th>
               <th align="center">Bajas Mes</th>
               <th align="center">Neto Mes</th>
               <th align="center">Total Clientes</th>
@@ -40,8 +40,8 @@
               <tr>
                 <td>{{item['mes']}}</td>
                 <td align="center" style="color: {{colors[0]}};">{{item['clientes_d1']}}</td>
-                <td align="center" style="color: {{colors[0]}};">{{item['clientes_m']}}</td>
-                <td align="center" style="color: {{colors[1]}};">{{item['bajas_mes']}}</td>
+                <td align="center"><a href="/deal/list/mes/{{item['mes']}}" style="color: {{colors[0]}};">{{item['clientes_m']}}</a></td>
+                <td align="center"><a href="/deal/list/bajas/mes/{{item['mes']}}" style="color: {{colors[1]}};">{{item['bajas_mes']}}</a></td>
                 <td align="center" style="color: {{colors[3]}};">{{item['neto']}}</td>
                 <td align="center" style="color: {{colors[0]}};">{{item['clientes']}}</td>
                 <td align="center" style="color: {{colors[1]}};">{{item['bajas']}}</td>

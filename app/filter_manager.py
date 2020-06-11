@@ -41,7 +41,7 @@ class FilterManager():
 		if 'DEAL_FILTERS' in sess:			
 			for field, field_list in sess['DEAL_FILTERS'].items():
 				if len(field_list) > 1:
-					if field in ['fecha_ganado', 'fecha_pase_produccion']:
+					if field in ['fecha_ganado', 'fecha_pase_produccion', 'fecha_baja']:
 						query_filter.append({'and':field_list})
 					else:
 						query_filter.append({'or':field_list})

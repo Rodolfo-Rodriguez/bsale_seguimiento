@@ -195,8 +195,10 @@ def stats_ventas_pep(year):
 	
 	colors = ['#4E9AAB','#64B474','#E58C77', '#2B629F', '#59A9C6']
 
+	mes_hoy = dt.today().month
+
 	meses = {
-				"2020":['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06'],
+				"2020":['2020-{:0>2}'.format(m) for m in range(1,mes_hoy+1)],
 				"2019":['2019-01','2019-02','2019-03','2019-04','2019-05','2019-06','2019-07','2019-08','2019-09','2019-10','2019-11','2019-12'],
 				"2018":['2018-01','2018-02','2018-03','2018-04','2018-05','2018-06','2018-07','2018-08','2018-09','2018-10','2018-11','2018-12']
 			}
@@ -334,27 +336,34 @@ def stats_churn():
 	
 	colors = ['#64B474', '#E58C77', '#F5C150', '#4E9AAB']
 
-	meses = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06']
+	mes_hoy = dt.today().month
+
+	meses = [ '2020-{:0>2}'.format(m) for m in range(1,mes_hoy+1) ]
 
 	data = []
+
+	bajas_base = Deal.query.filter(Deal.etapa == 'BAJA', Deal.fecha_baja == '').count()
 
 	for mes in meses:
 		fecha_ini = '{}-01'.format(mes)
 		fecha_fin = '{}-31'.format(mes)
 
-		deals_vend_d1 = Deal.query.filter(Deal.fecha_ganado<=fecha_ini)
+		deals_vend_d1 = Deal.query.filter(Deal.fecha_ganado<fecha_ini)
 		deals_vend_m = Deal.query.filter(Deal.fecha_ganado>=fecha_ini, Deal.fecha_ganado<=fecha_fin)
 
-		deals_baja_d1 = Deal.query.filter(Deal.fecha_baja<=fecha_ini, Deal.fecha_baja != '')
+		deals_baja_d1 = Deal.query.filter(Deal.etapa == 'BAJA', Deal.fecha_baja < fecha_ini, Deal.fecha_baja != '')
+
 		deals_baja_m = Deal.query.filter(Deal.fecha_baja>=fecha_ini, Deal.fecha_baja<=fecha_fin)
 			
-		tot_clientes_d1 = deals_vend_d1.count()
+		tot_clientes_d1 = deals_vend_d1.count() - deals_baja_d1.count() - bajas_base
 		tot_clientes_m = deals_vend_m.count()
-		tot_clientes = tot_clientes_d1 + tot_clientes_m
-		tot_bajas_d1 = deals_baja_d1.count()
+		
+		tot_bajas_d1 = deals_baja_d1.count() + bajas_base
 		tot_bajas_m = deals_baja_m.count()
 		tot_bajas = tot_bajas_d1 + tot_bajas_m
 		neto = tot_clientes_m - tot_bajas_m
+
+		tot_clientes = tot_clientes_d1 + neto
 
 		churn = round(100 * tot_bajas_m / tot_clientes_d1, 1)
 
