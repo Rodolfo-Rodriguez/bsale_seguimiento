@@ -439,3 +439,24 @@ def deal_load():
 
 	return render_template("edit_excel_file.html", form=form)
 
+#---------------------------------------------------------------------------------------------------------------------------------
+# Update Deals
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/update", methods=['GET', 'POST'])
+@login_required
+def deal_update():
+
+	form = FileForm()
+        
+	if form.validate_on_submit():
+
+		excel_file = form.filename.data
+		local_excel_file = os.path.join(config['DATA_DIR'], config['UPDATE_DEALS_FILE'])
+		excel_file.save(local_excel_file)
+
+		io_manager.deal_update(excel_file, db)
+						
+		return redirect(url_for('main.home'))
+
+	return render_template("edit_excel_file.html", form=form)
+

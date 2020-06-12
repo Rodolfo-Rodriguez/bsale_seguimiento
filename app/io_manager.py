@@ -2,13 +2,16 @@ from datetime import datetime as dt
 import pandas as pd
 from openpyxl import Workbook
 
-from .models import Checkpoint
+from .models import Checkpoint, Deal
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # IO Manager Class
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IOManager():
 
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+	# Deal Download
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
 	def deal_download(self, items, filepath):
 
 		wb = Workbook()
@@ -72,8 +75,9 @@ class IOManager():
 
 		wb.save(filename = filepath)
 		
-
-#---------------------------------------------------------------------------------------------------------------------------------
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+	# Deal Load
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	def deal_load(self, excel_file, db):
 
@@ -170,6 +174,66 @@ class IOManager():
 					db.session.add(checkpoint)
 
 				db.session.commit()
+
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+	# Deal Update
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	def deal_update(self, excel_file, db):
+
+		df = pd.read_excel(excel_file, 
+							usecols = ["ID",
+									"RUC", 
+									"CPN", 
+									"Razon Social",
+									"Fecha Ganado",
+									"Comercial",
+									"Plan BSale",
+									"Categoria",
+									"Ejecutivo PEM",
+									"Etapa",
+									"Estado",
+									],
+							dtype = {"Fecha Ganado":str, 
+									"CPN":int, 
+									"RUC":str})
+
+
+		df.fillna(value={'CPN':'',
+						'RUC':'',
+						'Comercial':'',
+						'Razon Social':'',
+						'Plan BSale':'',
+						'Categoria':'',
+						'Etapa':'',
+						'Estado':'',
+						'Fecha Ganado':'', 
+						'Ejecutivo PEM':'',
+						}, inplace=True)
+
+
+		df.set_index('ID', inplace=True)
+
+		
+		# Write to DB
+
+		for id in df.index:
+
+			deal = Deal.query.get(id)
+
+			if deal:
+				deal.ruc = df.loc[id,"RUC"]
+				deal.cpn = int(df.loc[id,"CPN"])
+				deal.razon_social = df.loc[id,"Razon Social"]
+				deal.fecha_ganado = df.loc[id,"Fecha Ganado"]
+				deal.comercial = df.loc[id,"Comercial"]
+				deal.plan_bsale = df.loc[id,"Plan BSale"]
+				deal.categoria = df.loc[id,"Categoria"]
+				deal.etapa = df.loc[id,"Etapa"]
+				deal.estado = df.loc[id,"Estado"]
+				deal.ejecutivo_pem = df.loc[id,"Ejecutivo PEM"]
+
+		db.session.commit()
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # IO Manager Object

@@ -29,7 +29,7 @@ config = {
     'BASE_DIR': basedir,
     'DATA_DIR':'data',
     'DEALS_FILE':'bsale_deals.xlsx',
-    'IMPORT_SCRIPT': os.path.join(basedir, 'import_excel.sh'),
+    'UPDATE_DEALS_FILE':'update_deals.xlsx',
 }
 
 
