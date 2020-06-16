@@ -40,7 +40,7 @@ class IOManager():
 		ws.cell(column=20, row=1).value = 'Comentario'
 		ws.cell(column=21, row=1).value = 'Al Dia'
 		
-		for idx in range(0,5):
+		for idx in range(0,4):
 			ws.cell(column=22+idx*3, row=1).value = 'Check {}'.format(idx+1)
 			ws.cell(column=22+idx*3+1, row=1).value = 'Fecha Check {}'.format(idx+1)
 			ws.cell(column=22+idx*3+2, row=1).value = 'Estado Check {}'.format(idx+1)
@@ -153,7 +153,6 @@ class IOManager():
 
 			seguimientos = {
 				'Seguimiento Pasa a Produccion':3,
-				'Seguimiento dia 7':7,
 				'Seguimiento dia 15':15,
 				'Seguimiento dia 30':30,
 				'Seguimiento dia 60':60,
