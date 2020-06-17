@@ -35,15 +35,16 @@ class IOManager():
 		ws.cell(column=15, row=1).value = 'Dias en PEM'
 		ws.cell(column=16, row=1).value = 'Dias en Prod.'
 		ws.cell(column=17, row=1).value = 'URL BSale'
-		ws.cell(column=18, row=1).value = 'Fecha de Baja'
-		ws.cell(column=19, row=1).value = 'Razon de Baja'
-		ws.cell(column=20, row=1).value = 'Comentario'
-		ws.cell(column=21, row=1).value = 'Al Dia'
+		ws.cell(column=18, row=1).value = 'URL Cliente'
+		ws.cell(column=19, row=1).value = 'Fecha de Baja'
+		ws.cell(column=20, row=1).value = 'Razon de Baja'
+		ws.cell(column=21, row=1).value = 'Comentario'
+		ws.cell(column=22, row=1).value = 'Al Dia'
 		
 		for idx in range(0,4):
-			ws.cell(column=22+idx*3, row=1).value = 'Check {}'.format(idx+1)
-			ws.cell(column=22+idx*3+1, row=1).value = 'Fecha Check {}'.format(idx+1)
-			ws.cell(column=22+idx*3+2, row=1).value = 'Estado Check {}'.format(idx+1)
+			ws.cell(column=23+idx*3, row=1).value = 'Check {}'.format(idx+1)
+			ws.cell(column=23+idx*3+1, row=1).value = 'Fecha Check {}'.format(idx+1)
+			ws.cell(column=23+idx*3+2, row=1).value = 'Estado Check {}'.format(idx+1)
 
 		for row, item in enumerate(items):
 			ws.cell(column=1, row=row+2).value = item.negocio_id
@@ -63,15 +64,16 @@ class IOManager():
 			ws.cell(column=15, row=row+2).value = item.dias_pem()
 			ws.cell(column=16, row=row+2).value = item.dias_prod()
 			ws.cell(column=17, row=row+2).value = item.url_bsale
-			ws.cell(column=18, row=row+2).value = item.fecha_baja
-			ws.cell(column=19, row=row+2).value = item.razon_baja
-			ws.cell(column=20, row=row+2).value = item.comentario
-			ws.cell(column=21, row=row+2).value = item.al_dia()[0]
+			ws.cell(column=18, row=row+2).value = item.url_cliente
+			ws.cell(column=19, row=row+2).value = item.fecha_baja
+			ws.cell(column=20, row=row+2).value = item.razon_baja
+			ws.cell(column=21, row=row+2).value = item.comentario
+			ws.cell(column=22, row=row+2).value = item.al_dia()[0]
 
 			for idx, cp in enumerate(item.checkpoints):
-				ws.cell(column=22+idx*3, row=row+2).value = 'SI' if cp.realizado else 'NO'
-				ws.cell(column=22+idx*3+1, row=row+2).value = cp.fecha
-				ws.cell(column=22+idx*3+2, row=row+2).value = cp.estado
+				ws.cell(column=23+idx*3, row=row+2).value = 'SI' if cp.realizado else 'NO'
+				ws.cell(column=23+idx*3+1, row=row+2).value = cp.fecha
+				ws.cell(column=23+idx*3+2, row=row+2).value = cp.estado
 
 		wb.save(filename = filepath)
 		
