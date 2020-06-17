@@ -7,7 +7,6 @@ from flask_login import UserMixin
 
 seguimientos = {
                 'Seguimiento Pasa a Produccion':3,
-                'Seguimiento dia 7':7,
                 'Seguimiento dia 15':15,
                 'Seguimiento dia 30':30,
                 'Seguimiento dia 60':60,
