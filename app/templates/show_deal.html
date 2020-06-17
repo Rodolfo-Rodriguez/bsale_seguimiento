@@ -13,7 +13,7 @@
 
           <div class="row">
 
-            <div class="col-lg-7">    
+            <div class="col-lg-6">    
 
               <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -41,7 +41,7 @@
 
             </div>
 
-            <div class="col-lg-5">  
+            <div class="col-lg-6">  
 
               {% if deal.etapa == 'BAJA' %} 
                 <div class="panel panel-red">
@@ -166,6 +166,17 @@
                     <p><a target="_new" href="{{deal.url_bsale}}">{{deal.url_bsale}}</a></p>
                   {% else %}
                     <p>{{deal.url_bsale}}</p>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-5"><p class="text-right"><strong>URL Cliente</strong></p></div>
+                <div class="col-lg-7 text-left text-info">
+                  {% if deal.tiene_url_cliente() %}
+                    <p><a target="_new" href="{{deal.url_bsale}}">{{deal.url_cliente}}</a></p>
+                  {% else %}
+                    <p>{{deal.url_cliente}}</p>
                   {% endif %}
                 </div>
               </div>

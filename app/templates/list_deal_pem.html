@@ -44,44 +44,36 @@
          <table width="100%" class="table table-striped table-hover table-compact" id="dataTables">
           <thead>
             <tr>
-              <th colspan="4" class="table-border-right">Cliente</th>
-              <th colspan="4" class="table-border-right">Venta</th>
-              <th colspan="5" class="table-border-right">Post Venta</th>
+              <th colspan="3" class="table-border-right">Cliente</th>
+              <th colspan="3" class="table-border-right">Venta</th>
+              <th colspan="3" class="table-border-right">PEM</th>
               <th colspan="1"></th>
             </tr>
             <tr>
-              <th>ID</th>
               <th>RUC</th>
               <th>CPN</th>
               <th class="table-border-right">Razon Social</th>
               <th>Fecha Gan.</th>
               <th>Comercial</th>
-              <th>Plan Bsale</th>
-              <th class="table-border-right">Categoria</th>
+              <th class="table-border-right">Plan Bsale</th>
               <th>Ejecutivo PEM</th>
-              <th>Etapa</th>
               <th>Estado</th>
-              <th>Dias en PEM</th>
-              <th class="table-border-right">Dias en Pro.</th>
+              <th class="table-border-right">Dias en PEM</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
           {% for item in items %}
             <tr>
-              <td><a href="/deal/show/{{item.negocio_id}}">{{item.negocio_id}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.ruc}}</a></td>
               <td><a href="/deal/show/{{item.negocio_id}}">{{item.cpn}}</a></td>
               <td class="table-border-right"><a href="/deal/show/{{item.negocio_id}}">{{item.razon_social}}</a></td>
               <td>{{item.fecha_ganado}}</td>
               <td><a href="/deal/add_filter?field=comercial&op===&value={{item.comercial}}">{{item.comercial}}</td>
-              <td><a href="/deal/add_filter?field=plan_bsale&op===&value={{item.plan_bsale}}">{{item.plan_bsale}}</td>
-              <td class="table-border-right"><a href="/deal/add_filter?field=categoria&op===&value={{item.categoria}}">{{item.categoria}}</td>
+              <td class="table-border-right"><a href="/deal/add_filter?field=plan_bsale&op===&value={{item.plan_bsale}}">{{item.plan_bsale}}</td>
               <td><a href="/deal/add_filter?field=ejecutivo_pem&op===&value={{item.ejecutivo_pem}}">{{item.ejecutivo_pem}}</a></td>                       
-              <td><a href="/deal/add_filter?field=etapa&op===&value={{item.etapa}}">{{item.etapa}}</a></td>
               <td><a href="/deal/add_filter?field=estado&op===&value={{item.estado}}">{{item.estado}}</a></td>
-              <td align="center">{{item.dias_pem()}}</td>
-              <td align="center" class="table-border-right">{{item.dias_prod()}}</td>
+              <td class="table-border-right" align="center">{{item.dias_pem()}}</td>
               <td align="right">
                 {% if item.tiene_url() %}
                   <a href="{{item.url_bsale}}" target="_new" class="icon-list"><i class="fas fa-external-link-square-alt"></i></a>
@@ -89,7 +81,6 @@
                 {% if item.tiene_url_cliente() %}
                   <a href="{{item.url_cliente}}" target="_new" class="icon-list"><i class="fas fa-external-link-alt"></i></a>
                 {% endif %}
-                <a href="/deal/delete/{{item.negocio_id}}" class="icon-list"><i class="far fa-trash-alt"></i></a>
               </td>
              </tr>
           {% endfor %}
@@ -123,8 +114,8 @@
               "lengthChange": true,
               "lengthMenu": [ 20, 50, 100 ],
               "sDom": "<'row'<'col-lg-6'f><'col-lg-6'l>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
-              "columnDefs": [ { "width": "60px", "targets": [4] },
-                              { "width": "60px", "targets": [13]}]
+              "columnDefs": [ { "width": "60px", "targets": [3] },
+                              { "width": "40px", "targets": [9]}]
           });
           $('.dataTables_filter input').css({"width": "60%"});
       });          

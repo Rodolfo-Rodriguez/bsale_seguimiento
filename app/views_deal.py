@@ -329,6 +329,7 @@ def deal_edit_pem(id):
 		deal.fecha_contacto_inicial = form.fecha_contacto_inicial.data		
 		deal.set_fecha_pase_produccion(form.fecha_pase_produccion.data)
 		deal.url_bsale = form.url_bsale.data		
+		deal.url_cliente = form.url_cliente.data		
 
 		db.session.commit()
 
@@ -339,6 +340,7 @@ def deal_edit_pem(id):
 	form.fecha_contacto_inicial.data = deal.fecha_contacto_inicial
 	form.fecha_pase_produccion.data = deal.fecha_pase_produccion
 	form.url_bsale.data = deal.url_bsale
+	form.url_cliente.data = deal.url_cliente
 
 	return render_template("edit_deal_pem.html", form=form)
 

@@ -34,7 +34,6 @@ def deal_prod_list():
 
 
 	filter = request.args.get('filter')
-	print(filter)
 
 	if filter == 'default':
 
@@ -52,6 +51,30 @@ def deal_prod_list():
 	session['LAST_URL'] = url_for('prod.deal_prod_list')
 	
 	return render_template('list_deal_prod.html', items=items)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+# Deal en PEM - List
+#---------------------------------------------------------------------------------------------------------------------------------
+@prod.route("/deal/pem/list", methods=["GET"])
+@login_required
+def deal_pem_list():
+
+
+	filter = request.args.get('filter')
+
+	if filter == 'default':
+
+		session['DEAL_FILTERS'] = fm.add_filter_to_session(session,'etapa','==','PEM')
+	
+	query_filter = fm.create_query_filter(session)
+	query = db.session.query(Deal)
+	query = apply_filters(query, query_filter)
+
+	items = query.all()
+
+	session['LAST_URL'] = url_for('prod.deal_pem_list')
+	
+	return render_template('list_deal_pem.html', items=items)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Add Checkpoint

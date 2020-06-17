@@ -20,6 +20,7 @@ class DealForm(FlaskForm):
 	fecha_pase_produccion = StringField('Fecha de Pase a Produccion')
 	fecha_baja = StringField('Fecha de Baja')
 	url_bsale = StringField('URL BSale')
+	url_cliente = StringField('URL Cliente')
 	comentario = TextAreaField('Comentario')
 	razon_baja = SelectField('Razón Baja', choices=[('','NO'), 
 													('ACTIVACION TEMPORAL','ACTIVACION TEMPORAL'),
@@ -66,6 +67,7 @@ class DealPEMForm(FlaskForm):
 	fecha_contacto_inicial = StringField('Fecha de Contacto Inicial')
 	fecha_pase_produccion = StringField('Fecha de Pase a Produccion')
 	url_bsale = StringField('URL BSale')
+	url_cliente = StringField('URL Cliente')
 
 	submit = SubmitField('Submit')
 

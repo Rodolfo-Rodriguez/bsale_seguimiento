@@ -32,6 +32,7 @@ class Deal(db.Model):
     fecha_contacto_inicial = db.Column(db.String, nullable=True)
     fecha_pase_produccion = db.Column(db.String, nullable=True)
     url_bsale = db.Column(db.String, nullable=True)
+    url_cliente = db.Column(db.String, nullable=True)
     comentario = db.Column(db.String, nullable=True)
     razon_baja = db.Column(db.String, nullable=True)
     fecha_baja = db.Column(db.String, nullable=True)
@@ -121,6 +122,10 @@ class Deal(db.Model):
         
         return ( self.url_bsale.startswith('http') if self.url_bsale else False)
 
+
+    def tiene_url_cliente(self):
+        
+        return ( self.url_cliente.startswith('http') if self.url_cliente else False )
 
     def checkpoint(self, idx):
 
