@@ -122,3 +122,9 @@ class ConfirmForm(FlaskForm):
 
 	title = 'Confirm'
 	submit = SubmitField('Borrar')
+
+class FechaForm(FlaskForm):
+	fecha_ini = StringField('Fecha Ini')
+	fecha_fin = StringField('Fecha Fin')
+
+	submit = SubmitField('Apply')

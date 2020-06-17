@@ -13,6 +13,9 @@ main = Blueprint('main', __name__)
 
 from . import db, config
 from .models import Deal
+from .forms import FechaForm
+
+from .filter_manager import filter_manager as fm
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # Home
@@ -29,7 +32,7 @@ def home():
 #---------------------------------------------------------------------------------------------------------------------------------
 # List Filtros
 #---------------------------------------------------------------------------------------------------------------------------------
-@main.route("/filtros/list", methods=["GET"])
+@main.route("/filtros/list", methods=["GET","POST"])
 @login_required
 def filtros_list():
 
@@ -70,14 +73,24 @@ def filtros_list():
 		ejecutivos.append('NA')
 
 	session['LAST_URL'] = url_for('main.filtros_list')
+
+	form = FechaForm()
+
+	if form.validate_on_submit():
+
+		session['DEAL_FILTERS'] = fm.add_date_range_filter_to_session(session, 'fecha_ganado', form.fecha_ini.data, form.fecha_fin.data)
+
 	
+	form.fecha_ini.data, form.fecha_fin.data = fm.get_date_range_from_filter(session, 'fecha_ganado')
+
 	return render_template('list_filtros.html',
 							comerciales=comerciales,
 							planes_bsale=planes_bsale,
 							categorias=categorias,
 							etapas=etapas,
 							estados=estados,
-							ejecutivos=ejecutivos)
+							ejecutivos=ejecutivos,
+							form=form)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 # List Etapas

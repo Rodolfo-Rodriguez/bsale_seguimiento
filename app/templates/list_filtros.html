@@ -121,6 +121,38 @@
      </div>
     </div>
 
+    <form class="needs-validation" method="POST">
+      {{form.csrf_token}}
+      <fieldset>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="text-heading">Fecha Ganado</div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-4 text-right">
+              <div class="form-group">{{form.fecha_ini.label}}</div>
+            </div>
+            <div class="col-lg-7">               
+              <div class="form-group input-group">{{form.fecha_ini(class="form-control")}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 text-right">
+              <div class="form-group">{{form.fecha_fin.label}}</div>
+            </div>
+            <div class="col-lg-7">               
+              <div class="form-group input-group">{{form.fecha_fin(class="form-control")}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="text-footer text-right">{{form.submit(class="btn btn-outline btn-primary")}}</div> 
+        </div>
+      </div> 
+      </fieldset>
+    </form>
+
   </div>
 
 

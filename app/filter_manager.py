@@ -59,11 +59,30 @@ class FilterManager():
 			deal_filters.clear()
 
 		field_list = []
-		field_list.append({'field': fecha_field, 'op': '>=', 'value': fecha_ini})
-		field_list.append({'field': fecha_field, 'op': '<=', 'value': fecha_fin})
+		if fecha_ini != '':
+			field_list.append({'field': fecha_field, 'op': '>=', 'value': fecha_ini})
+		if fecha_fin != '':
+			field_list.append({'field': fecha_field, 'op': '<=', 'value': fecha_fin})
 		deal_filters[fecha_field] = field_list
 
 		return(deal_filters)
+
+	def get_date_range_from_filter(self, sess, fecha_field):
+
+		fecha_ini = ''
+		fecha_fin = ''
+		
+		if 'DEAL_FILTERS' in sess and fecha_field in sess['DEAL_FILTERS']:
+			field_list = sess['DEAL_FILTERS'][fecha_field]
+			for filt in field_list:
+				if filt['op'] == '>=':
+					fecha_ini = filt['value']
+				elif filt['op'] == '<=':
+					fecha_fin = filt['value']
+
+		return(fecha_ini, fecha_fin)
+			
+
 
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------

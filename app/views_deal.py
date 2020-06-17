@@ -13,7 +13,7 @@ deal = Blueprint('deal', __name__)
 
 from . import db, config
 from .models import Deal, Checkpoint
-from .forms import DealForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealBajaForm, DealEtapaForm
+from .forms import DealForm, FileForm, ConfirmForm, DealVentaForm, DealPEMForm, DealBajaForm, DealEtapaForm, FechaForm
 
 from .filter_manager import filter_manager as fm
 from .io_manager import io_manager
