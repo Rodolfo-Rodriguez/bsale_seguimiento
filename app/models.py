@@ -140,7 +140,7 @@ class Deal(db.Model):
         al_dia = False
         ultima_fecha = ''
         for cp in self.checkpoints:
-            if cp.fecha < fecha_hoy:
+            if cp.fecha and cp.fecha < fecha_hoy:
                 al_dia = cp.realizado
                 ultima_fecha = cp.fecha
             else:
@@ -169,7 +169,7 @@ class Deal(db.Model):
         elif self.etapa == 'PRODUCCION':
             dias_txt = '{}, {}'.format(dias_pem_txt, dias_prod_txt)
         elif self.etapa == 'BAJA':
-            dias_txt = '{}, {}, {}'.format(dias_pem_txt, dias_prod_txt, dias_baja_txt)
+            dias_txt = '{} - {} - {}'.format(dias_pem_txt, dias_prod_txt, dias_baja_txt)
         else:
             dias_txt = '{}'.format(dias_gan_txt)
 
@@ -194,7 +194,7 @@ class Checkpoint(db.Model):
 
     def expirado(self):
 
-        if self.fecha != '':
+        if self.fecha and self.fecha != '':
             return (dt.strptime(self.fecha, '%Y-%m-%d').date() < dt.today().date())
         else:
             return False
