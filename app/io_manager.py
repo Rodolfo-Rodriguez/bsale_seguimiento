@@ -182,57 +182,36 @@ class IOManager():
 
 	def deal_update(self, excel_file, db):
 
-		df = pd.read_excel(excel_file, 
-							usecols = ["ID",
-									"RUC", 
-									"CPN", 
-									"Razon Social",
-									"Fecha Ganado",
-									"Comercial",
-									"Plan BSale",
-									"Categoria",
-									"Ejecutivo PEM",
-									"Etapa",
-									"Estado",
-									],
-							dtype = {"Fecha Ganado":str, 
-									"CPN":int, 
-									"RUC":str})
-
-
-		df.fillna(value={'CPN':'',
-						'RUC':'',
-						'Comercial':'',
-						'Razon Social':'',
-						'Plan BSale':'',
-						'Categoria':'',
-						'Etapa':'',
-						'Estado':'',
-						'Fecha Ganado':'', 
-						'Ejecutivo PEM':'',
-						}, inplace=True)
-
+		df = pd.read_excel(excel_file)
 
 		df.set_index('ID', inplace=True)
-
 		
-		# Write to DB
 
 		for id in df.index:
 
 			deal = Deal.query.get(id)
 
 			if deal:
-				deal.ruc = df.loc[id,"RUC"]
-				deal.cpn = int(df.loc[id,"CPN"])
-				deal.razon_social = df.loc[id,"Razon Social"]
-				deal.fecha_ganado = df.loc[id,"Fecha Ganado"]
-				deal.comercial = df.loc[id,"Comercial"]
-				deal.plan_bsale = df.loc[id,"Plan BSale"]
-				deal.categoria = df.loc[id,"Categoria"]
-				deal.etapa = df.loc[id,"Etapa"]
-				deal.estado = df.loc[id,"Estado"]
-				deal.ejecutivo_pem = df.loc[id,"Ejecutivo PEM"]
+				if "RUC" in df.columns:
+					deal.ruc = str(df.loc[id,"RUC"])
+				if "CPN" in df.columns:
+					deal.cpn = int(df.loc[id,"CPN"])
+				if "Razon Social" in df.columns:
+					deal.razon_social = df.loc[id,"Razon Social"]
+				if "Fecha Ganado" in df.columns:
+					deal.fecha_ganado = df.loc[id,"Fecha Ganado"]
+				if "Comercial" in df.columns:
+					deal.comercial = df.loc[id,"Comercial"]
+				if "Plan BSale" in df.columns:
+					deal.plan_bsale = df.loc[id,"Plan BSale"]
+				if "Categoria" in df.columns:
+					deal.categoria = df.loc[id,"Categoria"]
+				if "Etapa" in df.columns:
+					deal.etapa = df.loc[id,"Etapa"]
+				if "Estado" in df.columns:
+					deal.estado = df.loc[id,"Estado"]
+				if "Ejecutivo PEM" in df.columns:
+					deal.ejecutivo_pem = df.loc[id,"Ejecutivo PEM"]
 
 		db.session.commit()
 
