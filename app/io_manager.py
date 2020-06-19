@@ -38,13 +38,6 @@ class IOManager():
 		ws.cell(column=18, row=1).value = 'URL Cliente'
 		ws.cell(column=19, row=1).value = 'Fecha de Baja'
 		ws.cell(column=20, row=1).value = 'Razon de Baja'
-		ws.cell(column=21, row=1).value = 'Comentario'
-		ws.cell(column=22, row=1).value = 'Al Dia'
-		
-		for idx in range(0,4):
-			ws.cell(column=23+idx*3, row=1).value = 'Check {}'.format(idx+1)
-			ws.cell(column=23+idx*3+1, row=1).value = 'Fecha Check {}'.format(idx+1)
-			ws.cell(column=23+idx*3+2, row=1).value = 'Estado Check {}'.format(idx+1)
 
 		for row, item in enumerate(items):
 			ws.cell(column=1, row=row+2).value = item.negocio_id
@@ -67,13 +60,6 @@ class IOManager():
 			ws.cell(column=18, row=row+2).value = item.url_cliente
 			ws.cell(column=19, row=row+2).value = item.fecha_baja
 			ws.cell(column=20, row=row+2).value = item.razon_baja
-			ws.cell(column=21, row=row+2).value = item.comentario
-			ws.cell(column=22, row=row+2).value = item.al_dia()[0]
-
-			for idx, cp in enumerate(item.checkpoints):
-				ws.cell(column=23+idx*3, row=row+2).value = 'SI' if cp.realizado else 'NO'
-				ws.cell(column=23+idx*3+1, row=row+2).value = cp.fecha
-				ws.cell(column=23+idx*3+2, row=row+2).value = cp.estado
 
 		wb.save(filename = filepath)
 		
@@ -206,12 +192,26 @@ class IOManager():
 					deal.plan_bsale = df.loc[id,"Plan BSale"]
 				if "Categoria" in df.columns:
 					deal.categoria = df.loc[id,"Categoria"]
+				if "Ejecutivo PEM" in df.columns:
+					deal.ejecutivo_pem = df.loc[id,"Ejecutivo PEM"]
 				if "Etapa" in df.columns:
 					deal.etapa = df.loc[id,"Etapa"]
 				if "Estado" in df.columns:
 					deal.estado = df.loc[id,"Estado"]
-				if "Ejecutivo PEM" in df.columns:
-					deal.ejecutivo_pem = df.loc[id,"Ejecutivo PEM"]
+				if "Fecha Inicio PEM" in df.columns:
+					deal.fecha_inicio_pem = df.loc[id,"Fecha Inicio PEM"]
+				if "Fecha Contacto Inicial" in df.columns:
+					deal.fecha_contacto_inicial = df.loc[id,"Fecha Contacto Inicial"]
+				if "Fecha Pase a Produccion" in df.columns:
+					deal.fecha_pase_produccion = df.loc[id,"Fecha Pase a Produccion"]
+				if "URL BSale" in df.columns:
+					deal.url_bsale = df.loc[id,"URL BSale"]
+				if "URL Cliente" in df.columns:
+					deal.url_cliente = df.loc[id,"URL Cliente"]
+				if "Fecha de Baja" in df.columns:
+					deal.fecha_baja = df.loc[id,"Fecha de Baja"]
+				if "Razon de Baja" in df.columns:
+					deal.razon_baja = df.loc[id,"Razon de Baja"]
 
 		db.session.commit()
 
