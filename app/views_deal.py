@@ -435,9 +435,10 @@ def deal_load():
 		local_excel_file = os.path.join(config['DATA_DIR'], config['DEALS_FILE'])
 		excel_file.save(local_excel_file)
 
-		io_manager.deal_load(excel_file, db)
+		loaded_deals_id = io_manager.deal_load(excel_file, db)
+		items = [ Deal.query.get(id) for id in loaded_deals_id ]
 						
-		return redirect(url_for('main.home'))
+		return render_template('list_deal_loaded.html', items=items)
 
 	return render_template("edit_excel_file.html", form=form)
 
@@ -470,6 +471,7 @@ def deal_update_selected():
 	local_excel_file = os.path.join(config['DATA_DIR'], config['UPDATE_DEALS_FILE'])
 
 	columns = io_manager.get_file_cols(local_excel_file)
+	
 	if 'ID' in columns:
 		columns.remove('ID')
 	if 'Dias en PEM' in columns:
