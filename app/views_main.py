@@ -60,7 +60,7 @@ def filtros_list():
 		etapas.remove('')
 		etapas.append('NA')
 
-	estados = [ deal.estado for deal in db.session.query(Deal.estado).distinct() ]
+	estados = [ deal.estado for deal in db.session.query(Deal.estado, Deal.etapa).distinct() if deal.etapa=='PRODUCCION']
 	estados.sort()
 	if '' in estados:
 		estados.remove('')
