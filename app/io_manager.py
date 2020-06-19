@@ -165,55 +165,46 @@ class IOManager():
 	#------------------------------------------------------------------------------------------------------------------------------------------------------------
 	# Deal Update
 	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+	def get_file_cols(self, excel_file):
 
-	def deal_update(self, excel_file, db):
+		df = pd.read_excel(excel_file)
+
+		return( [ col for col in df.columns] )
+
+
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+	# Deal Update
+	#------------------------------------------------------------------------------------------------------------------------------------------------------------
+	def deal_update(self, excel_file, db, import_columns):
 
 		df = pd.read_excel(excel_file)
 
 		df.set_index('ID', inplace=True)
-		
 
+		df.fillna('', inplace=True)
+
+		deals_updated = []
+		
 		for id in df.index:
 
 			deal = Deal.query.get(id)
 
 			if deal:
-				if "RUC" in df.columns:
-					deal.ruc = str(df.loc[id,"RUC"])
-				if "CPN" in df.columns:
-					deal.cpn = int(df.loc[id,"CPN"])
-				if "Razon Social" in df.columns:
-					deal.razon_social = df.loc[id,"Razon Social"]
-				if "Fecha Ganado" in df.columns:
-					deal.fecha_ganado = df.loc[id,"Fecha Ganado"]
-				if "Comercial" in df.columns:
-					deal.comercial = df.loc[id,"Comercial"]
-				if "Plan BSale" in df.columns:
-					deal.plan_bsale = df.loc[id,"Plan BSale"]
-				if "Categoria" in df.columns:
-					deal.categoria = df.loc[id,"Categoria"]
-				if "Ejecutivo PEM" in df.columns:
-					deal.ejecutivo_pem = df.loc[id,"Ejecutivo PEM"]
-				if "Etapa" in df.columns:
-					deal.etapa = df.loc[id,"Etapa"]
-				if "Estado" in df.columns:
-					deal.estado = df.loc[id,"Estado"]
-				if "Fecha Inicio PEM" in df.columns:
-					deal.fecha_inicio_pem = df.loc[id,"Fecha Inicio PEM"]
-				if "Fecha Contacto Inicial" in df.columns:
-					deal.fecha_contacto_inicial = df.loc[id,"Fecha Contacto Inicial"]
-				if "Fecha Pase a Produccion" in df.columns:
-					deal.fecha_pase_produccion = df.loc[id,"Fecha Pase a Produccion"]
-				if "URL BSale" in df.columns:
-					deal.url_bsale = df.loc[id,"URL BSale"]
-				if "URL Cliente" in df.columns:
-					deal.url_cliente = df.loc[id,"URL Cliente"]
-				if "Fecha de Baja" in df.columns:
-					deal.fecha_baja = df.loc[id,"Fecha de Baja"]
-				if "Razon de Baja" in df.columns:
-					deal.razon_baja = df.loc[id,"Razon de Baja"]
+
+				for col in import_columns:
+					if df.loc[id, col] != '':
+						if col == 'RUC':
+							deal.set_value_by_col(col, str(df.loc[id, col]))
+						elif col == 'CPN':
+							deal.set_value_by_col(col, int(df.loc[id, col]))
+						else:
+							deal.set_value_by_col(col, df.loc[id, col])				
+
+				deals_updated.append(deal)
 
 		db.session.commit()
+
+		return(deals_updated)
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # IO Manager Object

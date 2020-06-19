@@ -41,6 +41,74 @@ class Deal(db.Model):
     def __repr__(self):
         return f'<Deal (id={self.negocio_id}, (cpn={self.cpn}, ruc={self.ruc})>'
 
+    def get_value_by_col(self, col_name):
+        
+        col_name_to_value = {
+                                'ID' : self.negocio_id,
+                                'CPN' : self.cpn,
+                                'RUC' : self.ruc,
+                                'Comercial' : self.comercial,
+                                'Razon Social' : self.razon_social,
+                                'Plan BSale' : self.plan_bsale,
+                                'Categoria' : self.categoria,
+                                'Etapa' : self.etapa,
+                                'Estado' : self.estado,
+                                'Fecha Ganado' : self.fecha_ganado,
+                                'Fecha Inicio PEM' : self.fecha_inicio_pem,
+                                'Ejecutivo PEM' : self.ejecutivo_pem,
+                                'Fecha Contacto Inicial' : self.fecha_contacto_inicial,
+                                'Fecha Pase a Produccion' : self.fecha_pase_produccion,
+                                'URL BSale' : self.url_bsale,
+                                'URL Cliente' : self.url_cliente,
+                                'Comentario' : self.comentario,
+                                'Razon de Baja' : self.razon_baja,
+                                'Fecha de Baja' : self.fecha_baja,
+                            }
+
+        return( col_name_to_value[col_name] )
+
+    def set_value_by_col(self, col_name, value):
+        
+        if col_name == 'ID': 
+            self.negocio_id = value
+        elif col_name =='CPN':
+            self.cpn = value
+        elif col_name == 'RUC':
+            self.ruc = value
+        elif col_name == 'Comercial':
+            self.comercial = value
+        elif col_name == 'Razon Social':
+            self.razon_social = value
+        elif col_name == 'Plan BSale':
+            self.plan_bsale = value
+        elif col_name == 'Categoria':
+            self.categoria = value
+        elif col_name == 'Etapa':
+            self.etapa = value
+        elif col_name == 'Estado':
+            self.estado = value
+        elif col_name == 'Fecha Ganado':
+            self.fecha_ganado = value
+        elif col_name == 'Fecha Inicio PEM':
+            self.fecha_inicio_pem = value
+        elif col_name == 'Ejecutivo PEM':
+            self.ejecutivo_pem = value
+        elif col_name == 'Fecha Contacto Inicial':
+            self.fecha_contacto_inicial = value
+        elif col_name == 'Fecha Pase a Produccion':
+            self.fecha_pase_produccion = value
+        elif col_name == 'URL BSale':
+            self.url_bsale = value
+        elif col_name == 'URL Cliente':
+            self.url_cliente = value
+        elif col_name == 'Comentario':
+            self.comentario = value
+        elif col_name == 'Razon de Baja':
+            self.razon_baja = value
+        elif col_name == 'Fecha de Baja':
+            self.fecha_baja = value
+
+
     def set_fecha_pase_produccion(self, fecha):
         self.fecha_pase_produccion = fecha
 
@@ -54,8 +122,6 @@ class Deal(db.Model):
             
             checkpoint = Checkpoint.query.filter(Checkpoint.nombre==nombre, Checkpoint.deal_id==self.negocio_id).first()
             checkpoint.fecha = fecha_str
-
-        #db.session.commit()
 
 
     def anio(self):

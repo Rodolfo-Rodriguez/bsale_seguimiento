@@ -456,9 +456,34 @@ def deal_update():
 		local_excel_file = os.path.join(config['DATA_DIR'], config['UPDATE_DEALS_FILE'])
 		excel_file.save(local_excel_file)
 
-		io_manager.deal_update(excel_file, db)
-						
-		return redirect(url_for('main.home'))
+		return redirect(url_for('deal.deal_update_selected'))
 
 	return render_template("edit_excel_file.html", form=form)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+# Update Selected
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/update/selected", methods=['GET', 'POST'])
+@login_required
+def deal_update_selected():
+        
+	local_excel_file = os.path.join(config['DATA_DIR'], config['UPDATE_DEALS_FILE'])
+
+	columns = io_manager.get_file_cols(local_excel_file)
+	if 'ID' in columns:
+		columns.remove('ID')
+	if 'Dias en PEM' in columns:
+		columns.remove('Dias en PEM')
+	if 'Dias en Prod.' in columns:
+		columns.remove('Dias en Prod.')
+	
+	if request.method == 'POST':
+
+		import_columns = [ col for col in columns if request.form.get(col)=='y' ]	
+
+		deals_updated = io_manager.deal_update(local_excel_file, db, import_columns)
+
+		return render_template('list_deal_updated.html', items=deals_updated, columns=import_columns)
+
+	return render_template('edit_fields_to_update.html', columns=columns)
 
