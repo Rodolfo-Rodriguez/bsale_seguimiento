@@ -135,6 +135,21 @@ def deal_list_mes(mes):
 	return redirect(url_for('deal.deal_list'))
 
 #---------------------------------------------------------------------------------------------------------------------------------
+# Deal - List Vendidos en mes en estado PEM
+#---------------------------------------------------------------------------------------------------------------------------------
+@deal.route("/deal/list/mes/estado/<mes>/<estado>", methods=["GET"])
+@login_required
+def deal_list_pem_mes(mes, estado):
+
+	fecha_ini = '{}-01'.format(mes)
+	fecha_fin = '{}-31'.format(mes)
+	
+	session['DEAL_FILTERS'] = fm.add_date_range_filter_to_session(session, 'fecha_ganado', fecha_ini, fecha_fin)
+	session['DEAL_FILTERS'] = fm.add_filter_to_session(session, 'etapa', '==', estado)
+
+	return redirect(url_for('deal.deal_list'))
+
+#---------------------------------------------------------------------------------------------------------------------------------
 # Deal - List Bajas en un Mes
 #---------------------------------------------------------------------------------------------------------------------------------
 @deal.route("/deal/list/bajas/mes/<mes>", methods=["GET"])

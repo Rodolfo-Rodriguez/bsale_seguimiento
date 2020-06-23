@@ -51,10 +51,10 @@
             {% for item in data %}
               <tr>
                 <td>{{item['mes']}}</td>
-                <td align="center" style="color: {{colors[3]}};"><a href="/deal/list/mes/{{item['mes']}}">{{item['deals_vend']}}</a></td>
-                <td align="center" style="color: {{colors[0]}};">{{item['deals_en_pem']}}</td>
-                <td align="center" style="color: {{colors[1]}};">{{item['deals_en_prod']}}</td>
-                <td align="center" style="color: {{colors[2]}};">{{item['deals_en_baja']}}</td>
+                <td align="center"><a href="/deal/list/mes/{{item['mes']}}" style="color: {{colors[3]}};">{{item['deals_vend']}}</a></td>
+                <td align="center"><a href="/deal/list/mes/estado/{{item['mes']}}/PEM" style="color: {{colors[0]}};">{{item['deals_en_pem']}}</a></td>
+                <td align="center"><a href="/deal/list/mes/estado/{{item['mes']}}/PRODUCCION" style="color: {{colors[1]}};">{{item['deals_en_prod']}}</a></td>
+                <td align="center"><a href="/deal/list/mes/estado/{{item['mes']}}/BAJA" style="color: {{colors[2]}};">{{item['deals_en_baja']}}</a></td>
               </tr>
             {% endfor %}
             <tr>
